@@ -1,12 +1,4 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mcardoso <mcardoso@student.42lisboa.com    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/09/25 16:39:32 by mcardoso          #+#    #+#              #
-#    Updated: 2025/09/25 16:39:33 by mcardoso         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
+make:
+	cc -Wall -Wextra -Werror -lreadline minishell.c libft/libft.a -o minishell
+clean:
+	rm -f minishell
