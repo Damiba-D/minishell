@@ -1,5 +1,5 @@
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef MINISHELLM_H
+# define MINISHELLM_H
 
 # include "libft/libft.h"
 # include <fcntl.h>
