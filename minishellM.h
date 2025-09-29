@@ -13,4 +13,15 @@
 # include <unistd.h>
 # include <dirent.h>
 
+typedef struct	s_data
+{
+	char	*rline;
+	char	*prompt;
+	int		signal;
+
+
+}		t_data;
+
+t_data	*minsh(void);
+
 #endif
