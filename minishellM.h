@@ -2,6 +2,7 @@
 # define MINISHELLM_H
 
 # include "libft/libft.h"
+# include "arg_split/arg_split.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -22,6 +23,8 @@ typedef struct	s_data
 
 }		t_data;
 
-t_data	*minsh(void);
+t_data	*data(void);
+void	free_arr(char **arr);
+
 
 #endif
