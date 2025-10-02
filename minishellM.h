@@ -19,8 +19,6 @@ typedef struct	s_data
 	char	*rline;
 	char	*prompt;
 	int		signal;
-
-
 }		t_data;
 
 t_data	*data(void);
