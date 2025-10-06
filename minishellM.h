@@ -2,7 +2,7 @@
 # define MINISHELLM_H
 
 # include "libft/libft.h"
-# include "arg_split/arg_split.h"
+# include "parsing/arg_split.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -14,15 +14,17 @@
 # include <unistd.h>
 # include <dirent.h>
 
-typedef struct	s_data
+typedef struct	s_cmd
 {
-	char	*rline;
-	char	*prompt;
-	int		signal;
-}		t_data;
+	char			**argv; // list of args
+	char			*infile; // < cmd
+	char			*outfile; // > cmd
+	int				append; // >> cmd
+	int				hdoc; // < cmd
+	struct s_cmd	*next; // proximo pipe
+}					t_cmd;
 
-t_data	*data(void);
+t_cmd	*data(void);
 void	free_arr(char **arr);
-
 
 #endif
