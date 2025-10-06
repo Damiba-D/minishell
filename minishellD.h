@@ -11,6 +11,13 @@
 # include <sys/wait.h>
 # include <dirent.h>
 
+typedef struct s_env
+{
+    char *key;
+    char *value;
+    struct s_env *next;
+}   t_env;
 
+t_env *init_env(t_env *env_list);
 
 #endif
