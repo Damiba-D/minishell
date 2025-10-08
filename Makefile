@@ -1,4 +1,4 @@
-SRCS = minishell.c data.c arg_split/arg_split.c arg_split/copying.c arg_split/counting.c
+SRCS = minishell.c data.c parsing/arg_split.c parsing/copying.c parsing/counting.c
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
 

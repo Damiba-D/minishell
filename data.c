@@ -1,8 +1,7 @@
 #include "minishellM.h"
 
-t_data	*data(void)
+t_msh	*msh(void)
 {
-	static t_data	data;
-
+	static t_msh	data;
 	return (&data);
 }
