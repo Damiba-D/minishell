@@ -24,5 +24,6 @@ void	env_add(t_env **lst, t_env *new);
 void	init_env(t_env **env_list);
 void	term_env(t_env *env_list);
 int		env_cmd(t_env *env_list);
+int		echo_cmd(char **argv);
 
 #endif
