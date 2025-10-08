@@ -1,6 +1,12 @@
 
 #include "minishellD.h"
 
+void exit_cmd(t_env *env_list, int exit_code)
+{
+	term_env(env_list);
+	exit(exit_code);
+}
+
 int main(void)
 {
 	char		*input;
@@ -12,14 +18,12 @@ int main(void)
 		input = readline("minishell > ");
 		if (!input || !input[0])
 		{
-			exit(1);
+			exit_cmd(env_list, 1);
 		}
 		else
 			add_history(input);
 		if (!strncmp(input, "exit", 5))
-		{
-			exit(0);
-		}
+			exit_cmd(env_list, 0);
 		if (!strncmp(input, "env", 4))
 			env_cmd(env_list);
 	}

@@ -48,11 +48,28 @@ void init_env(t_env **env_list)
 	}
 }
 
+void term_env(t_env *env_list)
+{
+	t_env *temp;
+
+	while (env_list != NULL)
+	{
+		temp = env_list;
+		env_list = env_list->next;
+		if (temp->key != NULL)
+			free(temp->key);
+		if (temp->value != NULL)
+			free(temp->value);
+		free(temp);
+	}
+}
+
 int	env_cmd(t_env *env_list)
 {
 	while(env_list != NULL)
 	{
-		printf("%s=%s\n", env_list->key, env_list->value);
+		if (env_list->value != NULL)
+			printf("%s=%s\n", env_list->key, env_list->value);
 		env_list = env_list->next;
 	}
 	return (0);
