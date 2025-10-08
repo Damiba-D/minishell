@@ -46,7 +46,7 @@ $(NAME): $(OBJ)
 	@echo "$(YELLOW)🔧 Building libft...$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 	@echo "$(BLUE)🔗 Linking $(NAME)...$(RESET)"
-	@$(CC) $(CFLAGS) $(RLFLAG) $(OBJ) $(LIBFT_A) $(PRINTF_A) $(GNL_A) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_A) $(PRINTF_A) $(GNL_A) $(RLFLAG) -o $(NAME)
 	@echo "$(GREEN)✅ $(NAME) compiled successfully!$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
