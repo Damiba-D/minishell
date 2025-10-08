@@ -6,7 +6,7 @@
 /*   By: ddamiba <ddamiba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:09:08 by ddamiba           #+#    #+#             */
-/*   Updated: 2025/08/07 15:29:48 by ddamiba          ###   ########.fr       */
+/*   Updated: 2025/10/08 11:03:59 by ddamiba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);
+char	*ft_strndup(const char *s1, size_t len);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);

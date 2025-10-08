@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Minishell",
+            "type": "shell",
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Build minishell using Makefile"
+        },
+        {
+            "label": "Clean Minishell",
+            "type": "shell",
+            "command": "make fclean",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}

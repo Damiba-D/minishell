@@ -6,7 +6,7 @@ int main(void)
 	char		*input;
 	t_env		*env_list;
 
-	env_list = init_env(env_list);
+	init_env(&env_list);
 	while (1)
 	{
 		input = readline("minishell > ");
@@ -20,6 +20,8 @@ int main(void)
 		{
 			exit(0);
 		}
+		if (!strncmp(input, "env", 4))
+			env_cmd(env_list);
 	}
 	return 0;
 }

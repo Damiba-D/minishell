@@ -18,6 +18,10 @@ typedef struct s_env
     struct s_env *next;
 }   t_env;
 
-t_env *init_env(t_env *env_list);
+
+t_env	*env_new_node(char *key, char *value);
+void	env_add(t_env **lst, t_env *new);
+void	init_env(t_env **env_list);
+int		env_cmd(t_env *env_list);
 
 #endif
