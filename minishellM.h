@@ -33,8 +33,13 @@ typedef struct	s_msh
 	int		error_status;
 }			t_msh;
 
+t_input	*create_input_node(char *segment);
+void	add_input_back(t_input **lst, t_input *new);
+t_input	*parse_line(char *line);
+
 
 t_msh	*msh(void);
 void	free_arr(char **arr);
+void	free_input_list(t_input *input_list);
 
 #endif
