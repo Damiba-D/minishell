@@ -11,7 +11,7 @@ int main(void)
 {
 	char		*input;
 	t_env		*env_list;
-	char *args[] = {"echo", "-nnnnnnnnnnnnnnnnnnnnnnnnnnnnnna", "-n", "-n", "-nnnnnnnnnnnnnnnnnnnnnnnnn", "A", "B", "C", NULL};
+	char *args[] = {"unset", "1VAR", "NEWVAR", "BIGVAR", NULL};
 
 	init_env(&env_list);
 	while (1)
@@ -29,6 +29,14 @@ int main(void)
 			env_cmd(env_list);
 		if (!ft_strncmp(input, "echo", 5))
 		 	echo_cmd(args);
+		if (!ft_strncmp(input, "unset", 6))
+		 	unset_cmd(args, &env_list);
+		if (!ft_strncmp(input, "export", 7))
+		{
+			set_env_value("NEWVAR", "your mom a hoe", &env_list);
+			set_env_value("BIGVAR", "yo moma so fat", &env_list);
+			set_env_value("UGLYVAR", "yo moma so ugly", &env_list);
+		} //COLORTERM=truecolor
 	}
 	return 0;
 }

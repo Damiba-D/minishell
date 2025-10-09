@@ -30,47 +30,42 @@ void	env_add(t_env **lst, t_env *new)
 	last->next = new;
 }
 
-void init_env(t_env **env_list)
+t_env *get_env_node(char *key, t_env *env_list)
 {
-	extern char	**environ;
-	int			i;
-	int			len;
-
-	*env_list = NULL;
-	i = 0;
-	while (environ[i])
+	while (env_list)
 	{
-		len = 0;
-		while (environ[i][len] && environ[i][len] != '=')
-			len++;
-		env_add(env_list, env_new_node(ft_strndup(environ[i], len + 1), ft_strdup(environ[i] + len + 1)));
-		i++;
+		if (!strncmp(key, env_list->key, ft_strlen(key)))
+			return (env_list);
+		env_list = env_list->next;
 	}
+	return (NULL);
 }
 
-void term_env(t_env *env_list)
+char	*get_env_value(const char *key, t_env *env_list)
+{
+	while (env_list)
+	{
+		if (!strncmp(key, env_list->key, ft_strlen(key)))
+			return (env_list->value);
+		env_list = env_list->next;
+	}
+	return (NULL);
+}
+
+void	set_env_value(const char *key, const char *value, t_env **env_list)
 {
 	t_env *temp;
 
-	while (env_list != NULL)
+	temp = *env_list;
+	while (temp)
 	{
-		temp = env_list;
-		env_list = env_list->next;
-		if (temp->key != NULL)
-			free(temp->key);
-		if (temp->value != NULL)
+		if (!strncmp(key, temp->key, ft_strlen(key)))
+		{
 			free(temp->value);
-		free(temp);
+			temp->value = ft_strdup(value);
+			return ;
+		}
+		temp = temp->next;
 	}
-}
-
-int	env_cmd(t_env *env_list)
-{
-	while(env_list != NULL)
-	{
-		if (env_list->value != NULL)
-			printf("%s=%s\n", env_list->key, env_list->value);
-		env_list = env_list->next;
-	}
-	return (0);
+	env_add(env_list, env_new_node(ft_strdup(key), ft_strdup(value)));
 }

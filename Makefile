@@ -23,7 +23,7 @@ PRINTF_A    = $(PRINTF_DIR)/libftprintf.a
 GNL_A       = $(GNL_DIR)/get_next_line.a
 
 # Sources and objects
-SRC         = minishell.c envfuncs.c echo_cmd.c
+SRC         = envfuncs.c env_cmd.c unset_cmd.c echo_cmd.c cd_cmd.c minishell.c
 OBJ         = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 # Includes
