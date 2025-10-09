@@ -3,27 +3,17 @@
 void	echo_flag_handler(int *i, char **argv, int *nl_flag)
 {
 	int j;
-	int k;
 
-	j = 0;
-	k = *i;
-	if (argv[k][j] != '-')
-		return ;
-	while (argv[k])
+	while (argv[*i] && argv[*i][0] == '-' && argv[*i][1] == 'n')
 	{
-		j = 0;
-		if (argv[k][j] == '-' && argv[k][j + 1] == 'n')
-		{
-			j++;
-			while (argv[k][j] == 'n')
+		j = 1;
+		while (argv[*i][j] == 'n')
 				j++;
-			if (argv[k][j] != '\0')
+		if (argv[*i][j] != '\0')
 				return ;
-		}
-		k++;
+		(*i)++;
+		*nl_flag = 1;
 	}
-	*i = k;
-	*nl_flag = 1;
 }
 
 int	echo_cmd(char **argv)

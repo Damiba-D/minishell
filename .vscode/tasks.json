@@ -6,8 +6,7 @@
             "type": "shell",
             "command": "make",
             "group": { "kind": "build", "isDefault": true },
-            "problemMatcher": ["$gcc"],
-            "detail": "Build minishell using Makefile"
+            "problemMatcher": ["$gcc"]
         },
         {
             "label": "Clean Minishell",

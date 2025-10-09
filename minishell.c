@@ -11,7 +11,7 @@ int main(void)
 {
 	char		*input;
 	t_env		*env_list;
-	char *args[] = {"A", "B", "C"};
+	char *args[] = {"echo", "-nnnnnnnnnnnnnnnnnnnnnnnnnnnnnna", "-n", "-n", "-nnnnnnnnnnnnnnnnnnnnnnnnn", "A", "B", "C", NULL};
 
 	init_env(&env_list);
 	while (1)

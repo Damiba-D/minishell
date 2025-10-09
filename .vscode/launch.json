@@ -29,15 +29,5 @@
             "preLaunchTask": "Build Minishell",
             "postDebugTask": "Close Debug Terminal"
         }
-    ],
-    "compounds": [
-        {
-            "name": "Debug Minishell (Auto)",
-            "configurations": [
-                "${env:WSL_DISTRO_NAME:+Debug Minishell (WSL)}",
-                "${env:WSL_DISTRO_NAME:?Debug Minishell (Native)}"
-            ],
-            "stopAll": true
-        }
     ]
 }
