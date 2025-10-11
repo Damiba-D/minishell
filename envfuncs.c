@@ -34,7 +34,7 @@ t_env *get_env_node(char *key, t_env *env_list)
 {
 	while (env_list)
 	{
-		if (!strncmp(key, env_list->key, ft_strlen(key)))
+		if (!ft_strncmp(key, env_list->key, (ft_strlen(key) + 1)))
 			return (env_list);
 		env_list = env_list->next;
 	}
@@ -45,7 +45,7 @@ char	*get_env_value(const char *key, t_env *env_list)
 {
 	while (env_list)
 	{
-		if (!strncmp(key, env_list->key, ft_strlen(key)))
+		if (!ft_strncmp(key, env_list->key, (ft_strlen(key) + 1)))
 			return (env_list->value);
 		env_list = env_list->next;
 	}
@@ -59,13 +59,18 @@ void	set_env_value(const char *key, const char *value, t_env **env_list)
 	temp = *env_list;
 	while (temp)
 	{
-		if (!strncmp(key, temp->key, ft_strlen(key)))
+		if (!ft_strncmp(key, temp->key, (ft_strlen(key) + 1)))
 		{
 			free(temp->value);
 			temp->value = ft_strdup(value);
+			if (temp->value == NULL)
+				malloc_err_exit(*env_list, "init_env");
 			return ;
 		}
 		temp = temp->next;
 	}
-	env_add(env_list, env_new_node(ft_strdup(key), ft_strdup(value)));
+	temp = env_new_node(ft_strdup(key), ft_strdup(value));
+	if (temp == NULL || temp->key == NULL || temp->value == NULL)
+		malloc_err_exit(*env_list, "set_env_value");
+	env_add(env_list, temp);
 }
