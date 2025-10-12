@@ -14,9 +14,15 @@ void init_env(t_env **env_list)
 		len = 0;
 		while (environ[i][len] && environ[i][len] != '=')
 			len++;
-		new = env_new_node(ft_strndup(environ[i], len + 1), ft_strdup(environ[i] + len + 1));
-		if (new == NULL || new->key == NULL || new->value == NULL)
+		new = env_new_node(NULL, NULL);
+		if (new == NULL)
 			malloc_err_exit(*env_list, "init_env");
+		new->key = ft_strndup(environ[i], len);
+		if (new->key == NULL)
+			return (free_env_node(new), malloc_err_exit(*env_list, "init_env"));
+		new->value = ft_strdup(environ[i] + len + 1);
+		if (new->value == NULL)
+			return (free_env_node(new), malloc_err_exit(*env_list, "init_env"));
 		env_add(env_list, new);
 		i++;
 	}

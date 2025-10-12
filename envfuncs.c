@@ -64,13 +64,19 @@ void	set_env_value(const char *key, const char *value, t_env **env_list)
 			free(temp->value);
 			temp->value = ft_strdup(value);
 			if (temp->value == NULL)
-				malloc_err_exit(*env_list, "init_env");
+				malloc_err_exit(*env_list, "set_env_value");
 			return ;
 		}
 		temp = temp->next;
 	}
-	temp = env_new_node(ft_strdup(key), ft_strdup(value));
-	if (temp == NULL || temp->key == NULL || temp->value == NULL)
+	temp = env_new_node(NULL, NULL);
+	if (temp == NULL)
 		malloc_err_exit(*env_list, "set_env_value");
+	temp->key = ft_strdup(key);
+	if (temp->key == NULL)
+		return (free_env_node(temp), malloc_err_exit(*env_list, "set_env_value"));
+	temp->value = ft_strdup(value);
+	if (temp->value == NULL)
+		return (free_env_node(temp), malloc_err_exit(*env_list, "set_env_value"));
 	env_add(env_list, temp);
 }
