@@ -52,9 +52,11 @@ char	*get_env_value(const char *key, t_env *env_list)
 	return (NULL);
 }
 
-void	set_env_value(const char *key, const char *value, t_env **env_list) //UNABLE TO SET ENV VALUE TO NULL
+void	set_env_value(const char *key, const char *value, t_env **env_list)
 {
 	t_env *temp;
+	char *n_key;
+	char *n_value;
 
 	temp = *env_list;
 	while (temp)
@@ -69,14 +71,12 @@ void	set_env_value(const char *key, const char *value, t_env **env_list) //UNABL
 		}
 		temp = temp->next;
 	}
-	temp = env_new_node(NULL, NULL);
+	n_key = ft_strdup(key);
+	n_value = ft_strdup(value);
+	if ((n_key == NULL ) | (n_value == NULL && value != NULL))
+		return (free(n_key), free(n_value), malloc_err_exit(*env_list, "set_env_value"));
+	temp = env_new_node(n_key, n_value);
 	if (temp == NULL)
-		malloc_err_exit(*env_list, "set_env_value");
-	temp->key = ft_strdup(key);
-	if (temp->key == NULL)
-		return (free_env_node(temp), malloc_err_exit(*env_list, "set_env_value"));
-	temp->value = ft_strdup(value);
-	if (temp->value == NULL)
-		return (free_env_node(temp), malloc_err_exit(*env_list, "set_env_value"));
+		return (free(n_key), free(n_value), malloc_err_exit(*env_list, "set_env_value"));
 	env_add(env_list, temp);
 }

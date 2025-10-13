@@ -1,6 +1,6 @@
 #include "minishellD.h"
 
-void init_env(t_env **env_list)
+void	init_env(t_env **env_list)
 {
 	extern char	**environ;
 	int			i;
@@ -12,21 +12,20 @@ void init_env(t_env **env_list)
 	while (environ[i])
 	{
 		len = 0;
-		while (environ[i][len] && environ[i][len] != '=')
+		while (environ[i][len] != '=')
 			len++;
 		new = env_new_node(NULL, NULL);
-		if (new == NULL)
+		if (!new)
 			malloc_err_exit(*env_list, "init_env");
 		new->key = ft_strndup(environ[i], len);
-		if (new->key == NULL)
-			return (free_env_node(new), malloc_err_exit(*env_list, "init_env")); //POTENTIALLY UNABLE TO INITALIZE MINISHELL WITH A PREVIOUSLY SET TO NULL VARIABLE
 		new->value = ft_strdup(environ[i] + len + 1);
-		if (new->value == NULL)
+		if (!new->key || !new->value)
 			return (free_env_node(new), malloc_err_exit(*env_list, "init_env"));
 		env_add(env_list, new);
 		i++;
 	}
 }
+
 
 void term_env(t_env *env_list)
 {
