@@ -50,7 +50,7 @@ void	debug_print_input_list(t_input *input_list)
 			i = 0;
 			while (current->argv[i])
 			{
-				printf("  argv[%d]: '%s'\n", i, current->argv[i]);
+				printf("  argv[%d]: %s\n", i, current->argv[i]);
 				i++;
 			}
 		}

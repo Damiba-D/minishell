@@ -15,7 +15,7 @@ static int	has_unmatched_quote(char *s)
 			i += 2;
 			continue ;
 		}
-		if (s[i] == '\'')
+		if (s[i] == '\'' || s[i] == '\"')
 			in_quote = !in_quote;
 		i++;
 	}

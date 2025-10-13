@@ -22,7 +22,9 @@ static int	count_pipes(char *line)
 	}
 	return(count);
 }
-
+/// @brief 
+/// @param line 
+/// @return segments
 static char	**split_pipe(char *line)
 {
 	char	**segments;
@@ -44,10 +46,12 @@ static char	**split_pipe(char *line)
 	{
 		if (line[i] == '\'' && (i == 0 || line[i - 1] != '\\'))
 			in_quote = !in_quote;
+		else if (line[i] == '\"' && (i == 0 || line[i - 1] != '\\'))
+			in_quote = !in_quote;
 		if (line[i] == '|' && !in_quote)
 		{
 			segments[j] = ft_substr(line, start, i - start);
-			if (!segments)
+			if (!segments[j])
 				return(free_arr(segments), NULL);
 			j++;
 			start = i + 1;
@@ -62,12 +66,15 @@ static char	**split_pipe(char *line)
 	return (segments);
 }
 
+/// @brief Creates a new input node from a command segment
+/// @param segment Command string segment
+/// @return New t_input node or NULL on failure
 t_input	*create_input_node(char *segment)
 {
 	t_input	*new_node;
 	int		inv_arg;
 
-	new_node = malloc(sizeof(t_input));
+	new_node = ft_calloc(1 ,sizeof(t_input));
 	if (!new_node)
 		return (NULL);
 	new_node->argv = arg_split(segment, &inv_arg);
