@@ -36,7 +36,8 @@ int main(void)
 
 	init_env(&env_list);
 	unset_cmd(args, &env_list);
-	set_env_value("PATHNAME", "your mom a hoe", &env_list);
+	set_env_value("VAR", "", &env_list);
+	set_env_value("GONE", NULL, &env_list);
 	while (1)
 	{
 		input = readline("minishell > ");

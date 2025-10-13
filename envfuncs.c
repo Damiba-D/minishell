@@ -52,7 +52,7 @@ char	*get_env_value(const char *key, t_env *env_list)
 	return (NULL);
 }
 
-void	set_env_value(const char *key, const char *value, t_env **env_list)
+void	set_env_value(const char *key, const char *value, t_env **env_list) //UNABLE TO SET ENV VALUE TO NULL
 {
 	t_env *temp;
 

@@ -19,7 +19,7 @@ void init_env(t_env **env_list)
 			malloc_err_exit(*env_list, "init_env");
 		new->key = ft_strndup(environ[i], len);
 		if (new->key == NULL)
-			return (free_env_node(new), malloc_err_exit(*env_list, "init_env"));
+			return (free_env_node(new), malloc_err_exit(*env_list, "init_env")); //POTENTIALLY UNABLE TO INITALIZE MINISHELL WITH A PREVIOUSLY SET TO NULL VARIABLE
 		new->value = ft_strdup(environ[i] + len + 1);
 		if (new->value == NULL)
 			return (free_env_node(new), malloc_err_exit(*env_list, "init_env"));
