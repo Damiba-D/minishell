@@ -14,10 +14,15 @@
 # include <unistd.h>
 # include <dirent.h>
 
-typedef	enum	e_token
+typedef	enum	e_tokent
 {
+	WORD,
 	PIPE,
-}		t_token;
+	REDIN,
+	REDOUT,
+	APPEND,
+	HDOC,
+}		t_tokent;
 
 typedef struct	s_input
 {
@@ -28,6 +33,13 @@ typedef struct	s_input
 	int				hdoc; // << cmd
 	struct s_input	*next; // proximo pipe
 }					t_input;
+
+typedef struct s_token
+{
+	char 			*value;
+	t_tokent	 	type;
+	struct s_token	*next;
+}					t_token;
 
 typedef struct	s_msh
 {
