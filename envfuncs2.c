@@ -32,8 +32,7 @@ char **env_list_to_char(t_env *env_list)
 	char	**env_arr;
 	int		i;
 
-	size = env_lstsize(env_list);
-	env_arr = (char **)malloc(sizeof(char *) * (size + 1));
+	env_arr = (char **)malloc(sizeof(char *) * (env_lstsize(env_list) + 1));
 	if (env_arr == NULL)
 		malloc_err_exit(env_list, "env_list_to_char");
 	i = 0;
