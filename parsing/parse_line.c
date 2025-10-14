@@ -88,7 +88,6 @@ t_input	*create_input_node(char *segment)
 	new_node->append = 0;
 	new_node->hdoc = 0;
 	new_node->next = NULL;
-	new_node->prev = NULL;
 	return (new_node);
 }
 
@@ -107,7 +106,6 @@ void	add_input_back(t_input **lst, t_input *new)
 	while (last->next)
 		last = last->next;
 	last->next = new;
-	new->prev = last;
 }
 
 t_input	*parse_line(char *line)

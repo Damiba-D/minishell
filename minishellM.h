@@ -14,6 +14,11 @@
 # include <unistd.h>
 # include <dirent.h>
 
+typedef	enum	e_token
+{
+	PIPE,
+}		t_token;
+
 typedef struct	s_input
 {
 	char			**argv; // list of args
@@ -22,7 +27,6 @@ typedef struct	s_input
 	int				append; // >> cmd
 	int				hdoc; // << cmd
 	struct s_input	*next; // proximo pipe
-	struct s_input	*prev;
 }					t_input;
 
 typedef struct	s_msh
