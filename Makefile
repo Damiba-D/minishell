@@ -23,8 +23,9 @@ PRINTF_A    = $(PRINTF_DIR)/libftprintf.a
 GNL_A       = $(GNL_DIR)/get_next_line.a
 
 # Sources and objects
-SRC         = envfuncs.c envfuncs2.c env_cmd.c unset_cmd.c echo_cmd.c cd_cmd.c export_cmd.c minishell.c
-OBJ         = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+SRCs        = envfuncs.c envfuncs2.c env_cmd.c unset_cmd.c echo_cmd.c cd_cmd.c export_cmd/export_utils.c export_cmd/export_cmd.c \
+			  minishell.c
+OBJ 		= $(addprefix $(OBJ_DIR)/, $(SRCs:.c=.o))
 
 # Includes
 INCLUDES    = -I. -I$(LIBFT_DIR) -I$(PRINTF_DIR) -I$(GNL_DIR)
@@ -49,7 +50,8 @@ $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_A) $(PRINTF_A) $(GNL_A) $(RLFLAG) -o $(NAME)
 	@echo "$(GREEN)✅ $(NAME) compiled successfully!$(RESET)"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	@echo "$(BLUE)🧩 Compiling:$(RESET) $<"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 

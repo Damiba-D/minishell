@@ -3,6 +3,7 @@
 # define MINISHELLD_H
 
 # include "libft/libft.h"
+# include "export_cmd/export_cmd.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
@@ -36,6 +37,5 @@ void	term_env(t_env *env_list);
 int		env_cmd(t_env *env_list);
 int		echo_cmd(char **argv);
 int		unset_cmd(char **args, t_env **env_list);
-int		export_cmd(char **args, t_env **env_list);
 
 #endif
