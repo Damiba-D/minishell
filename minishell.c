@@ -35,9 +35,6 @@ int main(void)
 	char *args[] = {"export", NULL};
 
 	init_env(&env_list);
-	unset_cmd(args, &env_list);
-	set_env_value("VAR", "", &env_list);
-	set_env_value("GONE", NULL, &env_list);
 	while (1)
 	{
 		input = readline("minishell > ");
@@ -57,15 +54,10 @@ int main(void)
 		 	unset_cmd(args, &env_list);
 		if (!ft_strncmp(input, "export", 7))
 		 	export_cmd(args, &env_list);
-		if (!ft_strncmp(input, "array", 6))
+		if (!ft_strncmp(input, "pwd", 4))
 		{
-			char **arr = env_list_to_char(env_list);
-			for (int i = 0; arr[i]; i++)
-			{
-				printf("%s\n", arr[i]);
-			}
-			free_arr(arr);
-		} //COLORTERM=truecolor
+			pwd_cmd(env_list);
+		} 
 	}
 	return 0;
 }

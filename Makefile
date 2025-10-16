@@ -24,7 +24,7 @@ GNL_A       = $(GNL_DIR)/get_next_line.a
 
 # Sources and objects
 SRCs        = envfuncs.c envfuncs2.c env_cmd.c unset_cmd.c echo_cmd.c cd_cmd.c export_cmd/export_utils.c export_cmd/export_cmd.c \
-			  minishell.c
+			  pwd_cmd.c minishell.c
 OBJ 		= $(addprefix $(OBJ_DIR)/, $(SRCs:.c=.o))
 
 # Includes

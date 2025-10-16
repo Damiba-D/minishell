@@ -6,6 +6,7 @@ void	init_env(t_env **env_list)
 	int			i;
 	int			len;
 	t_env		*new;
+	char		buf[PATH_MAX];
 
 	*env_list = NULL;
 	i = 0;
@@ -24,6 +25,7 @@ void	init_env(t_env **env_list)
 		env_add(env_list, new);
 		i++;
 	}
+	set_env_value("PWD", getcwd(buf, sizeof(buf)), env_list);
 }
 
 
