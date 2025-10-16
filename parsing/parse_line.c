@@ -72,11 +72,13 @@ static char	**split_pipe(char *line)
 t_input	*create_input_node(char *segment)
 {
 	t_input	*new_node;
+	char	*cleaned_segment;
 	int		inv_arg;
 
 	new_node = ft_calloc(1 ,sizeof(t_input));
 	if (!new_node)
 		return (NULL);
+	cleaned_segment = 
 	new_node->argv = arg_split(segment, &inv_arg);
 	if (inv_arg == 2 || !new_node->argv)
 	{
@@ -128,7 +130,8 @@ t_input	*parse_line(char *line)
 		if (!new_node)
 		{
 			free_arr(segments);
-			return (input_list);
+			free_input_list(input_list);
+			return (NULL);
 		}
 		add_input_back(&input_list, new_node);
 		i++;

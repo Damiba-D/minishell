@@ -17,11 +17,11 @@
 typedef	enum	e_tokent
 {
 	WORD,
-	PIPE,
-	REDIN,
-	REDOUT,
-	APPEND,
-	HDOC,
+	PIPE, // |
+	REDIN, // <
+	REDOUT, // >
+	APPEND, // >>
+	HDOC, // <<
 }		t_tokent;
 
 typedef struct	s_input
@@ -57,5 +57,9 @@ t_input	*parse_line(char *line);
 t_msh	*msh(void);
 void	free_arr(char **arr);
 void	free_input_list(t_input *input_list);
+
+// utils
+int	skip_whitespace(char *str, int pos);
+
 
 #endif
