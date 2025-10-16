@@ -25,7 +25,7 @@ void	init_env(t_env **env_list)
 		env_add(env_list, new);
 		i++;
 	}
-	set_env_value("PWD", getcwd(buf, sizeof(buf)), env_list);
+	set_env_value("PWD", getcwd(buf, sizeof(buf)), env_list, false);
 }
 
 

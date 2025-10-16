@@ -32,9 +32,10 @@ int main(void)
 {
 	char		*input;
 	t_env		*env_list;
-	char *args[] = {"export", NULL};
+	char **args = ft_split("export VAR+=SOMETHING", ' ');
 
 	init_env(&env_list);
+	set_env_value("VAR", "ONETHING", &env_list, false);
 	while (1)
 	{
 		input = readline("minishell > ");
@@ -45,7 +46,10 @@ int main(void)
 		else
 			add_history(input);
 		if (!ft_strncmp(input, "exit", 5))
+		{
+			free_arr(args);
 			exit_cmd(env_list, 0);
+		}
 		if (!ft_strncmp(input, "env", 4))
 			env_cmd(env_list);
 		if (!ft_strncmp(input, "echo", 5))

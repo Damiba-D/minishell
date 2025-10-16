@@ -52,31 +52,12 @@ char	*get_env_value(const char *key, t_env *env_list)
 	return (NULL);
 }
 
-void	set_env_value(const char *key, const char *value, t_env **env_list)
+void	free_env_node(t_env *env_node)
 {
-	t_env *temp;
-	char *n_key;
-	char *n_value;
-
-	temp = *env_list;
-	while (temp)
-	{
-		if (!ft_strncmp(key, temp->key, (ft_strlen(key) + 1)))
-		{
-			free(temp->value);
-			temp->value = ft_strdup(value);
-			if (temp->value == NULL)
-				malloc_err_exit(*env_list, "set_env_value");
-			return ;
-		}
-		temp = temp->next;
-	}
-	n_key = ft_strdup(key);
-	n_value = ft_strdup(value);
-	if ((n_key == NULL ) | (n_value == NULL && value != NULL))
-		return (free(n_key), free(n_value), malloc_err_exit(*env_list, "set_env_value"));
-	temp = env_new_node(n_key, n_value);
-	if (temp == NULL)
-		return (free(n_key), free(n_value), malloc_err_exit(*env_list, "set_env_value"));
-	env_add(env_list, temp);
+	if (env_node->key != NULL)
+		free(env_node->key);
+	if (env_node->value != NULL)
+		free(env_node->value);
+	free(env_node);
 }
+

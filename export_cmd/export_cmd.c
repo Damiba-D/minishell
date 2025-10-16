@@ -1,19 +1,30 @@
 #include "../minishellD.h"
 #include "export_cmd.h"
 
-void	export_non_null(char *eq_pos, char *arg, t_env **env_list)
+static void	export_non_null(char *eq_pos, char *pl_pos, char *arg, t_env **env_list)
 {
 	char *key;
 	char *value;
 
-	*eq_pos = '\0';
-    key = arg;
-    value = eq_pos + 1;
-    set_env_value(key, value, env_list);
-    *eq_pos = '=';
+	if (!pl_pos)
+	{
+		*eq_pos = '\0';
+		key = arg;
+		value = eq_pos + 1;
+		set_env_value(key, value, env_list, false);
+		*eq_pos = '=';
+	}
+	else
+	{
+		*pl_pos = '\0';
+		key = arg;
+		value = eq_pos + 1;
+		set_env_value(key, value, env_list, true);
+		*pl_pos = '+';
+	}
 }
 
-void	print_sorted_env(t_env *env_list)
+static void	print_sorted_env(t_env *env_list)
 {
 	t_env **sorted_list;
 	int i;
@@ -39,6 +50,7 @@ int		export_cmd(char **args, t_env **env_list)
 	int i;
 	int ret_val;
 	char *eq_pos;
+	char *pl_pos;
 
 	ret_val = 0;
 	if (!args[1])
@@ -51,10 +63,11 @@ int		export_cmd(char **args, t_env **env_list)
 			if (is_invalid_identifier(args[i], &ret_val))
 				continue ;
 			eq_pos = ft_strchr(args[i], '=');
+			pl_pos = ft_strchr(args[i], '+');
 			if (!eq_pos && !get_env_node(args[i], *env_list))
-				set_env_value(args[i], NULL, env_list);
+				set_env_value(args[i], NULL, env_list, false);
 			if (eq_pos)
-				export_non_null(eq_pos, args[i], env_list);
+				export_non_null(eq_pos, pl_pos, args[i], env_list);
 		}
 	}
 	return (ret_val);

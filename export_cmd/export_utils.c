@@ -49,7 +49,7 @@ int	is_invalid_identifier(char *arg, int *ret_val)
 		inval = 1;
 	while (arg[i] && !inval)
 	{
-		if (arg[i] == '=')
+		if (arg[i] == '=' || (arg[i] == '+' && arg[i + 1] == '='))
 			break ;
 		if (!ft_isalnum(arg[i]) && arg[i] != '_')
 			inval = 1;
