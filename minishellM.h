@@ -34,13 +34,6 @@ typedef struct	s_input
 	struct s_input	*next; // proximo pipe
 }					t_input;
 
-typedef struct s_token
-{
-	char 			*value;
-	t_tokent	 	type;
-	struct s_token	*next;
-}					t_token;
-
 typedef struct	s_msh
 {
 	t_input	*imput;
@@ -61,5 +54,15 @@ void	free_input_list(t_input *input_list);
 // utils
 int	skip_whitespace(char *str, int pos);
 
+
+// extract_reds
+char	*ext_reds_file(char *seg, t_tokent type);
+char	*ext_reds_file_util(char *seg, int start_pos);
+
+// check_reds
+int	has_in_red(char *seg);
+int	has_out_red(char *seg);
+int	has_hdoc(char *seg);
+int	has_append(char *seg);
 
 #endif
