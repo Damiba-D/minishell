@@ -13,6 +13,7 @@
 # include <dirent.h>
 # include <linux/limits.h>
 # include <stdbool.h>
+# include <errno.h>
 
 typedef struct s_env
 {
@@ -39,6 +40,7 @@ void	term_env(t_env *env_list);
 int		env_cmd(t_env *env_list);
 int		echo_cmd(char **argv);
 int		unset_cmd(char **args, t_env **env_list);
-int		pwd_cmd(t_env *env_list);
+int		pwd_cmd(char **args, t_env *env_list);
+int		cd_cmd(char **args, t_env **env_list);
 
 #endif

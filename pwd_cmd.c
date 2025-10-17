@@ -1,9 +1,11 @@
 #include "minishellD.h"
 
-int pwd_cmd(t_env *env_list)
+int pwd_cmd(char **args, t_env *env_list)
 {
 	char *cwd;
 
+	if (args[1])
+		return (ft_putstr_fd("pwd: too many arguments\n", 2), 1);
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{

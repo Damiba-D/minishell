@@ -11,6 +11,7 @@ void	free_arr(char **arr)
 		free(arr[i]);
 		i++;
 	}
+	free(arr[i]);
 	free(arr);
 }
 
@@ -32,10 +33,9 @@ int main(void)
 {
 	char		*input;
 	t_env		*env_list;
-	char **args = ft_split("export VAR+=SOMETHING", ' ');
+	char **args;
 
 	init_env(&env_list);
-	set_env_value("VAR", "ONETHING", &env_list, false);
 	while (1)
 	{
 		input = readline("minishell > ");
@@ -45,23 +45,43 @@ int main(void)
 		}
 		else
 			add_history(input);
-		if (!ft_strncmp(input, "exit", 5))
+		args = ft_split(input, ' ');
+		if (!ft_strncmp(args[0], "exit", 5))
 		{
 			free_arr(args);
 			exit_cmd(env_list, 0);
 		}
-		if (!ft_strncmp(input, "env", 4))
-			env_cmd(env_list);
-		if (!ft_strncmp(input, "echo", 5))
-		 	echo_cmd(args);
-		if (!ft_strncmp(input, "unset", 6))
-		 	unset_cmd(args, &env_list);
-		if (!ft_strncmp(input, "export", 7))
-		 	export_cmd(args, &env_list);
-		if (!ft_strncmp(input, "pwd", 4))
+		else if (!ft_strncmp(args[0], "env", 4))
 		{
-			pwd_cmd(env_list);
-		} 
+			env_cmd(env_list);
+			free_arr(args);
+		}
+		else if (!ft_strncmp(args[0], "echo", 5))
+		{
+		 	echo_cmd(args);
+			free_arr(args);
+		}
+		else if (!ft_strncmp(args[0], "unset", 6))
+		{
+		 	unset_cmd(args, &env_list);
+			free_arr(args);
+		}
+		else if (!ft_strncmp(args[0], "export", 7))
+		{
+		 	export_cmd(args, &env_list);
+			free_arr(args);
+		}
+		else if (!ft_strncmp(args[0], "pwd", 4))
+		{
+			pwd_cmd(args, env_list);
+			free_arr(args);
+		}
+		else if (!ft_strncmp(args[0], "cd", 3))
+		{
+			cd_cmd(args, &env_list);
+			free_arr(args);
+			printf("PWD: %s, OLDPWD: %s\n" , get_env_value("PWD", env_list), get_env_value("OLDPWD", env_list));
+		}
 	}
 	return 0;
 }
