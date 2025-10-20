@@ -72,23 +72,34 @@ static char	**split_pipe(char *line)
 t_input	*create_input_node(char *segment)
 {
 	t_input	*new_node;
-	//char	*cleaned_segment;
+	char	*cleaned_segment;
 	int		inv_arg;
 
 	new_node = ft_calloc(1 ,sizeof(t_input));
 	if (!new_node)
 		return (NULL);
+	if (has_in_red(segment))
+		new_node->infile = ext_reds_file(segment, REDIN);
+	if (has_out_red(segment))
+		new_node->outfile = ext_reds_file(segment, REDOUT);
+	if (has_append(segment))
+	{
+		new_node->outfile = ext_reds_file(segment, APPEND);
+		new_node->append = 1;
+	}
+	if (has_hdoc(segment))
+	{
+		new_node->infile = ext_reds_file(segment, HDOC);
+		new_node->hdoc = 1;
+	}
+	cleaned_segment = ;
 	new_node->argv = arg_split(segment, &inv_arg);
+	free(cleaned_segment);
 	if (inv_arg == 2 || !new_node->argv)
 	{
 		free(new_node);
 		return (NULL);
 	}
-	new_node->infile = NULL;
-	new_node->outfile = NULL;
-	new_node->append = 0;
-	new_node->hdoc = 0;
-	new_node->next = NULL;
 	return (new_node);
 }
 

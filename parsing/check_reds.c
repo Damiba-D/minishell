@@ -99,3 +99,16 @@ int	has_append(char *seg)
 	}
 	return (0);
 }
+
+int	has_red(char *seg)
+{
+	if (has_hdoc(seg))
+		return (HDOC);
+	if (has_append(seg))
+		return (APPEND);
+	if (has_in_red(seg))
+		return (REDIN);
+	if (has_out_red(seg))
+		return (REDOUT);
+	return (0);
+}
