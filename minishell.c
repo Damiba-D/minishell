@@ -34,6 +34,8 @@ int main(void)
 	char		*input;
 	t_env		*env_list;
 	char **args;
+	pid_t pid;
+	char **envp;
 
 	init_env(&env_list);
 	while (1)
@@ -81,6 +83,25 @@ int main(void)
 			cd_cmd(args, &env_list);
 			free_arr(args);
 			printf("PWD: %s, OLDPWD: %s\n" , get_env_value("PWD", env_list), get_env_value("OLDPWD", env_list));
+		}
+		else if (!ft_strncmp(args[0], "clear", 6))
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				envp = env_list_to_char(env_list);
+				if (execve("/usr/bin/clear", args, envp))
+				{
+					free_arr(args);
+					free_arr(envp);
+					exit_cmd(env_list, 1);
+				}
+			}
+			else
+			{
+				waitpid(pid, NULL, 0);
+				free_arr(args);
+			}
 		}
 	}
 	return 0;

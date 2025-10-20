@@ -85,10 +85,18 @@ void	set_env_value(const char *key, const char *value, t_env **env_list, bool ap
 	}
 	n_key = ft_strdup(key);
 	n_value = ft_strdup(value);
-	if ((n_key == NULL ) | (n_value == NULL && value != NULL))
+	if ((n_key == NULL ) || (n_value == NULL && value != NULL))
 		return (free(n_key), free(n_value), malloc_err_exit(*env_list, "set_env_value"));
 	temp = env_new_node(n_key, n_value);
 	if (temp == NULL)
 		return (free(n_key), free(n_value), malloc_err_exit(*env_list, "set_env_value"));
 	env_add(env_list, temp);
 }
+
+
+/*
+	char *temp
+	char *temp2
+	temp = strjoin(key, =)
+	temp2 = strjoin(temp, value)
+*/
