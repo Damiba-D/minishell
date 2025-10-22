@@ -15,20 +15,6 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-void malloc_err_exit(t_env *env_list, char *err_loc)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(err_loc, 2);
-	ft_putstr_fd(": Allocation Error\n", 2);
-	exit_cmd(env_list, 1);
-}
-
-void exit_cmd(t_env *env_list, unsigned char exit_code)
-{
-	term_env(env_list);
-	exit(exit_code);
-}
-
 int main(void)
 {
 	char		*input;
