@@ -40,15 +40,17 @@ int		exit_cmd(char **args, t_env *env_list)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
-		exit(2);
+		exit_cmd_cleanup(args, env_list, 2);
 	}
 	if (args[2])
 	{
+		free_arr(args);
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return (1); // do not exit shell, return error
 	}
 	exit_value = ft_atoll(args[1]);
-	exit((unsigned char)exit_value); // Bash masks with 0–255
+	exit_cmd_cleanup(args, env_list, (unsigned char)exit_value); // Bash masks with 0–255
+	return (0);
 }
 
 void malloc_err_exit(t_env *env_list, char *err_loc)

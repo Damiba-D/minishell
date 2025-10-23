@@ -21,7 +21,7 @@ static int set_path(char **args, t_env *env_list, char **path)
 		*path = get_env_value("OLDPWD", env_list);
 		if (!(*path))
 			return (ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2), 1);
-		ft_putendl_fd(*path, 1); // bash prints new dir after cd -
+		ft_putendl_fd(*path, 1);
 	}
 	else
 		*path = args[1];
@@ -44,9 +44,11 @@ int	cd_cmd(char **args, t_env **env_list)
 	set_env_value("OLDPWD", old_pwd, env_list, false);
 	new_pwd = getcwd(NULL, 0);
 	if (new_pwd)
+		return(set_env_value("PWD", new_pwd, env_list, false), free(new_pwd), 0);
+	else
 	{
-		set_env_value("PWD", new_pwd, env_list, false);
-		free(new_pwd);
+		free_arr(args);
+		malloc_err_exit(*env_list, "cd");
 	}
 	return (0);
 }

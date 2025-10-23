@@ -6,6 +6,8 @@ void	free_arr(char **arr)
 	int i;
 
 	i = 0;
+	if (arr == NULL)
+		return ;
 	while (arr[i])
 	{
 		free(arr[i]);
@@ -68,7 +70,6 @@ int main(void)
 		{
 			cd_cmd(args, &env_list);
 			free_arr(args);
-			printf("PWD: %s, OLDPWD: %s\n" , get_env_value("PWD", env_list), get_env_value("OLDPWD", env_list));
 		}
 		else if (!ft_strncmp(args[0], "clear", 6))
 		{
