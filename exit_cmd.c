@@ -1,38 +1,54 @@
 #include "minishellD.h"
 
-static void exit_cmd_cleanup(t_env *env_list, unsigned char exit_code)
+static void exit_cmd_cleanup(char **args, t_env *env_list, unsigned char exit_code)
 {
+	free_arr(args);
 	term_env(env_list);
 	exit(exit_code);
 }
 
-int	exit_cmd(char **args, t_env *env_list)
+static bool	is_numeric(const char *s)
 {
-	long	exit_code;
-	int		i;
+	int i;
+
+	i = 0;
+	if (!s || !*s)
+		return (false);
+	if (s[i] == '+' || s[i] == '-')
+		i++;
+
+	if (!isdigit(s[i]))
+		return (false);
+	while (s[i])
+	{
+		if (!isdigit(s[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+int		exit_cmd(char **args, t_env *env_list)
+{
+	long long	exit_value;
 
 	ft_putendl_fd("exit", 1);
 	if (!args[1])
-		exit_cmd_cleanup(env_list, 0);
-	if (args[2])
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return (1);
-	}
-	i = 0;
-	while (args[1][i] && (ft_isdigit(args[1][i]) || 
-			((args[1][i] == '+' || args[1][i] == '-') && i == 0)))
-		i++;
-	if (args[1][i] != '\0')
+		exit_cmd_cleanup(args, env_list, 0);
+	if (!is_numeric(args[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		exit_cmd_cleanup(env_list, 255);
+		ft_putendl_fd(": numeric argument required", 2);
+		exit(2);
 	}
-	exit_code = ft_atoi(args[1]);
-	exit_cmd_cleanup(env_list, (unsigned char)exit_code);
-	return (0);
+	if (args[2])
+	{
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		return (1); // do not exit shell, return error
+	}
+	exit_value = ft_atoll(args[1]);
+	exit((unsigned char)exit_value); // Bash masks with 0–255
 }
 
 void malloc_err_exit(t_env *env_list, char *err_loc)
@@ -40,5 +56,5 @@ void malloc_err_exit(t_env *env_list, char *err_loc)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(err_loc, 2);
 	ft_putstr_fd(": Allocation Error\n", 2);
-	exit_cmd_cleanup(env_list, 1);
+	exit_cmd_cleanup(NULL, env_list, 1);
 }

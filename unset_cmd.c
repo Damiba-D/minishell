@@ -13,7 +13,9 @@ void	unset_env(const char *key, t_env **env_list)
 	{
 		if (!ft_strncmp(key, targ->key, (ft_strlen(key) + 1)))
 		{
-			if (prev != NULL)
+			if (prev == NULL)
+				*env_list = targ->next;
+			else
 				prev->next = foll;
 			free_env_node(targ);
 			return ;

@@ -29,15 +29,15 @@ int main(void)
 		input = readline("minishell > ");
 		if (!input || !input[0])
 		{
-			exit_cmd(env_list, 1);
+			term_env(env_list);
+			exit(0);
 		}
 		else
 			add_history(input);
 		args = ft_split(input, ' ');
 		if (!ft_strncmp(args[0], "exit", 5))
 		{
-			free_arr(args);
-			exit_cmd(env_list, 0);
+			exit_cmd(args, env_list);
 		}
 		else if (!ft_strncmp(args[0], "env", 4))
 		{
@@ -80,7 +80,8 @@ int main(void)
 				{
 					free_arr(args);
 					free_arr(envp);
-					exit_cmd(env_list, 1);
+					term_env(env_list);
+					exit(1);
 				}
 			}
 			else

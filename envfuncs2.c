@@ -77,10 +77,7 @@ void	set_env_value(const char *key, const char *value, t_env **env_list, bool ap
 	while (temp)
 	{
 		if (!ft_strncmp(key, temp->key, (ft_strlen(key) + 1)))
-		{
-			update_env_value(temp, value, append, env_list);
-			return ;
-		}
+			return (update_env_value(temp, value, append, env_list));
 		temp = temp->next;
 	}
 	n_key = ft_strdup(key);

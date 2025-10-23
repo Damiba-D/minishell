@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atol.c                                          :+:      :+:    :+:   */
+/*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddamiba <ddamiba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 18:11:48 by ddamiba           #+#    #+#             */
-/*   Updated: 2025/10/23 16:51:17 by ddamiba          ###   ########.fr       */
+/*   Created: 2025/10/23 15:33:29 by ddamiba           #+#    #+#             */
+/*   Updated: 2025/10/23 16:51:24 by ddamiba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long	ft_atol(const char *str)
+long long	ft_atoll(const char *str)
 {
-	int		i;
-	long	res;
-	int		sign;
-	char	*cpy;
+	int			i;
+	long long	res;
+	int			sign;
+	char		*cpy;
 
 	i = 0;
 	res = 0;
