@@ -53,16 +53,21 @@ void	free_input_list(t_input *input_list);
 
 // utils
 int	skip_whitespace(char *str, int pos);
-
+int	skip_reds_filename(char *seg, int start_pos);
 
 // extract_reds
 char	*ext_reds_file(char *seg, t_tokent type);
 char	*ext_reds_file_util(char *seg, int start_pos);
 
+// free hub
+char	*remove_all_reds(char *seg);
+
+
 // check_reds
-int	has_in_red(char *seg);
-int	has_out_red(char *seg);
-int	has_hdoc(char *seg);
-int	has_append(char *seg);
+int	find_in_red(char *seg, int start_pos);
+int	find_out_red(char *seg, int start_pos);
+int	find_hdoc(char *seg, int start_pos);
+int	find_append(char *seg, int start_pos);
+int	find_next_red(char *seg, int start_pos);
 
 #endif
