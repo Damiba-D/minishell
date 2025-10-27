@@ -13,7 +13,6 @@ void	free_arr(char **arr)
 		free(arr[i]);
 		i++;
 	}
-	free(arr[i]);
 	free(arr);
 }
 

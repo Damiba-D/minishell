@@ -16,7 +16,6 @@ static bool	is_numeric(const char *s)
 		return (false);
 	if (s[i] == '+' || s[i] == '-')
 		i++;
-
 	if (!isdigit(s[i]))
 		return (false);
 	while (s[i])
@@ -32,7 +31,7 @@ int		exit_cmd(char **args, t_env *env_list)
 {
 	long long	exit_value;
 
-	ft_putendl_fd("exit", 1);
+	ft_putendl_fd("exit", 2);
 	if (!args[1])
 		exit_cmd_cleanup(args, env_list, 0);
 	if (!is_numeric(args[1]))
@@ -46,10 +45,10 @@ int		exit_cmd(char **args, t_env *env_list)
 	{
 		free_arr(args);
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		return (1); // do not exit shell, return error
+		return (1);
 	}
 	exit_value = ft_atoll(args[1]);
-	exit_cmd_cleanup(args, env_list, (unsigned char)exit_value); // Bash masks with 0–255
+	exit_cmd_cleanup(args, env_list, (unsigned char)exit_value);
 	return (0);
 }
 
