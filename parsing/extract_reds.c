@@ -30,19 +30,26 @@ char	*ext_reds_file(char *seg, t_tokent type)
 char	*ext_reds_file_util(char *seg, int start_pos)
 {
 	int	i;
-	int	in_double;
-	int	in_single;
+	int	k;
+	int	in_quote;
+	int	in_word;
+	char	*res;
 
+	res = malloc(ft_strlen(seg + start_pos) + 1);
+	if (!res)
+		return (NULL);
 	i = start_pos;
-	in_double = 0;
-	in_single = 0;
-	while (seg[i] && (in_single || in_double || seg[i] != ' '))
+	k = 0;
+	in_quote = 0;
+	in_word = 0;
+	while (seg[i] && (in_quote || seg[i] != ' '))
 	{
-		if (seg[i] == '\'' && !in_double)
-			in_single = !in_single;
-		else if (seg[i] == '\"' && !in_single)
-			in_double = !in_double;
+		handle_quote(seg, i, &in_quote, &in_word);
+		handle_dquote(seg, i, &in_quote, &in_word);
+		if ((seg[i] != '\'' && seg[i] != '\"') || (i > 0 && seg[i - 1] == '\\'))
+			res[k++] = seg[i];
 		i++;
 	}
-	return (ft_substr(seg, start_pos, i - start_pos));
+	res[k] = '\0';
+	return (res);
 }

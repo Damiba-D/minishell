@@ -30,26 +30,24 @@ typedef struct	s_input
 	char			*infile; // < cmd
 	char			*outfile; // > cmd
 	int				append; // >> cmd
-	int				hdoc; // << cmd
-	struct s_input	*next; // proximo pipe
+	char			*hdoc; // << cmd		
 }					t_input;
 
 typedef struct	s_msh
 {
-	t_input	*imput;
+	t_input	*input;
 	char	*rline;
 	char	*prompt;
-	int		error_status;
+	int		exit_status;
 }			t_msh;
 
 t_input	*create_input_node(char *segment);
-void	add_input_back(t_input **lst, t_input *new);
-t_input	*parse_line(char *line);
+t_list	*parse_line(char *line);
 
 
 t_msh	*msh(void);
 void	free_arr(char **arr);
-void	free_input_list(t_input *input_list);
+void	free_input_node(void *content);
 
 // utils
 int	skip_whitespace(char *str, int pos);

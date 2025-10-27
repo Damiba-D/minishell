@@ -1,7 +1,7 @@
 #include "arg_split.h"
 
 /* handle quotes: toggle in_quote and mark word started */
-static void	handle_quote(char *s, int i, int *in_quote, int *in_word)
+void	handle_quote(char *s, int i, int *in_quote, int *in_word)
 {
 	if (s[i] == '\'' && (i == 0 || s[i - 1] != '\\'))
 	{

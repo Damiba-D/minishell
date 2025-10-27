@@ -90,7 +90,7 @@ t_input	*create_input_node(char *segment)
 	if (find_hdoc(segment, 0) != -1)
 	{
 		new_node->infile = ext_reds_file(segment, HDOC);
-		new_node->hdoc = 1;
+		new_node->hdoc = "EOF"; //TEMP FIX, NEEDS ACTUAL WORK
 	}
 	cleaned_seg = remove_all_reds(segment);
 	new_node->argv = arg_split(cleaned_seg, &inv_arg);
@@ -103,27 +103,11 @@ t_input	*create_input_node(char *segment)
 	return (new_node);
 }
 
-void	add_input_back(t_input **lst, t_input *new)
-{
-	t_input	*last;
-
-	if (!new || !lst)
-		return ;
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
-	last = *lst;
-	while (last->next)
-		last = last->next;
-	last->next = new;
-}
-
-t_input	*parse_line(char *line)
+t_list	*parse_line(char *line)
 {
 	char	**segments;
-	t_input	*input_list;
+	t_list	*input_list;
+	t_list	*new;
 	t_input	*new_node;
 	int		i;
 
@@ -140,10 +124,17 @@ t_input	*parse_line(char *line)
 		if (!new_node)
 		{
 			free_arr(segments);
-			free_input_list(input_list);
+			ft_lstclear(&input_list, free_input_node);
 			return (NULL);
 		}
-		add_input_back(&input_list, new_node);
+		new = ft_lstnew(new_node);
+		if (!new)
+		{
+			free_arr(segments);
+			ft_lstclear(&input_list, free_input_node);
+			return (NULL);
+		}
+		ft_lstadd_back(&input_list, new);
 		i++;
 	}
 	free_arr(segments);

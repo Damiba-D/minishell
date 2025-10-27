@@ -1,24 +1,18 @@
 
 #include "minishellM.h"
 
-void	free_input_list(t_input *input_list)
+void	free_input_node(void *content)
 {
-	t_input *current;
-	t_input *next;
+	t_input *input;
 
-	current = input_list;
-	while (current)
-	{
-		next = current->next;
-		if (current->argv)
-			free_arr(current->argv);
-		if (current->infile)
-			free(current->infile);
-		if (current->outfile)
-			free(current->outfile);
-		free(current);
-		current = next;
-	}
+	input = (t_input *)content;
+	if (input->argv)
+		free_arr(input->argv);
+	if (input->infile)
+		free(input->infile);
+	if (input->outfile)
+		free(input->outfile);
+	free(input);
 }
 
 void	free_arr(char **arr)
@@ -34,23 +28,25 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-void	debug_print_input_list(t_input *input_list)
+void	debug_print_input_list(t_list *input_list)
 {
-	t_input *current;
+	t_list *current;
 	int i;
 	int cmd_num = 0;
+	t_input *input;
 
 	current = input_list;
 	printf("=== DEBUG: Parsed Commands ===\n");
 	while (current)
 	{
+		input = (t_input *)current->content;
 		printf("Command %d:\n", cmd_num++);
-		if (current->argv)
+		if (input->argv)
 		{
 			i = 0;
-			while (current->argv[i])
+			while (input->argv[i])
 			{
-				printf("  argv[%d]: %s\n", i, current->argv[i]);
+				printf("  argv[%d]: %s\n", i, input->argv[i]);
 				i++;
 			}
 		}
@@ -58,10 +54,10 @@ void	debug_print_input_list(t_input *input_list)
 		{
 			printf("  argv: NULL\n");
 		}
-		printf("  infile: %s\n", current->infile ? current->infile : "NULL");
-		printf("  outfile: %s\n", current->outfile ? current->outfile : "NULL");
-		printf("  append: %d\n", current->append);
-		printf("  hdoc: %d\n", current->hdoc);
+		printf("  infile: %s\n", input->infile ? input->infile : "NULL");
+		printf("  outfile: %s\n", input->outfile ? input->outfile : "NULL");
+		printf("  append: %d\n", input->append);
+		printf("  hdoc: %s\n", input->hdoc);
 		printf("  next: %s\n", current->next ? "exists" : "NULL");
 		printf("---\n");
 		current = current->next;
@@ -72,8 +68,9 @@ void	debug_print_input_list(t_input *input_list)
 int main(void)
 {
 	char *input;
-	t_input	*input_list;
-	t_input	*current;
+	t_list	*input_list;
+	t_list	*current;
+	t_input	*input_test;
 	int i;
 
 	while (1)
@@ -95,23 +92,25 @@ int main(void)
 			continue;
 		}
 		debug_print_input_list(input_list);
-		if (input_list->argv && input_list->argv[0] && 
-			(!strncmp(input_list->argv[0], "exit", 4) && input_list->argv[0][4] == '\0'))
+		input_test = (t_input *)input_list->content;
+		if (input_test->argv && input_test->argv[0] && 
+			(!strncmp(input_test->argv[0], "exit", 4) && input_test->argv[0][4] == '\0'))
 		{
-			free_input_list(input_list);
+			ft_lstclear(&input_list, free_input_node);
 			free(input);
 			exit(0);
 		}
 		current = input_list;
 		while (current)
 		{
-			if (current->argv && current->argv[0])
+			input_test = (t_input *)current->content;
+			if (input_test->argv && input_test->argv[0])
 			{
 				i = 0;
-				while (current->argv[i])
+				while (input_test->argv[i])
 				{
-					printf("%s", current->argv[i]);
-					if (current->argv[i + 1])
+					printf("%s", input_test->argv[i]);
+					if (input_test->argv[i + 1])
 						printf(" ");
 					i++;
 				}
@@ -121,8 +120,7 @@ int main(void)
 			current = current->next;
 		}
 		printf("\n");
-		
-		free_input_list(input_list);
+		ft_lstclear(&input_list, free_input_node);
 		free(input);
 	}
 	return 0;
