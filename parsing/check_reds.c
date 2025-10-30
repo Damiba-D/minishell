@@ -13,11 +13,8 @@ int	find_in_red(char *seg, int start_pos)
 	last_pos = -1;
 	while (seg[i])
 	{
-		if (seg[i] == '\'' && !in_double)
-			in_single = !in_single;
-		else if (seg[i] == '\"' && !in_single)
-			in_double = !in_double;
-		else if (!in_single && !in_double)
+		update_quotes(seg[i], &in_single, &in_double);
+		if (!in_single && !in_double)
 		{
 			if (seg[i] == '<' && seg[i + 1] != '<')
 				last_pos = i;
@@ -40,11 +37,8 @@ int	find_out_red(char *seg, int start_pos)
 	last_pos = -1;
 	while (seg[i])
 	{
-		if (seg[i] == '\'' && !in_double)
-			in_single = !in_single;
-		else if (seg[i] == '\"' && !in_single)
-			in_double = !in_double;
-		else if (!in_single && !in_double)
+		update_quotes(seg[i], &in_single, &in_double);
+		if (!in_single && !in_double)
 		{
 			if (seg[i] == '>' && seg[i + 1] != '>')
 				last_pos = i;
@@ -67,11 +61,8 @@ int	find_hdoc(char *seg, int start_pos)
 	last_pos = -1;
 	while (seg[i])
 	{
-		if (seg[i] == '\'' && !in_double)
-			in_single = !in_single;
-		else if (seg[i] == '\"' && !in_single)
-			in_double = !in_double;
-		else if (!in_single && !in_double)
+		update_quotes(seg[i], &in_single, &in_double);
+		if (!in_single && !in_double)
 		{
 			if (seg[i] == '<' && seg[i + 1] == '<')
 				last_pos = i;
@@ -94,11 +85,8 @@ int	find_append(char *seg, int start_pos)
 	last_pos = -1;
 	while (seg[i])
 	{
-		if (seg[i] == '\'' && !in_double)
-			in_single = !in_single;
-		else if (seg[i] == '\"' && !in_single)
-			in_double = !in_double;
-		else if (!in_single && !in_double)
+		update_quotes(seg[i], &in_single, &in_double);
+		if (!in_single && !in_double)
 		{
 			if (seg[i] == '>' && seg[i + 1] == '>')
 				last_pos = i;

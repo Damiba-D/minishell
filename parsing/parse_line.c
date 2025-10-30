@@ -8,15 +8,16 @@ static int	count_pipes(char *line)
 	int	i;
 	int	count;
 	int	in_quote;
+	int	in_dquote;
 
 	i = 0;
 	count = 0;
 	in_quote = 0;
+	in_dquote = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'' && (i == 0 || line[i - 1] != '\\'))
-			in_quote = !in_quote;
-		if (line[i] == '|' && !in_quote)
+		update_quotes(line[i], &in_quote, &in_dquote);
+		if (line[i] == '|' && !in_quote && !in_dquote)
 			count++;
 		i++;
 	}
@@ -33,6 +34,7 @@ static char	**split_pipe(char *line)
 	int		j;
 	int		start;
 	int		in_quote;
+	int		in_dquote;
 
 	p_count = count_pipes(line);
 	segments = malloc(sizeof(char *) * (p_count + 2));
@@ -42,13 +44,11 @@ static char	**split_pipe(char *line)
 	j = 0;
 	start = 0;
 	in_quote = 0;
+	in_dquote = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'' && (i == 0 || line[i - 1] != '\\'))
-			in_quote = !in_quote;
-		else if (line[i] == '\"' && (i == 0 || line[i - 1] != '\\'))
-			in_quote = !in_quote;
-		if (line[i] == '|' && !in_quote)
+		update_quotes(line[i], &in_quote, &in_dquote);
+		if (line[i] == '|' && !in_quote && !in_dquote)
 		{
 			segments[j] = ft_substr(line, start, i - start);
 			if (!segments[j])

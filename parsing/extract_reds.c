@@ -4,24 +4,25 @@ char	*ext_reds_file(char *seg, t_tokent type)
 {
 	int	i;
 	int	start_file;
+	int	red_pos;
 
 	i = 0;
-	while (seg[i])
-	{
-		if ((type == REDIN && seg[i] == '<' && seg[i + 1] != '<') ||
-			(type == REDOUT && seg[i] == '>' && seg[i + 1] != '>'))
-		{
-			i++;
-			break;
-		}
-		else if ((type == APPEND && seg[i] == '>' && seg[i + 1] == '>') ||
-			(type == HDOC && seg[i] == '<' && seg[i + 1] == '<'))
-		{
-			i += 2;
-			break;
-		}
-		i++;
-	}
+	if (type == REDIN)
+		red_pos = find_in_red(seg, 0);
+	else if (type == REDOUT)
+		red_pos = find_out_red(seg, 0);
+	else if (type == APPEND)
+		red_pos = find_append(seg, 0);
+	else if (type == HDOC)
+			red_pos = find_hdoc(seg, 0);
+	else
+		return (NULL);
+	if (red_pos == -1)
+		return (NULL);
+	if (type == APPEND || type == HDOC)
+		red_pos += 2;
+	else
+		red_pos += 1;
 	i = skip_whitespace(seg, i);
 	start_file = i;
 	return (ext_reds_file_util(seg, start_file));
@@ -29,10 +30,10 @@ char	*ext_reds_file(char *seg, t_tokent type)
 
 char	*ext_reds_file_util(char *seg, int start_pos)
 {
-	int	i;
-	int	k;
-	int	in_quote;
-	int	in_word;
+	int		i;
+	int		k;
+	int		in_quote;
+	int		in_word;
 	char	*res;
 
 	res = malloc(ft_strlen(seg + start_pos) + 1);
