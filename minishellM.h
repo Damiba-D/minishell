@@ -50,8 +50,11 @@ void	free_arr(char **arr);
 void	free_input_node(void *content);
 
 // utils
-int	skip_whitespace(char *str, int pos);
-int	skip_reds_filename(char *seg, int start_pos);
+int		skip_whitespace(char *str, int pos);
+int		skip_reds_filename(char *seg, int start_pos);
+void	update_quotes(char c);
+int		is_outside_quotes(int in_quote, int in_dquote);
+
 
 // extract_reds
 char	*ext_reds_file(char *seg, t_tokent type);

@@ -7,11 +7,22 @@ int	skip_whitespace(char *str, int pos)
 	return (pos);
 }
 
+void	update_quotes(char c)
+{
+	int	in_quote;
+	int	in_dquote;
+
+	in_quote = 0;
+	in_dquote = 0;
+	 if (c == '\'' && !in_dquote)
+        in_quote = !in_quote;
+    else if (c == '\"' && !in_quote)
+    	in_dquote = !in_dquote;
+}
+
 int	skip_reds_filename(char *seg, int start_pos)
 {
 	int	i;
-	int	in_single;
-	int	in_double;
 
 	i = start_pos;
 	if (seg[i] == '<' && seg[i + 1] == '<')
@@ -23,14 +34,9 @@ int	skip_reds_filename(char *seg, int start_pos)
 	else
 		return (i);
 	i = skip_whitespace(seg, i);
-	in_single = 0;
-	in_double = 0;
-	while (seg[i] && (in_single || in_double || seg[i] != ' '))
+	while (seg[i] && ((in_quote || in_dquote) || seg[i] != ' '))
 	{
-		if (seg[i] == '\'' && !in_double)
-			in_single = !in_single;
-		else if (seg[i] == '\"' && !in_single)
-			in_double = !in_double;
+		update_quotes(seg[i], in_quote, in_dquote);
 		i++;
 	}
 	return (i);
