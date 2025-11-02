@@ -1,5 +1,30 @@
 #include "minishellD.h"
 
+static void	set_shell_lvl(t_env **env_list)
+{
+	t_env	*shell_lvl;
+	int		new_lvl;
+
+	shell_lvl = get_env_node("SHLVL", *env_list);
+	if (shell_lvl)
+	{
+		new_lvl = ft_atoi(shell_lvl->value) + 1;
+		free(shell_lvl->value);
+		shell_lvl->value = ft_itoa(new_lvl);
+		if (!shell_lvl->value)
+			malloc_err_exit(*env_list, "init_env");
+	}
+	else
+	{
+		shell_lvl = env_new_node(NULL, NULL);
+		shell_lvl->key = ft_strdup("SHLVL");
+		shell_lvl->value = ft_strdup("1");
+		if (!shell_lvl->key || !shell_lvl->value)
+			return (free_env_node(shell_lvl), malloc_err_exit(*env_list, "init_env"));
+		env_add(env_list, shell_lvl);
+	}
+}
+
 void	init_env(t_env **env_list)
 {
 	extern char	**environ;
@@ -26,6 +51,7 @@ void	init_env(t_env **env_list)
 		i++;
 	}
 	set_env_value("PWD", getcwd(buf, sizeof(buf)), env_list, false);
+	set_shell_lvl(env_list);
 }
 
 

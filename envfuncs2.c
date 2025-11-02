@@ -60,7 +60,10 @@ static void update_env_value(t_env *node, const char *value, bool append, t_env 
 	else if (append)
 	{
 		temp = node->value;
-		node->value = ft_strjoin(node->value, value);
+		if (node->value != NULL)
+			node->value = ft_strjoin(node->value, value);
+		else
+			node->value = ft_strdup(value);
 		free(temp);
 		if (node->value == NULL)
 			malloc_err_exit(*env_list, "set_env_value");
