@@ -14,6 +14,7 @@
 # include <linux/limits.h>
 # include <stdbool.h>
 # include <errno.h>
+# include <fcntl.h>
 
 typedef struct s_env
 {
@@ -21,6 +22,12 @@ typedef struct s_env
     char *value;
     struct s_env *next;
 }   t_env;
+
+typedef struct s_h_d
+{
+    char *del;
+    bool quoted;
+}   t_h_d;
 
 
 void	free_arr(char **arr);
@@ -42,5 +49,6 @@ int		echo_cmd(char **argv);
 int		unset_cmd(char **args, t_env **env_list);
 int		pwd_cmd(char **args, t_env *env_list);
 int		cd_cmd(char **args, t_env **env_list);
+void    here_doc_handler(t_h_d here_doc);
 
 #endif
