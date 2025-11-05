@@ -5,21 +5,25 @@ static int	has_unmatched_quote(char *s)
 {
 	int	i;
 	int	in_quote;
+	int in_dquote;
 
 	i = 0;
 	in_quote = 0;
+	in_dquote = 0;
 	while (s[i])
 	{
-		if (!in_quote && s[i] == '\\' && s[i + 1])
+		if ((!in_quote || !in_dquote) && s[i] == '\\' && s[i + 1])
 		{
 			i += 2;
 			continue ;
 		}
-		if (s[i] == '\'' || s[i] == '\"')
+		if (s[i] == '\'')
 			in_quote = !in_quote;
+		if (s[i] == '\"')
+			in_dquote = !in_dquote;
 		i++;
 	}
-	return (in_quote);
+	return (in_quote || in_dquote);
 }
 
 char	**arg_split(char *s, int *inv_arg)
