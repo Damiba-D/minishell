@@ -40,7 +40,11 @@ char	**arg_split(char *s, int *inv_arg)
 		return (NULL);
 	i = ft_cpy_alloc(arr, s);
 	if (i == -1)
+	{
+		free(arr);
 		return (NULL);
+	}
+	*inv_arg = 0;
 	arr[i] = NULL;
 	return (arr);
 }
