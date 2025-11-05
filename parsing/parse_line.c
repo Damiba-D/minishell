@@ -74,30 +74,35 @@ t_input	*create_input_node(char *segment)
 	t_input	*new_node;
 	char	*cleaned_seg;
 	int		inv_arg;
+	char	**append_files;
 
 	new_node = ft_calloc(1 ,sizeof(t_input));
 	if (!new_node)
 		return (NULL);
-	if (find_in_red(segment, 0) != -1)
+	if (find_next_red(segment, 0, REDIN) != -1)
 		new_node->infile = ext_reds_file(segment, REDIN);
-	if (find_out_red(segment, 0) != -1)
+	if (find_next_red(segment, 0, REDOUT) != -1)
 		new_node->outfile = ext_reds_file(segment, REDOUT);
-	if (find_append(segment, 0) != -1)
+	if (find_next_red(segment, 0, HDOC) != -1)
+		new_node->hdoc = ext_reds_file(segment, HDOC);
+	if (find_next_red(segment, 0, APPEND) != -1)
 	{
-		new_node->outfile = ext_reds_file(segment, APPEND);
-		new_node->append = 1;
-	}
-	if (find_hdoc(segment, 0) != -1)
-	{
-		new_node->infile = ext_reds_file(segment, HDOC);
-		new_node->hdoc = "EOF"; //TEMP FIX, NEEDS ACTUAL WORK
+		append_files = ext_reds_file(segment, APPEND);
+		if (append_files)
+   		{
+        	if (!new_node->outfile)
+            	new_node->outfile = append_files;
+        	else
+            	free_arr(append_files);
+        	new_node->append = 1;
+    	}
 	}
 	cleaned_seg = remove_all_reds(segment);
 	new_node->argv = arg_split(cleaned_seg, &inv_arg);
 	free(cleaned_seg);
 	if (inv_arg == 2 || !new_node->argv)
 	{
-		free(new_node);
+		free_input_node(new_node);
 		return (NULL);
 	}
 	return (new_node);

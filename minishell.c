@@ -9,9 +9,11 @@ void	free_input_node(void *content)
 	if (input->argv)
 		free_arr(input->argv);
 	if (input->infile)
-		free(input->infile);
+		free_arr(input->infile);
 	if (input->outfile)
-		free(input->outfile);
+		free_arr(input->outfile);
+	if (input->hdoc)
+		free_arr(input->hdoc);
 	free(input);
 }
 
@@ -30,39 +32,67 @@ void	free_arr(char **arr)
 
 void	debug_print_input_list(t_list *input_list)
 {
-	t_list *current;
-	int i;
-	int cmd_num = 0;
-	t_input *input;
+    t_list *current;
+    int i;
+    int cmd_num = 0;
+    t_input *input;
 
-	current = input_list;
-	printf("=== DEBUG: Parsed Commands ===\n");
-	while (current)
-	{
-		input = (t_input *)current->content;
-		printf("Command %d:\n", cmd_num++);
-		if (input->argv)
-		{
-			i = 0;
-			while (input->argv[i])
-			{
-				printf("  argv[%d]: %s\n", i, input->argv[i]);
-				i++;
-			}
-		}
-		else
-		{
-			printf("  argv: NULL\n");
-		}
-		printf("  infile: %s\n", input->infile ? input->infile : "NULL");
-		printf("  outfile: %s\n", input->outfile ? input->outfile : "NULL");
-		printf("  append: %d\n", input->append);
-		printf("  hdoc: %s\n", input->hdoc);
-		printf("  next: %s\n", current->next ? "exists" : "NULL");
-		printf("---\n");
-		current = current->next;
-	}
-	printf("=== END DEBUG ===\n");
+    current = input_list;
+    printf("=== DEBUG: Parsed Commands ===\n");
+    while (current)
+    {
+        input = (t_input *)current->content;
+        printf("Command %d:\n", cmd_num++);
+        if (input->argv)
+        {
+            i = 0;
+            while (input->argv[i])
+            {
+                printf("  argv[%d]: %s\n", i, input->argv[i]);
+                i++;
+            }
+        }
+        else
+            printf("  argv: NULL\n");
+        if (input->infile)
+        {
+            i = 0;
+            while (input->infile[i])
+            {
+                printf("  infile[%d]: %s\n", i, input->infile[i]);
+                i++;
+            }
+        }
+        else
+            printf("  infile: NULL\n");
+        if (input->outfile)
+        {
+            i = 0;
+            while (input->outfile[i])
+            {
+                printf("  outfile[%d]: %s\n", i, input->outfile[i]);
+                i++;
+            }
+        }
+        else
+            printf("  outfile: NULL\n");
+        printf("  append: %d\n", input->append);
+        if (input->hdoc)
+        {
+            i = 0;
+            while (input->hdoc[i])
+            {
+                printf("  hdoc[%d]: %s\n", i, input->hdoc[i]);
+                i++;
+            }
+        }
+        else
+            printf("  hdoc: NULL\n");
+        printf("  next: %s\n", current->next ? "exists" : "NULL");
+        printf("---\n");
+        current = current->next;
+    }
+    printf("=== END DEBUG ===\n");
 }
 
 int main(void)

@@ -40,36 +40,3 @@ int	skip_reds_filename(char *seg, int start_pos)
 	}
 	return (i);
 }
-
-/* int ft_iscontrol(char c)
-{
-	return ((c == '&')
-		|| (c == '(')
-		|| (c == ')')
-		|| (c == ';')
-		|| (c == '<')
-		|| (c == '>')
-		|| (c == '\\')
-		|| (c == '|'));
-}
-
-static int  get_size_token(char const *line)
-{
-	int	i;
-	int	inside_quotes;
-	
-	i = 0;
-	inside_quotes = 0;
-	while (line[i]
-		&& (inside_quotes || (!ft_isspace(line[i]) && !ft_iscontrol(line[i]))))
-	{
-		if ((!inside_quotes) && (line[i] == '\'' || line[i] == '\"'))
-			inside_quotes = line[i];
-		else if (inside_quotes == line[i])
-			inside_quotes = 0;
-		i++;
-	}
-	if (inside_quotes)
-		return (-1);
-	return (0);
-} */

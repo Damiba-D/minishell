@@ -27,10 +27,10 @@ typedef	enum	e_tokent
 typedef struct	s_input
 {
 	char			**argv; // list of args
-	char			*infile; // < cmd
-	char			*outfile; // > cmd
+	char			**infile; // < cmd
+	char			**outfile; // > cmd
 	int				append; // >> cmd
-	char			*hdoc; // << cmd		
+	char			**hdoc; // << cmd
 }					t_input;
 
 typedef struct	s_msh
@@ -54,19 +54,16 @@ int		skip_whitespace(char *str, int pos);
 int		skip_reds_filename(char *seg, int start_pos);
 void	update_quotes(char c, int *in_quote, int *in_dquote);
 
+
+
 // extract_reds
-char	*ext_reds_file(char *seg, t_tokent type);
+char	**ext_reds_file(char *seg, t_tokent type);
+char	*ext_reds_file_single(char *seg, int red_pos, t_tokent type);
 char	*ext_reds_file_util(char *seg, int start_pos);
+int		find_next_red(char *seg, int start_pos, t_tokent type);
 
 // free hub
 char	*remove_all_reds(char *seg);
 
-
-// check_reds
-int	find_in_red(char *seg, int start_pos);
-int	find_out_red(char *seg, int start_pos);
-int	find_hdoc(char *seg, int start_pos);
-int	find_append(char *seg, int start_pos);
-int	find_next_red(char *seg, int start_pos);
 
 #endif
