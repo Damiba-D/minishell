@@ -10,7 +10,7 @@ $(NAME): $(OBJS) libft/libft.a
 	cc -Wall -Wextra -Werror $(OBJS) libft/libft.a -lreadline -o $(NAME)
 
 %.o: %.c
-	cc -Wall -Wextra -Werror -c $< -o $@
+	cc -g -Wall -Wextra -Werror -c $< -o $@
 
 libft/libft.a:
 	make -C libft

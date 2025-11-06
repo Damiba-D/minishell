@@ -81,30 +81,27 @@ t_input	*create_input_node(char *segment)
 		return (NULL);
 	if (find_next_red(segment, 0, REDIN) != -1)
 		new_node->infile = ext_reds_file(segment, REDIN);
-	if (find_next_red(segment, 0, REDOUT) != -1)
+	else if (find_next_red(segment, 0, REDOUT) != -1)
 		new_node->outfile = ext_reds_file(segment, REDOUT);
-	if (find_next_red(segment, 0, HDOC) != -1)
+	else if (find_next_red(segment, 0, HDOC) != -1)
 		new_node->hdoc = ext_reds_file(segment, HDOC);
-	if (find_next_red(segment, 0, APPEND) != -1)
+	else if (find_next_red(segment, 0, APPEND) != -1)
 	{
 		append_files = ext_reds_file(segment, APPEND);
 		if (append_files)
-   		{
-        	if (!new_node->outfile)
-            	new_node->outfile = append_files;
-        	else
-            	free_arr(append_files);
-        	new_node->append = 1;
-    	}
+		{
+			if (!new_node->outfile)
+				new_node->outfile = append_files;
+			else
+				free_arr(append_files);
+			new_node->append = 1;
+		}
 	}
 	cleaned_seg = remove_all_reds(segment);
 	new_node->argv = arg_split(cleaned_seg, &inv_arg);
 	free(cleaned_seg);
 	if (inv_arg == 2 || !new_node->argv)
-	{
-		free_input_node(new_node);
-		return (NULL);
-	}
+		return (free_input_node(new_node), NULL);
 	return (new_node);
 }
 

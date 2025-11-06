@@ -3,25 +3,26 @@
 int	find_next_red(char *seg, int start_pos, t_tokent type)
 {
 	int	i;
-    int	in_single;
-    int	in_double;
+	int	in_single;
+	int	in_double;
 
-    i = start_pos;
-    in_single = 0;
-    in_double = 0;
+	i = start_pos;
+	in_single = 0;
+	in_double = 0;
 	while (seg[i])
 	{
 		update_quotes(seg[i], &in_single, &in_double);
 		if (!in_single && !in_double)
 		{
-			if (type == REDIN && seg[i] == '<' && seg[i + 1] != '<')
-                return (i);
-            else if (type == REDOUT && seg[i] == '>' && seg[i + 1] != '>')
-                return (i);
-            else if (type == APPEND && seg[i] == '>' && seg[i + 1] == '>')
-                return (i);
-            else if (type == HDOC && seg[i] == '<' && seg[i + 1] == '<')
-                return (i);
+			//printf("%c %c\n", seg[i], seg[i + 1]);
+			if (type == REDIN && (seg[i] == '<' && seg[i + 1] != '<'))
+				return (i);
+			else if (type == REDOUT && (seg[i] == '>' && seg[i + 1] != '>'))
+				return (i);
+			else if (type == APPEND && (seg[i] == '>' && seg[i + 1] == '>'))
+				return (i);
+			else if (type == HDOC && (seg[i] == '<' && seg[i + 1] == '<'))
+				return (i);
 		}
 		i++;
 	}
@@ -53,9 +54,9 @@ char	*ext_reds_file_single(char *seg, int red_pos, t_tokent type)
 	if(red_pos == -1)
 		return (NULL);
 	if (type == APPEND || type == HDOC)
-        red_pos += 2;
+		red_pos += 2;
 	else
-        red_pos += 1;
+		red_pos += 1;
 	start_file = skip_whitespace(seg, red_pos);
 	return (ext_reds_file_util(seg, start_file));
 }
@@ -78,7 +79,7 @@ char	**ext_reds_file(char *seg, t_tokent type)
 	while (i < count)
 	{
 		start_pos = find_next_red(seg, start_pos, type);
-        files[i] = ext_reds_file_single(seg, start_pos, type);
+		files[i] = ext_reds_file_single(seg, start_pos, type);
 		if (!files[i])
 		{
 			while(--i >= 0)	// temp: create return error or something
