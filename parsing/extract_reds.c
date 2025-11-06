@@ -14,14 +14,13 @@ int	find_next_red(char *seg, int start_pos, t_tokent type)
 		update_quotes(seg[i], &in_single, &in_double);
 		if (!in_single && !in_double)
 		{
-			//printf("%c %c\n", seg[i], seg[i + 1]);
-			if (type == REDIN && (seg[i] == '<' && seg[i + 1] != '<'))
-				return (i);
-			else if (type == REDOUT && (seg[i] == '>' && seg[i + 1] != '>'))
+			if (type == HDOC && (seg[i] == '<' && seg[i + 1] == '<'))
 				return (i);
 			else if (type == APPEND && (seg[i] == '>' && seg[i + 1] == '>'))
 				return (i);
-			else if (type == HDOC && (seg[i] == '<' && seg[i + 1] == '<'))
+			else if (type == REDOUT && (seg[i] == '>' && seg[i + 1] != '>'))
+				return (i);
+			else if (type == REDIN && (seg[i] == '<' && seg[i + 1] != '<'))
 				return (i);
 		}
 		i++;
