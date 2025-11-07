@@ -24,13 +24,23 @@ typedef	enum	e_tokent
 	HDOC, // <<
 }		t_tokent;
 
+typedef struct s_infile
+{
+	char	*filename;
+	int		is_hdoc;
+}			t_infile;
+
+typedef struct s_outfile 
+{
+	char	*filename;
+	int		is_append;
+}			t_outfile;
+
 typedef struct	s_input
 {
-	char			**argv; // list of args
-	char			**infile; // < cmd
-	char			**outfile; // > cmd
-	int				append; // >> cmd
-	char			**hdoc; // << cmd
+	char			**argv;
+	t_infile		*infiles;
+	t_outfile		*outfiles;
 }					t_input;
 
 typedef struct	s_msh
