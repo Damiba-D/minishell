@@ -8,12 +8,10 @@ void	free_input_node(void *content)
 	input = (t_input *)content;
 	if (input->argv)
 		free_arr(input->argv);
-	if (input->infile)
-		free_arr(input->infile);
-	if (input->outfile)
-		free_arr(input->outfile);
-	if (input->hdoc)
-		free_arr(input->hdoc);
+	if (input->infiles)
+		free_files_arr(input->infiles);
+	if (input->outfiles)
+		free_files_arr(input->outfiles);
 	free(input);
 }
 
@@ -30,6 +28,21 @@ void	free_arr(char **arr)
 		i++;
 	}
 	free(arr);
+}
+
+void	free_file_arr(t_file *files)
+{
+	int i;
+
+	if (!files)
+		return ;
+	i = 0;
+	while (files[i].filename)
+	{
+		free(files[i].filename);
+		i++;
+	}
+	free(files);
 }
 
 void	debug_print_input_list(t_list *input_list)
@@ -56,40 +69,36 @@ void	debug_print_input_list(t_list *input_list)
 		}
 		else
 			printf("  argv: NULL\n");
-		if (input->infile)
+		if (input->infiles)
 		{
 			i = 0;
-			while (input->infile[i])
+			while (input->infiles[i].filename)
 			{
-				printf("  infile[%d]: %s\n", i, input->infile[i]);
+				printf("  infile[%d]: %s\n", i, input->infiles[i].filename);
+				if (input->infiles->mode == REDIN)
+					printf("  mode[%d]: infile\n");
+				else if (input->infiles->mode == HDOC)
+					printf("  mode[%d]: heredoc\n");
 				i++;
 			}
 		}
 		else
 			printf("  infile: NULL\n");
-		if (input->outfile)
+		if (input->outfiles)
 		{
 			i = 0;
-			while (input->outfile[i])
+			while (input->outfiles[i].filename)
 			{
-				printf("  outfile[%d]: %s\n", i, input->outfile[i]);
+				printf("  outfile[%d]: %s\n", i, input->outfiles[i].filename);
+				if (input->outfiles->mode == REDOUT)
+					printf("  mode[%d]: truncate\n");
+				else if (input->outfiles->mode == APPEND)
+					printf("  mode[%d]: append\n");
 				i++;
 			}
 		}
 		else
 			printf("  outfile: NULL\n");
-		printf("  append: %d\n", input->append);
-		if (input->hdoc)
-		{
-			i = 0;
-			while (input->hdoc[i])
-			{
-				printf("  hdoc[%d]: %s\n", i, input->hdoc[i]);
-				i++;
-			}
-		}
-		else
-			printf("  hdoc: NULL\n");
 		printf("  next: %s\n", current->next ? "exists" : "NULL");
 		printf("---\n");
 		current = current->next;

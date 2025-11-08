@@ -14,7 +14,7 @@
 # include <unistd.h>
 # include <dirent.h>
 
-typedef	enum	e_tokent
+typedef	enum	e_token
 {
 	WORD,
 	PIPE, // |
@@ -22,25 +22,19 @@ typedef	enum	e_tokent
 	REDOUT, // >
 	APPEND, // >>
 	HDOC, // <<
-}		t_tokent;
+}		t_token;
 
-typedef struct s_infile
+typedef struct s_file
 {
 	char	*filename;
-	int		is_hdoc;
-}			t_infile;
-
-typedef struct s_outfile 
-{
-	char	*filename;
-	int		is_append;
-}			t_outfile;
+	t_token	mode;
+}			t_file;
 
 typedef struct	s_input
 {
-	char			**argv;
-	t_infile		*infiles;
-	t_outfile		*outfiles;
+	char		**argv;
+	t_file		*infiles;
+	t_file		*outfiles;
 }					t_input;
 
 typedef struct	s_msh
@@ -67,10 +61,10 @@ void	update_quotes(char c, int *in_quote, int *in_dquote);
 
 
 // extract_reds
-char	**ext_reds_file(char *seg, t_tokent type);
-char	*ext_reds_file_single(char *seg, int red_pos, t_tokent type);
+char	**ext_reds_file(char *seg, t_token type);
+char	*ext_reds_file_single(char *seg, int red_pos, t_token type);
 char	*ext_reds_file_util(char *seg, int start_pos);
-int		find_next_red(char *seg, int start_pos, t_tokent type);
+int		find_next_red(char *seg, int start_pos, t_token type);
 
 // free hub
 char	*remove_all_reds(char *seg);

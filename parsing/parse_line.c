@@ -79,7 +79,7 @@ t_input	*create_input_node(char *segment)
 	new_node = ft_calloc(1 ,sizeof(t_input));
 	if (!new_node)
 		return (NULL);
-	if (find_next_red(segment, 0, HDOC) != -1)
+	/* if (find_next_red(segment, 0, HDOC) != -1)
 		new_node->hdoc = ext_reds_file(segment, HDOC);
 	if (find_next_red(segment, 0, REDIN) != -1)
 		new_node->infile = ext_reds_file(segment, REDIN);
@@ -96,7 +96,7 @@ t_input	*create_input_node(char *segment)
 				free_arr(append_files);
 			new_node->append = 1;
 		}
-	}
+	} */ //REPLACE WITH A SINGULAR FUNCTION THAT BUNDLES EVERYTHING INTO THEIR RESPECTIVE ARRAY
 	cleaned_seg = remove_all_reds(segment);
 	new_node->argv = arg_split(cleaned_seg, &inv_arg);
 	free(cleaned_seg);
