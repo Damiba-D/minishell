@@ -1,49 +1,32 @@
 #include "../minishellM.h"
 
-int	find_next_red(char *seg, int start_pos, t_tokent type)
+static int	count_reds(char *seg, int *in, int *out)
 {
-	int	i;
-	int	in_single;
-	int	in_double;
+	int		i;
+	char	type;
 
-	i = start_pos;
-	in_single = 0;
-	in_double = 0;
+	*in = 0;
+	*out = 0;
+	i = 0;
 	while (seg[i])
 	{
-		update_quotes(seg[i], &in_single, &in_double);
-		if (!in_single && !in_double)
+		if (seg[i] == '<' || seg[i] == '>')
 		{
-			if (type == HDOC && (seg[i] == '<' && seg[i + 1] == '<'))
-				return (i);
-			else if (type == APPEND && (seg[i] == '>' && seg[i + 1] == '>'))
-				return (i);
-			else if (type == REDOUT && (seg[i] == '>' && seg[i + 1] != '>'))
-				return (i);
-			else if (type == REDIN && (seg[i] == '<' && seg[i + 1] != '<'))
-				return (i);
+			type = seg[i];
+			if (seg[i + 1] == seg[i])
+				i++;
+			i = skip_whitespace(seg, i + 1);
+			if (!seg[i])
+				return (1);
+			if (type == '<')
+				(*in)++;
+			else if (type == '>')
+				(*out)++;
 		}
-		i++;
+		else
+			i++;
 	}
-	return (-1);
-}
-
-static int	count_reds(char *seg, t_tokent type)
-{
-	int	count;
-	int	start_pos;
-
-	count = 0;
-	start_pos = 0;
-	while (1)
-	{
-		start_pos = find_next_red(seg, start_pos, type);
-		if (start_pos == -1)
-			break;
-		count++;
-		start_pos++;
-	}
-	return (count);
+	return (0);
 }
 
 char	*ext_reds_file_single(char *seg, int red_pos, t_tokent type)
@@ -60,37 +43,28 @@ char	*ext_reds_file_single(char *seg, int red_pos, t_tokent type)
 	return (ext_reds_file_util(seg, start_file));
 }
 
-char	**ext_reds_file(char *seg, t_tokent type)
+void	ext_reds_file(char *seg)
 {
-	char	**files;
-	int		count;
-	int		start_pos;
+	t_file	*infiles;
+	int		in_count;
+	t_file	*outfiles;
+	int		out_count;
 	int		i;
 
-	count = count_reds(seg, type);
-	if (count == 0)
-		return (NULL);
-	files = malloc(sizeof(char *) * (count + 1));
-	if (!files)
-		return (NULL);
+	count_reds(seg, &in_count, &out_count);
+	if (!in_count && !out_count)
+		return ;							//no reds, nothing happens
+	infiles = malloc(sizeof(t_file) * (in_count + 1));
+	outfiles = malloc(sizeof(t_file) * (out_count + 1));
+	if (!infiles || !outfiles)
+		return (free(infiles), free(outfiles), NULL); //malloc error exit
+	infiles[in_count].filename = NULL;
+	outfiles[out_count].filename = NULL;
 	i = 0;
-	start_pos = 0;
-	while (i < count)
+	while (seg[i])
 	{
-		start_pos = find_next_red(seg, start_pos, type);
-		files[i] = ext_reds_file_single(seg, start_pos, type);
-		if (!files[i])
-		{
-			while(--i >= 0)	// temp: create return error or something
-				free(files[i]);
-			free(files);
-			return (NULL);
-		}
-		i++;
-		start_pos++;
+		//Store everything in the arrays
 	}
-	files[i] = NULL;
-	return (files);
 }
 
 char	*ext_reds_file_util(char *seg, int start_pos)
