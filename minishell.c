@@ -1,50 +1,6 @@
 
 #include "minishellM.h"
 
-void	free_input_node(void *content)
-{
-	t_input *input;
-
-	input = (t_input *)content;
-	if (input->argv)
-		free_arr(input->argv);
-	if (input->infiles)
-		free_files_arr(input->infiles);
-	if (input->outfiles)
-		free_files_arr(input->outfiles);
-	free(input);
-}
-
-void	free_arr(char **arr)
-{
-	int	i;
-
-	if (!arr)
-		return;
-	i = 0;
-	while (arr[i] != NULL)
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
-
-void	free_file_arr(t_file *files)
-{
-	int i;
-
-	if (!files)
-		return ;
-	i = 0;
-	while (files[i].filename)
-	{
-		free(files[i].filename);
-		i++;
-	}
-	free(files);
-}
-
 void	debug_print_input_list(t_list *input_list)
 {
 	t_list *current;

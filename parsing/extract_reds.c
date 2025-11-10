@@ -31,7 +31,8 @@ static int	count_reds(char *seg, int *in, int *out)
 
 char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
 {
-	int type;
+	int 	type;
+	char	*filename;
 
 	if (seg[*i] == '<')
 		type = REDIN;
@@ -39,7 +40,7 @@ char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
 		type = REDOUT;
 	if (seg[*i + 1] == seg[*i])
 	{
-		*i++;
+		(*i)++;
 		type += 2;
 	}
 	*i = skip_whitespace(seg, *i + 1);
@@ -49,7 +50,9 @@ char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
 		node->infiles[*red_i].mode = type;
 	else
 		node->outfiles[*red_i].mode = type;
-	return (ext_reds_file_util(seg, i));
+	filename = ext_reds_file_util(seg, i);
+	(*red_i)++;
+	return (filename);
 }
 
 void	ext_reds_file(char *seg, t_input *node)
@@ -74,34 +77,35 @@ void	ext_reds_file(char *seg, t_input *node)
 	{
 		if (seg[i] == '<' || seg[i] == '>')
 		{
-			
+			if (seg[i] == '<')
+				node->infiles[in_i].filename = ext_reds_file_single(seg, &i, node, &in_i);
+			else
+				node->outfiles[out_i].filename = ext_reds_file_single(seg, &i, node, &out_i);
 		}
 		else
 			i++;
 	}
 }
 
-char	*ext_reds_file_util(char *seg, int *start_pos)
+char	*ext_reds_file_util(char *seg, int *i)
 {
-	int		i;
 	int		k;
 	int		in_quote;
 	int		in_dquote;
 	char	*res;
 
-	res = malloc(ft_strlen(seg + start_pos) + 1);
-	if (!res)
-		return (NULL);
-	i = start_pos;
 	k = 0;
 	in_quote = 0;
 	in_dquote = 0;
-	while (seg[i] && ((in_quote || in_dquote) || seg[i] != ' '))
+	res = malloc(ft_strlen(seg + *i) + 1);
+	if (!res)
+		return (NULL);
+	while (seg[*i] && ((in_quote || in_dquote) || seg[*i] != ' '))
 	{
-		update_quotes(seg[i], &in_quote, &in_dquote);
-		if ((seg[i] != '\'' && seg[i] != '\"') || (i > 0 && seg[i - 1] == '\\'))
-			res[k++] = seg[i];
-		i++;
+		update_quotes(seg[*i], &in_quote, &in_dquote);
+		if ((seg[*i] != '\'' && seg[*i] != '\"') || (*i > 0 && seg[*i - 1] == '\\'))
+			res[k++] = seg[*i];
+		(*i)++;
 	}
 	res[k] = '\0';
 	return (res);

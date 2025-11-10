@@ -48,8 +48,6 @@ t_list	*parse_line(char *line);
 
 
 t_msh	*msh(void);
-void	free_arr(char **arr);
-void	free_input_node(void *content);
 
 // utils
 int		skip_whitespace(char *str, int pos);
@@ -57,15 +55,18 @@ int		skip_reds_filename(char *seg, int start_pos);
 void	update_quotes(char c, int *in_quote, int *in_dquote);
 
 
-
 // extract_reds
 void	ext_reds_file(char *seg, t_input *node);
-char	*ext_reds_file_single(char *seg, int red_pos, t_token type);
+char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i);
 char	*ext_reds_file_util(char *seg, int start_pos);
 int		find_next_red(char *seg, int start_pos, t_token type);
 
 // free hub
 char	*remove_all_reds(char *seg);
+void	free_arr(char **arr);
+void	free_file_arr(t_file *files);
+void	free_input_node(void *content);
+
 
 
 #endif
