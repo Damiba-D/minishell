@@ -79,6 +79,7 @@ t_input	*create_input_node(char *segment)
 	new_node = ft_calloc(1 ,sizeof(t_input));
 	if (!new_node)
 		return (NULL);
+	ext_reds_file(segment, new_node);
 	/* if (find_next_red(segment, 0, HDOC) != -1)
 		new_node->hdoc = ext_reds_file(segment, HDOC);
 	if (find_next_red(segment, 0, REDIN) != -1)

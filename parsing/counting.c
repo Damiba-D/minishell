@@ -67,13 +67,7 @@ void	arg_len(char *s, int *i, int *len)
 	in_quote = 0;
 	while (s[*i] && (in_quote || (s[*i] != ' ')))
 	{
-		if (s[*i] == '\'' && (in_quote || s[*i + 1] != '\0'))
-		{
-			in_quote = !in_quote;
-			*i += 1;
-			continue ;
-		}
-		else if (s[*i] == '\"' && (in_quote || s[*i + 1] != '\0'))
+		if ((s[*i] == '\'' || s[*i] == '\"') && (in_quote || s[*i + 1] != '\0'))
 		{
 			in_quote = !in_quote;
 			*i += 1;

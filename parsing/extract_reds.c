@@ -29,45 +29,59 @@ static int	count_reds(char *seg, int *in, int *out)
 	return (0);
 }
 
-char	*ext_reds_file_single(char *seg, int red_pos, t_tokent type)
+char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
 {
-	int	start_file;
+	int type;
 
-	if(red_pos == -1)
-		return (NULL);
-	if (type == APPEND || type == HDOC)
-		red_pos += 2;
+	if (seg[*i] == '<')
+		type = REDIN;
 	else
-		red_pos += 1;
-	start_file = skip_whitespace(seg, red_pos);
-	return (ext_reds_file_util(seg, start_file));
+		type = REDOUT;
+	if (seg[*i + 1] == seg[*i])
+	{
+		*i++;
+		type += 2;
+	}
+	*i = skip_whitespace(seg, *i + 1);
+	if (!seg[*i])
+		return (NULL);		// ERROR
+	if (type == REDIN || type == HDOC)
+		node->infiles[*red_i].mode = type;
+	else
+		node->outfiles[*red_i].mode = type;
+	return (ext_reds_file_util(seg, i));
 }
 
-void	ext_reds_file(char *seg)
+void	ext_reds_file(char *seg, t_input *node)
 {
-	t_file	*infiles;
-	int		in_count;
-	t_file	*outfiles;
-	int		out_count;
-	int		i;
+	int	in_count;
+	int	out_count;
+	int	i;
+	int in_i;
+	int out_i;
 
 	count_reds(seg, &in_count, &out_count);
 	if (!in_count && !out_count)
 		return ;							//no reds, nothing happens
-	infiles = malloc(sizeof(t_file) * (in_count + 1));
-	outfiles = malloc(sizeof(t_file) * (out_count + 1));
-	if (!infiles || !outfiles)
-		return (free(infiles), free(outfiles), NULL); //malloc error exit
-	infiles[in_count].filename = NULL;
-	outfiles[out_count].filename = NULL;
+	node->infiles = malloc(sizeof(t_file) * (in_count + 1));
+	node->outfiles = malloc(sizeof(t_file) * (out_count + 1));
+	if (!node->infiles || !node->outfiles)
+		return (free(node->infiles), free(node->outfiles), NULL); //malloc error exit
+	node->infiles[in_count].filename = NULL;
+	node->outfiles[out_count].filename = NULL;
 	i = 0;
 	while (seg[i])
 	{
-		//Store everything in the arrays
+		if (seg[i] == '<' || seg[i] == '>')
+		{
+			
+		}
+		else
+			i++;
 	}
 }
 
-char	*ext_reds_file_util(char *seg, int start_pos)
+char	*ext_reds_file_util(char *seg, int *start_pos)
 {
 	int		i;
 	int		k;
