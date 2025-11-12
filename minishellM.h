@@ -13,6 +13,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <dirent.h>
+# include <stdbool.h>
 
 typedef	enum	e_token
 {
@@ -26,6 +27,7 @@ typedef struct s_file
 {
 	char	*filename;
 	t_token	mode;
+	bool	quoted;
 }			t_file;
 
 typedef struct	s_input
@@ -58,7 +60,7 @@ void	update_quotes(char c, int *in_quote, int *in_dquote);
 // extract_reds
 void	ext_reds_file(char *seg, t_input *node);
 char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i);
-char	*ext_reds_file_util(char *seg, int start_pos);
+char	*ext_reds_file_util(char *seg, int *i, bool *quoted);
 int		find_next_red(char *seg, int start_pos, t_token type);
 
 // free hub

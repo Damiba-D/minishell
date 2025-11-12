@@ -50,7 +50,10 @@ char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
 		node->infiles[*red_i].mode = type;
 	else
 		node->outfiles[*red_i].mode = type;
-	filename = ext_reds_file_util(seg, i);
+	if (type == REDIN || type == HDOC)
+		filename = ext_reds_file_util(seg, i, &node->infiles[*red_i].quoted);
+	else
+		filename = ext_reds_file_util(seg, i, &node->outfiles[*red_i].quoted);
 	(*red_i)++;
 	return (filename);
 }
@@ -77,17 +80,13 @@ void	ext_reds_file(char *seg, t_input *node)
 	{
 		if (seg[i] == '<' || seg[i] == '>')
 		{
-			if (seg[i] == '<')
-				node->infiles[in_i].filename = ext_reds_file_single(seg, &i, node, &in_i);
-			else
-				node->outfiles[out_i].filename = ext_reds_file_single(seg, &i, node, &out_i);
 		}
 		else
 			i++;
 	}
 }
 
-char	*ext_reds_file_util(char *seg, int *i)
+char	*ext_reds_file_util(char *seg, int *i, bool *quoted)
 {
 	int		k;
 	int		in_quote;
@@ -103,6 +102,8 @@ char	*ext_reds_file_util(char *seg, int *i)
 	while (seg[*i] && ((in_quote || in_dquote) || seg[*i] != ' '))
 	{
 		update_quotes(seg[*i], &in_quote, &in_dquote);
+		if (in_quote || in_dquote)
+			*quoted = true;
 		if ((seg[*i] != '\'' && seg[*i] != '\"') || (*i > 0 && seg[*i - 1] == '\\'))
 			res[k++] = seg[*i];
 		(*i)++;
