@@ -66,8 +66,8 @@ void	free_input_node(void *content)
 	if (input->argv)
 		free_arr(input->argv);
 	if (input->infiles)
-		free_files_arr(input->infiles);
+		free_file_arr(input->infiles);
 	if (input->outfiles)
-		free_files_arr(input->outfiles);
+		free_file_arr(input->outfiles);
 	free(input);
 }

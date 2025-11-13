@@ -29,10 +29,9 @@ static int	count_reds(char *seg, int *in, int *out)
 	return (0);
 }
 
-char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
+void	ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
 {
 	int 	type;
-	char	*filename;
 
 	if (seg[*i] == '<')
 		type = REDIN;
@@ -45,17 +44,16 @@ char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
 	}
 	*i = skip_whitespace(seg, *i + 1);
 	if (!seg[*i])
-		return (NULL);		// ERROR
+		return ;		// ERROR
 	if (type == REDIN || type == HDOC)
 		node->infiles[*red_i].mode = type;
 	else
 		node->outfiles[*red_i].mode = type;
 	if (type == REDIN || type == HDOC)
-		filename = ext_reds_file_util(seg, i, &node->infiles[*red_i].quoted);
-	else
-		filename = ext_reds_file_util(seg, i, &node->outfiles[*red_i].quoted);
+        node->infiles[*red_i].filename = ext_reds_file_util(seg, i, &node->infiles[*red_i].quoted);
+    else
+		node->outfiles[*red_i].filename = ext_reds_file_util(seg, i, &node->outfiles[*red_i].quoted);
 	(*red_i)++;
-	return (filename);
 }
 
 void	ext_reds_file(char *seg, t_input *node)
@@ -72,15 +70,18 @@ void	ext_reds_file(char *seg, t_input *node)
 	node->infiles = malloc(sizeof(t_file) * (in_count + 1));
 	node->outfiles = malloc(sizeof(t_file) * (out_count + 1));
 	if (!node->infiles || !node->outfiles)
-		return (free(node->infiles), free(node->outfiles), NULL); //malloc error exit
+		return (free(node->infiles), free(node->outfiles));
 	node->infiles[in_count].filename = NULL;
 	node->outfiles[out_count].filename = NULL;
 	i = 0;
+	in_i = 0;
+	out_i = 0;
 	while (seg[i])
 	{
-		if (seg[i] == '<' || seg[i] == '>')
-		{
-		}
+		if (seg[i] == '<')
+            ext_reds_file_single(seg, &i, node, &in_i);
+        else if (seg[i] == '>')
+            ext_reds_file_single(seg, &i, node, &out_i);
 		else
 			i++;
 	}

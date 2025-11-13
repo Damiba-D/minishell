@@ -59,9 +59,8 @@ void	update_quotes(char c, int *in_quote, int *in_dquote);
 
 // extract_reds
 void	ext_reds_file(char *seg, t_input *node);
-char	*ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i);
+void	ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i);
 char	*ext_reds_file_util(char *seg, int *i, bool *quoted);
-int		find_next_red(char *seg, int start_pos, t_token type);
 
 // free hub
 char	*remove_all_reds(char *seg);

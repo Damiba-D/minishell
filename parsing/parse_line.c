@@ -74,7 +74,6 @@ t_input	*create_input_node(char *segment)
 	t_input	*new_node;
 	char	*cleaned_seg;
 	int		inv_arg;
-	char	**append_files;
 
 	new_node = ft_calloc(1 ,sizeof(t_input));
 	if (!new_node)

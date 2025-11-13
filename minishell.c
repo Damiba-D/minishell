@@ -31,10 +31,10 @@ void	debug_print_input_list(t_list *input_list)
 			while (input->infiles[i].filename)
 			{
 				printf("  infile[%d]: %s\n", i, input->infiles[i].filename);
-				if (input->infiles->mode == REDIN)
-					printf("  mode[%d]: infile\n");
-				else if (input->infiles->mode == HDOC)
-					printf("  mode[%d]: heredoc\n");
+				if (input->infiles[i].mode == REDIN)
+					printf("  mode[%d]: infile\n", i);
+				else if (input->infiles[i].mode == HDOC)
+					printf("  mode[%d]: heredoc\n", i);
 				i++;
 			}
 		}
@@ -46,10 +46,10 @@ void	debug_print_input_list(t_list *input_list)
 			while (input->outfiles[i].filename)
 			{
 				printf("  outfile[%d]: %s\n", i, input->outfiles[i].filename);
-				if (input->outfiles->mode == REDOUT)
-					printf("  mode[%d]: truncate\n");
-				else if (input->outfiles->mode == APPEND)
-					printf("  mode[%d]: append\n");
+				if (input->outfiles[i].mode == REDOUT)
+					printf("  mode[%d]: truncate\n", i);
+				else if (input->outfiles[i].mode == APPEND)
+					printf("  mode[%d]: append\n", i);
 				i++;
 			}
 		}
