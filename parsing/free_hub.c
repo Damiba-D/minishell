@@ -18,8 +18,8 @@ char	*remove_all_reds(char *seg)
 	while (seg[src_i])
 	{
 		update_quotes(seg[src_i], &in_single, &in_double);
-		if (!in_single && !in_double && 
-			((seg[src_i] == '<') || (seg[src_i] == '>')))
+		if (!in_single && !in_double
+			&& ((seg[src_i] == '<') || (seg[src_i] == '>')))
 			src_i = skip_reds_filename(seg, src_i);
 		else
 			cleaned[dst_i++] = seg[src_i++];
@@ -33,7 +33,7 @@ void	free_arr(char **arr)
 	int	i;
 
 	if (!arr)
-		return;
+		return ;
 	i = 0;
 	while (arr[i] != NULL)
 	{
@@ -45,7 +45,7 @@ void	free_arr(char **arr)
 
 void	free_file_arr(t_file *files)
 {
-	int i;
+	int	i;
 
 	if (!files)
 		return ;
@@ -60,7 +60,7 @@ void	free_file_arr(t_file *files)
 
 void	free_input_node(void *content)
 {
-	t_input *input;
+	t_input	*input;
 
 	input = (t_input *)content;
 	if (input->argv)
@@ -70,4 +70,17 @@ void	free_input_node(void *content)
 	if (input->outfiles)
 		free_file_arr(input->outfiles);
 	free(input);
+}
+
+void	free_all(char **segments, t_list **input_list, t_list *new_node)
+{
+	if (segments)
+		free_arr(segments);
+	if (input_list && *input_list)
+		ft_lstclear(input_list, free_input_node);
+	if (new_node)
+	{
+		free_input_node(new_node->content);
+		free(new_node);
+	}
 }

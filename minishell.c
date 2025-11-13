@@ -3,9 +3,9 @@
 
 void	debug_print_input_list(t_list *input_list)
 {
-	t_list *current;
-	int i;
-	int cmd_num = 0;
+	t_list	*current;
+	int		i;
+	int 	cmd_num = 0;
 	t_input *input;
 
 	current = input_list;
@@ -62,13 +62,13 @@ void	debug_print_input_list(t_list *input_list)
 	printf("=== END DEBUG ===\n");
 }
 
-int main(void)
+int	main(void)
 {
-	char *input;
+	char	*input;
 	t_list	*input_list;
 	t_list	*current;
 	t_input	*input_test;
-	int i;
+	int		i;
 
 	while (1)
 	{
@@ -78,7 +78,7 @@ int main(void)
 		if (!input[0])
 		{
 			free(input);
-			continue;
+			continue ;
 		}
 		add_history(input);
 		input_list = parse_line(input);
@@ -86,12 +86,13 @@ int main(void)
 		{
 			printf("syntax error: unmatched quote\n");
 			free(input);
-			continue;
+			continue ;
 		}
 		debug_print_input_list(input_list);
 		input_test = (t_input *)input_list->content;
-		if (input_test->argv && input_test->argv[0] && 
-			(!strncmp(input_test->argv[0], "exit", 4) && input_test->argv[0][4] == '\0'))
+		if (input_test->argv && input_test->argv[0]
+			&& (!strncmp(input_test->argv[0], "exit", 4)
+				&& input_test->argv[0][4] == '\0'))
 		{
 			ft_lstclear(&input_list, free_input_node);
 			free(input);
@@ -120,5 +121,5 @@ int main(void)
 		ft_lstclear(&input_list, free_input_node);
 		free(input);
 	}
-	return 0;
+	return (0);
 }

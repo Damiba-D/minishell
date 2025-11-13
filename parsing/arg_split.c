@@ -5,7 +5,7 @@ static int	has_unmatched_quote(char *s)
 {
 	int	i;
 	int	in_quote;
-	int in_dquote;
+	int	in_dquote;
 
 	i = 0;
 	in_quote = 0;

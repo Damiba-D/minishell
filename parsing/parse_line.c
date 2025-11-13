@@ -21,8 +21,9 @@ static int	count_pipes(char *line)
 			count++;
 		i++;
 	}
-	return(count);
+	return (count);
 }
+
 /// @brief 
 /// @param line 
 /// @return segments
@@ -39,7 +40,7 @@ static char	**split_pipe(char *line)
 	p_count = count_pipes(line);
 	segments = malloc(sizeof(char *) * (p_count + 2));
 	if (!segments)
-		return(NULL);
+		return (NULL);
 	i = 0;
 	j = 0;
 	start = 0;
@@ -52,7 +53,7 @@ static char	**split_pipe(char *line)
 		{
 			segments[j] = ft_substr(line, start, i - start);
 			if (!segments[j])
-				return(free_arr(segments), NULL);
+				return (free_arr(segments), NULL);
 			j++;
 			start = i + 1;
 		}
@@ -75,28 +76,10 @@ t_input	*create_input_node(char *segment)
 	char	*cleaned_seg;
 	int		inv_arg;
 
-	new_node = ft_calloc(1 ,sizeof(t_input));
+	new_node = ft_calloc(1, sizeof(t_input));
 	if (!new_node)
 		return (NULL);
 	ext_reds_file(segment, new_node);
-	/* if (find_next_red(segment, 0, HDOC) != -1)
-		new_node->hdoc = ext_reds_file(segment, HDOC);
-	if (find_next_red(segment, 0, REDIN) != -1)
-		new_node->infile = ext_reds_file(segment, REDIN);
-	if (find_next_red(segment, 0, REDOUT) != -1)
-		new_node->outfile = ext_reds_file(segment, REDOUT);
-	if (find_next_red(segment, 0, APPEND) != -1)
-	{
-		append_files = ext_reds_file(segment, APPEND);
-		if (append_files)
-		{
-			if (!new_node->outfile)
-				new_node->outfile = append_files;
-			else
-				free_arr(append_files);
-			new_node->append = 1;
-		}
-	} */ //REPLACE WITH A SINGULAR FUNCTION THAT BUNDLES EVERYTHING INTO THEIR RESPECTIVE ARRAY
 	cleaned_seg = remove_all_reds(segment);
 	new_node->argv = arg_split(cleaned_seg, &inv_arg);
 	free(cleaned_seg);
@@ -110,7 +93,6 @@ t_list	*parse_line(char *line)
 	char	**segments;
 	t_list	*input_list;
 	t_list	*new;
-	t_input	*new_node;
 	int		i;
 
 	if (!line || !*line)
@@ -122,23 +104,14 @@ t_list	*parse_line(char *line)
 	i = 0;
 	while (segments[i])
 	{
-		new_node = create_input_node(segments[i]);
-		if (!new_node)
-		{
-			free_arr(segments);
-			ft_lstclear(&input_list, free_input_node);
-			return (NULL);
-		}
-		new = ft_lstnew(new_node);
+		new = ft_lstnew(NULL);
 		if (!new)
-		{
-			free_arr(segments);
-			ft_lstclear(&input_list, free_input_node);
-			return (NULL);
-		}
+			return (free_all(segments, &input_list, NULL), NULL);
+		new->content = create_input_node(segments[i]);
+		if (!new->content)
+			return (free_all(segments, &input_list, new->content), NULL);
 		ft_lstadd_back(&input_list, new);
 		i++;
 	}
-	free_arr(segments);
-	return (input_list);
+	return (free_arr(segments), input_list);
 }
