@@ -54,6 +54,7 @@ t_msh	*msh(void);
 int		skip_whitespace(char *str, int pos);
 int		skip_reds_filename(char *seg, int start_pos);
 void	update_quotes(char c, int *in_quote, int *in_dquote);
+int		count_pipes(char *line);
 
 // extract_reds
 void	ext_reds_file(char *seg, t_input *node);

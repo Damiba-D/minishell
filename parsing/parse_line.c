@@ -1,27 +1,22 @@
 #include "../minishellM.h"
 
-/// @brief counts the amount of pipes in the line
-/// @param line 
-/// @return count
-static int	count_pipes(char *line)
+static char	*extract_segment(char *line, int *pos)
 {
-	int	i;
-	int	count;
+	int	start;
 	int	in_quote;
 	int	in_dquote;
 
-	i = 0;
-	count = 0;
+	start = *pos;
 	in_quote = 0;
 	in_dquote = 0;
-	while (line[i])
+	while (line[*pos])
 	{
-		update_quotes(line[i], &in_quote, &in_dquote);
-		if (line[i] == '|' && !in_quote && !in_dquote)
-			count++;
-		i++;
+		update_quotes(line[*pos], &in_quote, &in_dquote);
+		if (line[*pos] == '|' && !in_quote && !in_dquote)
+			break ;
+		(*pos)++;
 	}
-	return (count);
+	return (ft_substr(line, start, *pos - start));
 }
 
 /// @brief 
@@ -30,39 +25,23 @@ static int	count_pipes(char *line)
 static char	**split_pipe(char *line)
 {
 	char	**segments;
-	int		p_count;
-	int		i;
+	int		pos;
 	int		j;
-	int		start;
-	int		in_quote;
-	int		in_dquote;
 
-	p_count = count_pipes(line);
-	segments = malloc(sizeof(char *) * (p_count + 2));
+	segments = malloc(sizeof(char *) * (count_pipes(line) + 2));
 	if (!segments)
 		return (NULL);
-	i = 0;
+	pos = 0;
 	j = 0;
-	start = 0;
-	in_quote = 0;
-	in_dquote = 0;
-	while (line[i])
+	while (line[pos])
 	{
-		update_quotes(line[i], &in_quote, &in_dquote);
-		if (line[i] == '|' && !in_quote && !in_dquote)
-		{
-			segments[j] = ft_substr(line, start, i - start);
-			if (!segments[j])
-				return (free_arr(segments), NULL);
-			j++;
-			start = i + 1;
-		}
-		i++;
+		segments[j] = extract_segment(line, &pos);
+		if (!segments[j])
+			return (free_arr(segments), NULL);
+		j++;
+		if (line[pos] == '|')
+			pos++;
 	}
-	segments[j] = ft_substr(line, start, i - start);
-	if (!segments[j])
-		return (free_arr(segments), NULL);
-	j++;
 	segments[j] = NULL;
 	return (segments);
 }
