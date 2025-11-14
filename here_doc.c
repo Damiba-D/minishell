@@ -44,7 +44,7 @@ void    here_doc_handler(t_h_d here_doc)
     while (true)
     {
         fileno = ft_itoa(filenum);
-		tmpfilename = ft_strjoin("minishell-heredoc-", fileno);
+		tmpfilename = ft_strjoin("/tmp/minishell-heredoc-", fileno);
 		free(fileno);
 		if (!tmpfilename)
 			exit(1);
@@ -76,4 +76,6 @@ int main()
 	var.del = "EOF";
 	var.quoted = false;
 	here_doc_handler(var);
+	unsigned char bitch = 10;
+	exit(bitch);
 }

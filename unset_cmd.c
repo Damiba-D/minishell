@@ -5,13 +5,15 @@ void	unset_env(const char *key, t_env **env_list)
 	t_env *prev;
 	t_env *targ;
 	t_env *foll;
+	size_t key_len;
 
 	prev = NULL;
 	targ = *env_list;
 	foll = targ->next;
+	key_len = ft_strlen(key) + 1;
 	while (targ)
 	{
-		if (!ft_strncmp(key, targ->key, (ft_strlen(key) + 1)))
+		if (!ft_strncmp(key, targ->key, key_len))
 		{
 			if (prev == NULL)
 				*env_list = targ->next;
