@@ -1,19 +1,8 @@
-#ifndef MINISHELLM_H
-# define MINISHELLM_H
+#ifndef PARSING_H
+# define PARSING_H
 
-# include "libft/libft.h"
+# include "../shared.h"
 # include "arg_split.h"
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
-# include <dirent.h>
-# include <stdbool.h>
 
 typedef enum e_token
 {
@@ -37,18 +26,8 @@ typedef struct s_input
 	t_file		*outfiles;
 }					t_input;
 
-typedef struct s_msh
-{
-	t_input	*input;
-	char	*rline;
-	char	*prompt;
-	int		exit_status;
-}			t_msh;
-
 t_input	*create_input_node(char *segment);
 t_list	*parse_line(char *line);
-
-t_msh	*msh(void);
 
 // utils
 int		skip_whitespace(char *str, int pos);

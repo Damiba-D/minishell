@@ -1,20 +1,9 @@
 
-#ifndef MINISHELLD_H
-# define MINISHELLD_H
+#ifndef EXECUTION_H
+# define EXECUTION_H
 
-# include "libft/libft.h"
+# include "../shared.h"
 # include "export_cmd/export_cmd.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <unistd.h>
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <dirent.h>
-# include <linux/limits.h>
-# include <stdbool.h>
-# include <errno.h>
-# include <fcntl.h>
 
 typedef struct s_env
 {

@@ -1,4 +1,4 @@
-#include "minishellM.h"
+#include "parsing.h"
 
 char	*remove_all_reds(char *seg)
 {

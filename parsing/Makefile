@@ -3,7 +3,7 @@
 # **************************************************************************** #
 
 # Library name
-NAME        = execution.a
+NAME        = parsing.a
 
 # Compiler and flags
 CC          = cc
@@ -14,17 +14,15 @@ SRC_DIR     = .
 OBJ_DIR     = obj
 LIBFT_DIR   = ../libft
 
-# Libft (REMOVE THIS WHOLE BLOCK LATER IF NEEDED)
-# ------------------------------------------------
+# External library (used, but never built/cleaned here)
 LIBFT_A     = $(LIBFT_DIR)/libft.a
-# ------------------------------------------------
 
-# Sources (MINUS minishell.c)
-SRCs        = envfuncs.c envfuncs2.c env_cmd.c unset_cmd.c echo_cmd.c cd_cmd.c \
-			  export_cmd/export_utils.c export_cmd/export_cmd.c \
-			  exit_cmd.c pwd_cmd.c
+# Sources (WITHOUT minishell.c)
+SRCS        = arg_split.c copying.c \
+			  counting.c extract_reds.c \
+			  parse_line.c free_hub.c utils.c
 
-OBJ         = $(addprefix $(OBJ_DIR)/, $(SRCs:.c=.o))
+OBJ         = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
 # Includes
 INCLUDES    = -I. -I$(LIBFT_DIR)

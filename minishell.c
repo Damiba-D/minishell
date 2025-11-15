@@ -1,5 +1,5 @@
 
-#include "minishellM.h"
+#include "minishell.h"
 
 void	debug_print_input_list(t_list *input_list)
 {

@@ -1,4 +1,4 @@
-#include "minishellM.h"
+#include "parsing.h"
 
 static int	count_reds(char *seg, int *in, int *out)
 {
