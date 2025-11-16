@@ -6,10 +6,10 @@
 
 typedef struct s_msh
 {
-	t_input	*input;
-	char	*rline;
-	char	*prompt;
-	int		exit_status;
+	t_env	*env;
+	t_list	*inputlst;
+	char	*cmdline;
+	int		last_exit_status;
 }			t_msh;
 
 t_msh	*msh(void);

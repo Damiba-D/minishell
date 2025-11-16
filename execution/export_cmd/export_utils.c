@@ -72,7 +72,7 @@ t_env	**lst_to_arr(t_env *env_list)
 
 	arr = (t_env **)malloc((env_lstsize(env_list) + 1) * sizeof(t_env));
 	if (arr == NULL)
-		malloc_err_exit(env_list, "lst_to_arr");
+		malloc_err_exit("lst_to_arr");
 	i = 0;
 	while (env_list != NULL)
 	{

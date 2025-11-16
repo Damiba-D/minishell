@@ -20,8 +20,8 @@ typedef struct s_h_d
 
 
 void	free_arr(char **arr);
-int		exit_cmd(char **args, t_env *env_list);
-void	malloc_err_exit(t_env *env_list, char *err_loc);
+int		exit_cmd(char **args);
+void    malloc_err_exit(char *err_loc);
 t_env	*env_new_node(char *key, char *value);
 void	env_add(t_env **lst, t_env *new);
 t_env	*get_env_node(char *key, t_env *env_list);

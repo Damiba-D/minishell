@@ -1,4 +1,4 @@
-#include "parsing.h"
+#include "../minishell.h"
 
 static char	*extract_segment(char *line, int *pos)
 {

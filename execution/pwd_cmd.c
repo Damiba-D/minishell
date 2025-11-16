@@ -1,4 +1,4 @@
-#include "execution.h"
+#include "../minishell.h"
 
 int pwd_cmd(char **args, t_env *env_list)
 {

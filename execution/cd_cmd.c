@@ -1,4 +1,4 @@
-#include "execution.h"
+#include "../minishell.h"
 
 static void print_error(char *path)
 {
@@ -48,7 +48,7 @@ int	cd_cmd(char **args, t_env **env_list)
 	else
 	{
 		free_arr(args);
-		malloc_err_exit(*env_list, "cd");
+		malloc_err_exit("cd");
 	}
 	return (0);
 }

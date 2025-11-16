@@ -1,4 +1,4 @@
-#include "../execution.h"
+#include "../../minishell.h"
 #include "export_cmd.h"
 
 static void	export_non_null(char *eq_pos, char *pl_pos, char *arg, t_env **env_list)

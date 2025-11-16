@@ -1,4 +1,4 @@
-#include "parsing.h"
+#include "../minishell.h"
 
 int	skip_whitespace(char *str, int pos)
 {

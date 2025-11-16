@@ -1,4 +1,4 @@
-#include "execution.h"
+#include "../minishell.h"
 
 static void	set_shell_lvl(t_env **env_list)
 {
@@ -12,7 +12,7 @@ static void	set_shell_lvl(t_env **env_list)
 		free(shell_lvl->value);
 		shell_lvl->value = ft_itoa(new_lvl);
 		if (!shell_lvl->value)
-			malloc_err_exit(*env_list, "init_env");
+			malloc_err_exit("init_env");
 	}
 	else
 	{
@@ -20,7 +20,7 @@ static void	set_shell_lvl(t_env **env_list)
 		shell_lvl->key = ft_strdup("SHLVL");
 		shell_lvl->value = ft_strdup("1");
 		if (!shell_lvl->key || !shell_lvl->value)
-			return (free_env_node(shell_lvl), malloc_err_exit(*env_list, "init_env"));
+			return (free_env_node(shell_lvl), malloc_err_exit("init_env"));
 		env_add(env_list, shell_lvl);
 	}
 }
@@ -42,11 +42,11 @@ void	init_env(t_env **env_list)
 			len++;
 		new = env_new_node(NULL, NULL);
 		if (!new)
-			malloc_err_exit(*env_list, "init_env");
+			malloc_err_exit("init_env");
 		new->key = ft_strndup(environ[i], len);
 		new->value = ft_strdup(environ[i] + len + 1);
 		if (!new->key || !new->value)
-			return (free_env_node(new), malloc_err_exit(*env_list, "init_env"));
+			return (free_env_node(new), malloc_err_exit("init_env"));
 		env_add(env_list, new);
 		i++;
 	}

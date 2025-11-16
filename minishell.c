@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 void	debug_print_input_list(t_list *input_list)
@@ -64,62 +63,27 @@ void	debug_print_input_list(t_list *input_list)
 
 int	main(void)
 {
-	char	*input;
-	t_list	*input_list;
-	t_list	*current;
-	t_input	*input_test;
-	int		i;
+	init_env(&msh()->env);
+	msh()->last_exit_status = 0;
 
 	while (1)
 	{
-		input = readline("minishell$ ");
-		if (!input)
-			exit(0);
-		if (!input[0])
+		msh()->cmdline = readline("minishell$ ");
+		if (!msh()->cmdline)
+			exit_cmd(NULL);
+		if (!msh()->cmdline[0])
 		{
-			free(input);
+			free(msh()->cmdline);
 			continue ;
 		}
-		add_history(input);
-		input_list = parse_line(input);
-		if (!input_list)
+		add_history(msh()->cmdline);
+		msh()->inputlst = parse_line(msh()->cmdline);
+		if (!msh()->inputlst)
 		{
-			printf("syntax error: unmatched quote\n");
-			free(input);
+			free(msh()->inputlst);
 			continue ;
 		}
-		debug_print_input_list(input_list);
-		input_test = (t_input *)input_list->content;
-		if (input_test->argv && input_test->argv[0]
-			&& (!strncmp(input_test->argv[0], "exit", 4)
-				&& input_test->argv[0][4] == '\0'))
-		{
-			ft_lstclear(&input_list, free_input_node);
-			free(input);
-			exit(0);
-		}
-		current = input_list;
-		while (current)
-		{
-			input_test = (t_input *)current->content;
-			if (input_test->argv && input_test->argv[0])
-			{
-				i = 0;
-				while (input_test->argv[i])
-				{
-					printf("%s", input_test->argv[i]);
-					if (input_test->argv[i + 1])
-						printf(" ");
-					i++;
-				}
-				if (current->next)
-					printf(" | ");
-			}
-			current = current->next;
-		}
-		printf("\n");
-		ft_lstclear(&input_list, free_input_node);
-		free(input);
+		//executor();
 	}
-	return (0);
+	return ((unsigned char)msh()->last_exit_status);
 }
