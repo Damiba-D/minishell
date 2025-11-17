@@ -83,7 +83,7 @@ int	main(void)
 			free(msh()->inputlst);
 			continue ;
 		}
-		//executor();
+		executor();
 	}
 	return ((unsigned char)msh()->last_exit_status);
 }

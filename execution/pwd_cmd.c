@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int pwd_cmd(char **args, t_env *env_list)
+int pwd_cmd(char **args)
 {
 	char *cwd;
 
@@ -8,7 +8,7 @@ int pwd_cmd(char **args, t_env *env_list)
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{
-		cwd = get_env_value("PWD", env_list);
+		cwd = get_env_value("PWD", msh()->env);
 		if (cwd == NULL)
 		{
 			ft_putstr_fd("pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 2);

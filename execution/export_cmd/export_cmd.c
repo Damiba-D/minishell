@@ -45,7 +45,7 @@ static void	print_sorted_env(t_env *env_list)
 	free(sorted_list);
 }
 
-int		export_cmd(char **args, t_env **env_list)
+int		export_cmd(char **args)
 {
 	int i;
 	int ret_val;
@@ -54,7 +54,7 @@ int		export_cmd(char **args, t_env **env_list)
 
 	ret_val = 0;
 	if (!args[1])
-		print_sorted_env(*env_list);
+		print_sorted_env(msh()->env);
 	else
 	{
 		i = 0;
@@ -64,10 +64,10 @@ int		export_cmd(char **args, t_env **env_list)
 				continue ;
 			eq_pos = ft_strchr(args[i], '=');
 			pl_pos = ft_strchr(args[i], '+');
-			if (!eq_pos && !get_env_node(args[i], *env_list))
-				set_env_value(args[i], NULL, env_list, false);
+			if (!eq_pos && !get_env_node(args[i], msh()->env))
+				set_env_value(args[i], NULL, &msh()->env, false);
 			if (eq_pos)
-				export_non_null(eq_pos, pl_pos, args[i], env_list);
+				export_non_null(eq_pos, pl_pos, args[i], &msh()->env);
 		}
 	}
 	return (ret_val);

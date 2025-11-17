@@ -21,10 +21,10 @@ typedef struct s_file
 
 typedef struct s_input
 {
-	char		**argv;
-	t_file		*infiles;
-	t_file		*outfiles;
-}					t_input;
+	char	**argv;
+	t_file	*infiles;
+	t_file	*outfiles;
+}			t_input;
 
 t_input	*create_input_node(char *segment);
 t_list	*parse_line(char *line);

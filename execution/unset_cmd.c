@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-void	unset_env(const char *key, t_env **env_list)
+static void	unset_env(const char *key, t_env **env_list)
 {
 	t_env *prev;
 	t_env *targ;
@@ -28,16 +28,16 @@ void	unset_env(const char *key, t_env **env_list)
 	}
 }
 
-int		unset_cmd(char **args, t_env **env_list)
+int		unset_cmd(char **args)
 {
 	int i;
 
 	i = 0;
 	while (args[++i])
 	{
-		if (get_env_node(args[i], *env_list) == NULL)
+		if (get_env_node(args[i], msh()->env) == NULL)
 			continue ;
-		unset_env(args[i], env_list);
+		unset_env(args[i], &msh()->env);
 	}
 	return (0);
 }

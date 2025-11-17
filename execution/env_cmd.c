@@ -67,8 +67,11 @@ void term_env(t_env *env_list)
 	}
 }
 
-int	env_cmd(t_env *env_list)
+int	env_cmd(void)
 {
+	t_env *env_list;
+
+	env_list = msh()->env;
 	while(env_list != NULL)
 	{
 		if (env_list->value != NULL)

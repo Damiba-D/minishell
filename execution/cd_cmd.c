@@ -28,7 +28,7 @@ static int set_path(char **args, t_env *env_list, char **path)
 	return (0);
 }
 
-int	cd_cmd(char **args, t_env **env_list)
+int	cd_cmd(char **args)
 {
 	char	*path;
 	char	*old_pwd;
@@ -36,18 +36,17 @@ int	cd_cmd(char **args, t_env **env_list)
 
 	if (args[1] && args[2])
 		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
-	if (set_path(args, *env_list, &path))
+	if (set_path(args, msh()->env, &path))
 		return (1);
-	old_pwd = get_env_value("PWD", *env_list);
+	old_pwd = get_env_value("PWD",  msh()->env);
 	if (chdir(path) != 0)
 		return (print_error(path), 1);
-	set_env_value("OLDPWD", old_pwd, env_list, false);
+	set_env_value("OLDPWD", old_pwd,  &msh()->env, false);
 	new_pwd = getcwd(NULL, 0);
 	if (new_pwd)
-		return(set_env_value("PWD", new_pwd, env_list, false), free(new_pwd), 0);
+		return(set_env_value("PWD", new_pwd, &msh()->env, false), free(new_pwd), 0);
 	else
 	{
-		free_arr(args);
 		malloc_err_exit("cd");
 	}
 	return (0);
