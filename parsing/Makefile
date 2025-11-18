@@ -20,7 +20,8 @@ LIBFT_A     = $(LIBFT_DIR)/libft.a
 # Sources (WITHOUT minishell.c)
 SRCS        = arg_split.c copying.c \
 			  counting.c extract_reds.c \
-			  parse_line.c free_hub.c utils.c
+			  parse_line.c free_hub.c utils.c \
+			  signals.c
 
 OBJ         = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 

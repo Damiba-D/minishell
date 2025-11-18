@@ -47,5 +47,11 @@ void	free_file_arr(t_file *files);
 void	free_input_node(void *content);
 void	free_all(char **segments, t_list **input_list, t_list *new_node);
 
+// signals (temporary)
+void	signal_handler(int sig);
+void	handle_sigint_execution(int sig);
+void	handle_sigquit_interactive(int sig);
+void	setup_interactive_signals(void);
+void	setup_execution_signals(void);
 
 #endif

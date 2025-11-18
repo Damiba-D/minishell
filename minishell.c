@@ -65,12 +65,16 @@ int	main(void)
 {
 	init_env(&msh()->env);
 	msh()->last_exit_status = 0;
-
+	setup_interactive_signals();
 	while (1)
 	{
+		setup_interactive_signals();
 		msh()->cmdline = readline("minishell$ ");
 		if (!msh()->cmdline)
-			exit_cmd(NULL);
+        {
+            printf("exit\n");
+            exit_cmd(NULL);
+        }
 		if (!msh()->cmdline[0])
 		{
 			free(msh()->cmdline);
@@ -83,7 +87,11 @@ int	main(void)
 			free(msh()->inputlst);
 			continue ;
 		}
+		setup_execution_signals();
+        debug_print_input_list(msh()->inputlst);
 		executor();
+		ft_lstclear(&msh()->inputlst, free_input_node);
+        free(msh()->cmdline);
 	}
 	return ((unsigned char)msh()->last_exit_status);
 }
