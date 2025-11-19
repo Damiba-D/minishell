@@ -12,13 +12,6 @@ typedef struct s_env
 	struct s_env *next;
 }	t_env;
 
-typedef struct s_h_d
-{
-	char *del;
-	bool quoted;
-}	t_h_d;
-
-
 void	free_arr(char **arr);
 int		exit_cmd(char **args);
 void	malloc_err_exit(char *err_loc);
@@ -38,6 +31,6 @@ int		unset_cmd(char **args);
 int		pwd_cmd(char **args);
 int		cd_cmd(char **args);
 void	executor(void);
-void	here_doc_handler(t_h_d here_doc);
+void	here_doc_handler(t_file *here_doc);
 
 #endif

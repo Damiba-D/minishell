@@ -1,5 +1,5 @@
 #include "../minishell.h"
-
+#include "libft/get_next_line/get_next_line.h"
 /*
 If delimiter is unquoted (double or single, does not matter), expansions are performed normally and \ must used to escape special characters
 If any part of delimiter is quoted, everything appears to be treated a string literal
@@ -33,12 +33,12 @@ If any part of delimiter is quoted, everything appears to be treated a string li
 	return (h_d_pipe[0]);
 } */
 
-void    here_doc_handler(t_h_d here_doc)
+void    here_doc_handler(t_file *here_doc)
 {
     char *tmpfilename;
     char *fileno;
     int filenum;
-	(void)here_doc;
+	char *line;
 
     filenum = 0;
     while (true)
@@ -57,13 +57,16 @@ void    here_doc_handler(t_h_d here_doc)
 			filenum++;
 		free(tmpfilename);
     }
-	char arr[12];
-	write(filenum, "Look at me\n", 11);
+	while (true)
+	{
+		line = readline(">");
+		if (!line && ft_strncmp(line, here_doc->filename, ft_strlen(here_doc->filename)))
+		{
+
+		}
+	}
 	close(filenum);
 	filenum = open(tmpfilename, O_RDONLY);
-	ssize_t bytes = read(filenum, arr, sizeof(arr) - 1);
-	arr[bytes] = '\0';
-	printf("%s", arr);
 	close(filenum);
 	unlink(tmpfilename);
 	free(tmpfilename);
@@ -71,11 +74,10 @@ void    here_doc_handler(t_h_d here_doc)
 
 int main()
 {
-	t_h_d var;
+	t_file var;
 
-	var.del = "EOF";
+	var.filename = "EOF";
 	var.quoted = false;
-	here_doc_handler(var);
-	unsigned char bitch = 10;
-	exit(bitch);
+	here_doc_handler(&var);
+	exit(0);
 }
