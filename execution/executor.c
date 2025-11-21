@@ -22,6 +22,8 @@ static int execute_builtin(t_list *input_node)
 		msh()->last_exit_status = export_cmd(input->argv);
 	else if (!ft_strncmp(cmd, "exit", 5))
 		msh()->last_exit_status = exit_cmd(input->argv);
+	else
+		return (0);
 	return (1);
 	
 	//Restore FDs

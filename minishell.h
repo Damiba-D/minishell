@@ -1,8 +1,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "shared.h"
-# include "execution/execution.h"
 # include "parsing/parsing.h"
+# include "execution/execution.h"
 
 typedef struct s_msh
 {
