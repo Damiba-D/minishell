@@ -1,5 +1,5 @@
 #include "../minishell.h"
-#include "libft/get_next_line/get_next_line.h"
+#include "../libft/get_next_line/get_next_line.h"
 /*
 If delimiter is unquoted (double or single, does not matter), expansions are performed normally and \ must used to escape special characters
 If any part of delimiter is quoted, everything appears to be treated a string literal
@@ -39,12 +39,13 @@ void    here_doc_handler(t_file *here_doc)
     char *fileno;
     int filenum;
 	char *line;
+	size_t	del_len;
 
     filenum = 0;
     while (true)
     {
         fileno = ft_itoa(filenum);
-		tmpfilename = ft_strjoin("/tmp/minishell-heredoc-", fileno);
+		tmpfilename = ft_strjoin("../minishell-heredoc-", fileno);
 		free(fileno);
 		if (!tmpfilename)
 			exit(1);
@@ -57,27 +58,42 @@ void    here_doc_handler(t_file *here_doc)
 			filenum++;
 		free(tmpfilename);
     }
+	del_len = ft_strlen(here_doc->filename) + 1;
 	while (true)
 	{
 		line = readline(">");
-		if (!line && ft_strncmp(line, here_doc->filename, ft_strlen(here_doc->filename)))
+		if (!line || !ft_strncmp(line, here_doc->filename, del_len))
 		{
-
+			free(line);
+			break ;
 		}
+		ft_putendl_fd(line, filenum);
+		free(line);
 	}
 	close(filenum);
-	filenum = open(tmpfilename, O_RDONLY);
-	close(filenum);
-	unlink(tmpfilename);
-	free(tmpfilename);
+	here_doc->filename = tmpfilename;
 }
 
 int main()
 {
 	t_file var;
+	int fd;
+	char *line;
 
 	var.filename = "EOF";
 	var.quoted = false;
 	here_doc_handler(&var);
+	fd = open(var.filename, O_RDONLY);
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	unlink(var.filename);
+	free(var.filename);
 	exit(0);
 }
