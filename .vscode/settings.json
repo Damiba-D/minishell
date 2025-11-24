@@ -1,12 +1,14 @@
 {
   "files.associations": {
-	"libft.h": "c",
-	"execution.h": "c",
-	"fcntl.h": "c",
-	"arg_split.h": "c",
-	"parsing.h": "c",
-	"minishell.h": "c"
-},
+    "libft.h": "c",
+    "execution.h": "c",
+    "fcntl.h": "c",
+    "arg_split.h": "c",
+    "parsing.h": "c",
+    "minishell.h": "c",
+    "shared.h": "c",
+    "history.h": "c"
+  },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
   "C_Cpp_Runner.debuggerPath": "gdb",

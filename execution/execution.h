@@ -2,6 +2,7 @@
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
+# include "../minishell.h"
 # include "../shared.h"
 # include "export_cmd/export_cmd.h"
 
