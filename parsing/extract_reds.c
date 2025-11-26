@@ -82,8 +82,6 @@ void	ext_reds_file(char *seg, t_input *node)
 	int	out_i;
 
 	count_reds(seg, &in_count, &out_count);
-	if (!in_count && !out_count)
-		return ;
 	if (!allocate_file_arrays(node, in_count, out_count))
 		return ;
 	i = 0;

@@ -2,6 +2,7 @@
 
 static void	cpy_in_quote(char *dst, char *s, int *i, int *k)
 {
+	dst[(*k)++] = s[*i];
 	*i += 1;
 	while (s[*i] && s[*i] != '\'')
 	{
@@ -9,11 +10,16 @@ static void	cpy_in_quote(char *dst, char *s, int *i, int *k)
 		*i += 1;
 		*k += 1;
 	}
-	*i += 1;
+	if (s[*i] == '\'')
+	{
+		dst[(*k)++] = s[*i];
+		*i += 1;
+	}
 }
 
 static void	cpy_in_dquote(char *dst, char *s, int *i, int *k)
 {
+	dst[(*k)++] = s[*i];
 	*i += 1;
 	while (s[*i] && s[*i] != '\"')
 	{
@@ -21,13 +27,9 @@ static void	cpy_in_dquote(char *dst, char *s, int *i, int *k)
 			&& (s[*i + 1] == '\"' || s[*i + 1] == '\\'
 				|| s[*i + 1] == '$' || s[*i + 1] == '`'))
 		{
+			dst[(*k)++] = s[*i];
 			dst[(*k)++] = s[*i + 1];
 			*i += 2;
-		}
-		else if (s[*i] == '$')
-		{
-			dst[(*k)++] = s[*i];
-			*i += 1;
 		}
 		else
 		{
@@ -35,7 +37,11 @@ static void	cpy_in_dquote(char *dst, char *s, int *i, int *k)
 			*i += 1;
 		}
 	}
-	*i += 1;
+	if (s[*i] == '\"')
+	{
+		dst[(*k)++] = s[*i];
+		*i += 1;
+	}
 }
 
 /* Copy token into arr[j], removing quotes/escapes */
