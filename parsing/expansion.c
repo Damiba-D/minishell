@@ -33,8 +33,6 @@ static char	*exp_single_var(char *var_name, t_env *env_list, int lst_exit_stat)
 {
 	char	*value;
 
-	if (!var_name)
-		return(ft_strdup("?"));
 	if (ft_strncmp(var_name, "?", 2) == 0)
 		return (ft_itoa(lst_exit_stat));
 	value = get_env_value(var_name, env_list);

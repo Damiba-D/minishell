@@ -21,7 +21,7 @@ LIBFT_A     = $(LIBFT_DIR)/libft.a
 SRCS        = arg_split.c copying.c \
 			  counting.c extract_reds.c \
 			  parse_line.c free_hub.c utils.c \
-			  signals.c
+			  signals.c expansion.c
 
 OBJ         = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
