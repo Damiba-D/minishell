@@ -1,5 +1,5 @@
-#include "../minishell.h"
-#include "../libft/get_next_line/get_next_line.h"
+#include "../../minishell.h"
+//#include "../libft/get_next_line/get_next_line.h"
 /*
 If delimiter is unquoted (double or single, does not matter), expansions are performed normally and \ must used to escape special characters
 If any part of delimiter is quoted, everything appears to be treated a string literal
@@ -45,13 +45,18 @@ void    here_doc_handler(t_file *here_doc)
     while (true)
     {
         fileno = ft_itoa(filenum);
-		tmpfilename = ft_strjoin("../minishell-heredoc-", fileno);
+		tmpfilename = ft_strjoin("minishell-heredoc-", fileno);
 		free(fileno);
 		if (!tmpfilename)
-			exit(1);
+			malloc_err_exit("h_d_handler");
         if (access(tmpfilename, F_OK))
         {
 			filenum = open(tmpfilename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (filenum == -1)
+			{
+				free(tmpfilename);
+				var_err_exit("minishell: cannot create temp file for here-document: No space left on device", 1);
+			}
 			break ;
         }
 		else
@@ -71,10 +76,11 @@ void    here_doc_handler(t_file *here_doc)
 		free(line);
 	}
 	close(filenum);
+	free(here_doc->filename);
 	here_doc->filename = tmpfilename;
 }
 
-int main()
+/* int main()
 {
 	t_file var;
 	int fd;
@@ -96,4 +102,4 @@ int main()
 	unlink(var.filename);
 	free(var.filename);
 	exit(0);
-}
+} */

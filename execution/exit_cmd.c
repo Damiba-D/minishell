@@ -86,3 +86,10 @@ void malloc_err_exit(char *err_loc)
 	ft_putstr_fd(": Allocation Error\n", 2);
 	exit_cmd_cleanup(1);
 }
+
+void	var_err_exit(char *err_msg, int err_code)
+{
+	if (err_msg)
+		ft_putstr_fd(err_msg, 2);
+	exit_cmd_cleanup(err_code);
+}
