@@ -28,18 +28,6 @@
             "miDebuggerPath": "/usr/bin/gdb",
             "preLaunchTask": "Build Minishell",
             "postDebugTask": "Close Debug Terminal"
-        },
-        {
-            "name": "Debug hd",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/execution/hd",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "stopAtEntry": false,
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "miDebuggerPath": "/usr/bin/gdb"
         }
       ]
     }

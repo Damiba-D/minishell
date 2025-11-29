@@ -16,6 +16,7 @@ typedef struct s_env
 void	free_arr(char **arr);
 int		exit_cmd(char **args);
 void	malloc_err_exit(char *err_loc);
+void	var_err_exit(char *err_msg, int err_code);
 t_env	*env_new_node(char *key, char *value);
 void	env_add(t_env **lst, t_env *new);
 t_env	*get_env_node(char *key, t_env *env_list);

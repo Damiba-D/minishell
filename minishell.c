@@ -10,10 +10,7 @@ int	main(void)
 		setup_interactive_signals();
 		msh()->cmdline = readline("minishell$ ");
 		if (!msh()->cmdline)
-		{
-			printf("exit\n");
-			exit_cmd(NULL);
-		}
+            exit_cmd(NULL);
 		if (!msh()->cmdline[0])
 		{
 			free(msh()->cmdline);
@@ -35,8 +32,7 @@ int	main(void)
 		}
 		setup_execution_signals();
 		executor();
-		ft_lstclear(&msh()->inputlst, free_input_node);
-		free(msh()->cmdline);
+        free(msh()->cmdline);
 	}
 	return ((unsigned char)msh()->last_exit_status);
 }

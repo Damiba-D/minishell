@@ -22,7 +22,7 @@ LIBFT_A     = $(LIBFT_DIR)/libft.a
 # Sources (MINUS minishell.c)
 SRCs        = envfuncs.c envfuncs2.c env_cmd.c unset_cmd.c echo_cmd.c cd_cmd.c \
 			  export_cmd/export_utils.c export_cmd/export_cmd.c \
-			  exit_cmd.c pwd_cmd.c executor.c
+			  exit_cmd.c pwd_cmd.c executor/here_doc.c executor/executor.c
 
 OBJ         = $(addprefix $(OBJ_DIR)/, $(SRCs:.c=.o))
 
