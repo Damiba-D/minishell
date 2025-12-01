@@ -45,7 +45,7 @@ void    here_doc_handler(t_file *here_doc)
     while (true)
     {
         fileno = ft_itoa(filenum);
-		tmpfilename = ft_strjoin("minishell-heredoc-", fileno);
+		tmpfilename = ft_strjoin("/tmp/minishell-heredoc-", fileno);
 		free(fileno);
 		if (!tmpfilename)
 			malloc_err_exit("h_d_handler");
