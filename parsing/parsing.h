@@ -54,4 +54,9 @@ void	handle_sigquit_interactive(int sig);
 void	setup_interactive_signals(void);
 void	setup_execution_signals(void);
 
+// expansions
+int		is_var_char(char c);
+void	*extract_var_name(char *str, int *i);
+
+
 #endif
