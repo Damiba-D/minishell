@@ -73,11 +73,21 @@ static char	*parse_infiles(t_input *input)
 	return (infile);
 }
 
+static char *parse_outfiles(t_input *input, int *pos)
+{
+	char	*outfile;
+	int		i;
+
+	i = 0;
+
+}
+
 static void	setup_fds(t_list *input_node, int *og_fd)
 {
 	t_input *input;
 	int new_fd[2];
 	char	*name;
+	int		out_pos;
 
 	input = (t_input *)input_node->content;
 	if (input->infiles->filename)
@@ -90,6 +100,7 @@ static void	setup_fds(t_list *input_node, int *og_fd)
 	}
 	if (input->outfiles->filename)
 	{
+		name = parse_outfiles(input, &out_pos);
 		og_fd[1] = dup(STDOUT_FILENO);
 		new_fd[1] = open(input->outfiles[0].filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		dup2(new_fd[1], STDOUT_FILENO);
