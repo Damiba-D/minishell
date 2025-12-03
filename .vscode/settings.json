@@ -8,7 +8,9 @@
     "minishell.h": "c",
     "shared.h": "c",
     "history.h": "c",
-    "export_cmd.h": "c"
+    "export_cmd.h": "c",
+    "chrono": "c",
+    "functional": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

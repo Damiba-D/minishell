@@ -4,6 +4,9 @@
 # include "../shared.h"
 # include "arg_split.h"
 
+typedef struct s_env t_env;
+typedef struct s_msh t_msh;
+
 typedef enum e_token
 {
 	REDIN, // <
@@ -54,9 +57,15 @@ void	handle_sigquit_interactive(int sig);
 void	setup_interactive_signals(void);
 void	setup_execution_signals(void);
 
-// expansions
+// expansion utils
 int		is_var_char(char c);
 void	*extract_var_name(char *str, int *i);
+char	*append_to_res(char *res, char *to_add);
+char	*exp_single_var(char *var_name, t_env *env_list, int lst_exit_stat);
 
+// expansion
+void	expand_args(t_input *node);
+char	*expand_arg(char *arg, t_env *env_list, int lst_exit_stats);
+void	expand_all(t_msh *msh_data);
 
 #endif

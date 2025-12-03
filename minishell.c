@@ -87,11 +87,12 @@ int	main(void)
 			free(msh()->inputlst);
 			continue ;
 		}
+		expand_all(msh());
 		setup_execution_signals();
-        debug_print_input_list(msh()->inputlst);
+		debug_print_input_list(msh()->inputlst);
 		executor();
 		ft_lstclear(&msh()->inputlst, free_input_node);
-        free(msh()->cmdline);
+		free(msh()->cmdline);
 	}
 	return ((unsigned char)msh()->last_exit_status);
 }
