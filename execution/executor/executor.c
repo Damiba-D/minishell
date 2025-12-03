@@ -73,20 +73,39 @@ static char	*parse_infiles(t_input *input)
 	return (infile);
 }
 
-static char *parse_outfiles(t_input *input, t_token *type)
+static void open_file(char *name, int *fd, t_token type)
+{
+	if (type == REDIN || type == HDOC)
+		*fd = open(name, O_RDONLY);
+	if (type == REDOUT)
+		*fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (type == APPEND)
+		*fd = open(name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+}
+
+static char *parse_outfiles(t_input *input, int *fd)
 {
 	char	*outfile;
 	int		i;
 
 	i = 0;
+	outfile = input->outfiles[i].filename;
+	if (access(outfile, F_OK) || !access(outfile, W_OK))
+		open_file(outfile, fd, input->outfiles[i].mode);
+	else
+		return (NULL);
+	i++;
 	while (input->outfiles[i].filename)
 	{
+		close(*fd);
 		outfile = input->outfiles[i].filename;
-		if (!access(outfile, F_OK))
-		if (access(outfile, W_OK))
+		if (access(outfile, F_OK) || !access(outfile, W_OK))
+			open_file(outfile, fd, input->outfiles[i].mode);
+		else
 			return (NULL);
+		i++;
 	}
-
+	return (outfile);
 }
 
 static void	setup_fds(t_list *input_node, int *og_fd)
@@ -94,22 +113,20 @@ static void	setup_fds(t_list *input_node, int *og_fd)
 	t_input *input;
 	int new_fd[2];
 	char	*name;
-	t_token	type;
 
 	input = (t_input *)input_node->content;
 	if (input->infiles->filename)
 	{
 		name = parse_infiles(input);
 		og_fd[0] = dup(STDIN_FILENO);
-		new_fd[0] = open(name, O_RDONLY);
+		open_file(name, &new_fd[0], REDIN);
 		dup2(new_fd[0], STDIN_FILENO);
 		close(new_fd[0]);
 	}
 	if (input->outfiles->filename)
 	{
-		name = parse_outfiles(input, &type);
+		name = parse_outfiles(input, &new_fd[1]);
 		og_fd[1] = dup(STDOUT_FILENO);
-		new_fd[1] = open(input->outfiles[0].filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		dup2(new_fd[1], STDOUT_FILENO);
 		close(new_fd[1]);
 	}
