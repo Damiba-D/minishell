@@ -1,87 +1,76 @@
 #include "arg_split.h"
 
-/* handle quotes: toggle in_quote and mark word started */
-void	handle_quote(char *s, int i, int *in_quote, int *in_word)
+// Handles backslash escapes outside of quotes
+static int	back_sl_out_quote(char *s, int *i, int in_s, int in_d)
 {
-	if (s[i] == '\'' && (i == 0 || s[i - 1] != '\\'))
+	if (!in_s && !in_d && s[*i] == '\\' && s[*i + 1])
 	{
-		if (!*in_quote)
-			*in_word = 1;
-		*in_quote = !*in_quote;
+		*i += 2;
+		return (1);
 	}
+	return (0);
 }
 
-void	handle_dquote(char *s, int i, int *in_quote, int *in_word)
+// Handles backslash escapes inside double quotes
+static int	handle_dquote_escape(char *s, int *i, int *len)
 {
-	if (s[i] == '\"' && (i == 0 || s[i - 1] != '\\'))
+	if (s[*i] == '\\' && s[*i + 1]
+		&& (s[*i + 1] == '\"' || s[*i + 1] == '\\'
+			|| s[*i + 1] == '$' || s[*i + 1] == '`'))
 	{
-		if (!*in_quote)
-			*in_word = 1;
-		*in_quote = !*in_quote;
+		*len += 2;
+		*i += 2;
+		return (1);
 	}
+	return (0);
 }
 
-/* handle space outside quotes: maybe end a word */
-static void	handle_space(char c, int in_quote, int *in_word, int *count)
+// Checks if current char is a quote and toggles quote
+static int	check_quote_change(char *s, int *i, int *in_s, int *in_d)
 {
-	if (!in_quote && c == ' ')
+	int	prev_i;
+
+	prev_i = *i;
+	if (s[*i] == '\'' && !(*in_d))
 	{
-		if (*in_word)
-		{
-			(*count)++;
-			*in_word = 0;
-		}
+		*in_s = !(*in_s);
+		(*i)++;
 	}
+	else if (s[*i] == '\"' && !(*in_s))
+	{
+		*in_d = !(*in_d);
+		(*i)++;
+	}
+	return (*i != prev_i);
 }
 
-unsigned int	count_args(char *s)
+static void	process_char(char *s, int *i, int *len, int in_d)
 {
-	int	i;
-	int	count;
-	int	in_word;
-	int	in_quote;
-
-	i = 0;
-	count = 0;
-	in_word = 0;
-	in_quote = 0;
-	while (s[i])
-	{
-		handle_dquote(s, i, &in_quote, &in_word);
-		handle_quote(s, i, &in_quote, &in_word);
-		handle_space(s[i], in_quote, &in_word, &count);
-		if (!in_quote && s[i] != ' ' && s[i] != '\'' && s[i] != '\"')
-			in_word = 1;
-		i++;
-	}
-	if (in_word)
-		count++;
-	return (count);
+	if (in_d && handle_dquote_escape(s, i, len))
+		return ;
+	*len += 1;
+	*i += 1;
 }
 
-/* Compute arg length following quoting rules */
 void	arg_len(char *s, int *i, int *len)
 {
-	int	in_quote;
+	int	in_s;
+	int	in_d;
 
-	in_quote = 0;
-	while (s[*i] && (in_quote || (s[*i] != ' ')))
+	in_s = 0;
+	in_d = 0;
+	while (s[*i] && (in_s || in_d || s[*i] != ' '))
 	{
-		if ((s[*i] == '\'' || s[*i] == '\"') && (in_quote || s[*i + 1] != '\0'))
+		if (check_quote_change(s, i, &in_s, &in_d))
 		{
-			in_quote = !in_quote;
-			*i += 1;
+			*len += 1;
 			continue ;
 		}
-		if (!in_quote && s[*i] == '\\' && s[*i + 1])
+		if (handle_escape_outside(s, i, in_s, in_d))
 		{
 			*len += 1;
-			*i += 2;
+			continue ;
 		}
-		else
-		{
-			*len += 1;
-			*i += 1;
-		}
+		process_char(s, i, len, in_d);
 	}
 }

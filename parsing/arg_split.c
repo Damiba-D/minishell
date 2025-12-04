@@ -26,6 +26,33 @@ static int	has_unmatched_quote(char *s)
 	return (in_quote || in_dquote);
 }
 
+static int	count_args(char *s)
+{
+	int	count;
+	int	i;
+	int	in_quote;
+	int	in_dquote;
+
+	count = 0;
+	i = 0;
+	in_quote = 0;
+	in_dquote = 0;
+	while (s[i])
+	{
+		while (s[i] == ' ')
+			i++;
+		if (!s[i])
+			break ;
+		count++;
+		while (s[i] && (in_quote || in_dquote || s[i] != ' '))
+		{
+			update_quotes(s[i], &in_quote, &in_dquote);
+			i++;
+		}
+	}
+	return (count);
+}
+
 char	**arg_split(char *s, int *inv_arg)
 {
 	char	**arr;

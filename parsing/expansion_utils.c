@@ -11,6 +11,8 @@ void	*extract_var_name(char *str, int *i)
 	int		len;
 	char	*var_name;
 
+	if (!str || !i)
+		return (NULL);
 	start = *i;
 	len = 0;
 	if (str[*i] == '?')
@@ -29,23 +31,12 @@ void	*extract_var_name(char *str, int *i)
 	return (var_name);
 }
 
-char	*append_to_res(char *res, char *to_add)
-{
-	char	*new_res;
-
-	if (!res)
-		res = ft_strdup("");
-	if (!to_add)
-		return (res);
-	new_res = ft_strjoin(res, to_add);
-	free(res);
-	return (new_res);
-}
-
-char	*exp_single_var(char *var_name, t_env *env_list, int lst_exit_stat)
+char	*exp_var_env(char *var_name, t_env *env_list, int lst_exit_stat)
 {
 	char	*value;
 
+	if (!var_name)
+		return (ft_strdup(""));
 	if (ft_strncmp(var_name, "?", 2) == 0)
 		return (ft_itoa(lst_exit_stat));
 	value = get_env_value(var_name, env_list);

@@ -1,54 +1,48 @@
 #include "../minishell.h"
 
-static char	*process_dollar(char *arg, int *i, t_env *env_list, int lst_ex_stats)
+static char	*process_single_var(char *result, int var_start, int var_end)
 {
 	char	*var_name;
 	char	*var_value;
-	char	*expanded;
-	char	buf[2];
+	char	*new_result;
 
-	if (arg[*i] != '$')
-	{
-		buf[0] = arg[*i];
-		buf[1] = '\0';
-		(*i)++;
-		return(ft_strdup(buf));
-	}
-	(*i)++;
-	var_name = extract_var_name(arg, i);
+	if (!result || var_start < 0 || var_end <= var_start)
+		return (NULL);
+	var_name = ft_substr(result, var_start + 1, var_end - var_start - 1);
 	if (!var_name)
-		return (ft_strdup(""));
-	var_value = exp_single_var(var_name, env_list, lst_ex_stats);
+		return (NULL);
+	var_value = exp_var_env(var_name, msh()->env, msh()->last_exit_status);
 	free(var_name);
-	expanded = ft_strdup(var_value);
+	if (!var_value)
+		return (ft_strdup(result));
+	new_result = replace_var_str(result, var_start, var_end, var_value);
 	free(var_value);
-	return(expanded);
+	return (new_result);
 }
 
-char	*expand_arg(char *arg, t_env *env_list, int lst_exit_stats)
+char	*expand_arg(char *arg)
 {
-	char	*res;
-	char	*tmp;
-	int		i;
-	int		in_single;
-	int		in_double;
+	char	*result;
+	char	*new_result;
+	int		var_pos[2];
+	int		search_pos;
 
 	if (!arg)
 		return (NULL);
-	res = NULL;
-	i = 0;
-	in_single = 0;
-	in_double = 0;
-	while (arg[i])
+	result = ft_strdup(arg);
+	search_pos = 0;
+	while (find_next_var(result, search_pos, &var_pos[0], &var_pos[1]))
 	{
-		update_quotes(arg[i], &in_single, &in_double);
-		tmp = process_dollar(arg, &i, env_list, lst_exit_stats);
-		res = append_to_res(res, tmp);
-		free(tmp);
+		new_result = process_single_var(result, var_pos[0], var_pos[1]);
+		if (!new_result)
+			break;
+		search_pos = var_pos[0];
+		free(result);
+		result = new_result;
 	}
-	if (!res)
-		res = ft_strdup("");
-	return (res);
+	if (!result)
+		result = ft_strdup("");
+	return (result);
 }
 
 void	expand_args(t_input *node)
@@ -58,28 +52,34 @@ void	expand_args(t_input *node)
 	char	*original;
 
 	if (!node || !node->argv)
-		return;
-
+		return ;
 	i = 0;
 	while (node->argv[i])
 	{
 		original = node->argv[i];
-		expanded = expand_arg(original, msh()->env, msh()->last_exit_status);
+		expanded = expand_arg(original);
 		if (expanded)
 		{
 			node->argv[i] = expanded;
+			free(original);
+		}
+		else
+		{
+			node->argv[i] = ft_strdup("");
 			free(original);
 		}
 		i++;
 	}
 }
 
-void	expand_all(t_msh *msh_data)
+void	expand_all(t_msh *msh)
 {
 	t_list	*current;
 	t_input	*node;
 
-	current = msh_data->inputlst;
+	if (!msh)
+		return ;
+	current = msh->inputlst;
 	while (current)
 	{
 		node = (t_input *)current->content;
