@@ -48,14 +48,14 @@ void    here_doc_handler(t_file *here_doc)
 		tmpfilename = ft_strjoin("/tmp/minishell-heredoc-", fileno);
 		free(fileno);
 		if (!tmpfilename)
-			malloc_err_exit("h_d_handler");
+			error_exit("malloc", "Allocation Error", 1, false);
         if (access(tmpfilename, F_OK))
         {
 			filenum = open(tmpfilename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (filenum == -1)
 			{
 				free(tmpfilename);
-				var_err_exit("minishell: cannot create temp file for here-document: No space left on device", 1);
+				error_exit(NULL, "cannot create tmp file for here-doc", 1, false);
 			}
 			break ;
         }

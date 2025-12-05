@@ -1,13 +1,5 @@
 #include "../minishell.h"
 
-static void print_error(char *path)
-{
-	ft_putstr_fd("minishell: cd: ", 2);
-	ft_putstr_fd(path, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putendl_fd(strerror(errno), 2);
-}
-
 static int set_path(char **args, t_env *env_list, char **path)
 {
 	if (!args[1] || !ft_strncmp(args[1], "~", 2))
@@ -40,14 +32,14 @@ int	cd_cmd(char **args)
 		return (1);
 	old_pwd = get_env_value("PWD",  msh()->env);
 	if (chdir(path) != 0)
-		return (print_error(path), 1);
+		return (print_err("cd", path, true), 1);
 	set_env_value("OLDPWD", old_pwd,  &msh()->env, false);
 	new_pwd = getcwd(NULL, 0);
 	if (new_pwd)
 		return(set_env_value("PWD", new_pwd, &msh()->env, false), free(new_pwd), 0);
 	else
 	{
-		malloc_err_exit("cd");
+		error_exit("malloc", "Allocation Error", 1, false);
 	}
 	return (0);
 }

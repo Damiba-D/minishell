@@ -25,14 +25,14 @@ char **env_list_to_char(t_env *env_list)
 
 	env_arr = (char **)malloc(sizeof(char *) * (env_lstsize(env_list) + 1));
 	if (env_arr == NULL)
-		malloc_err_exit("env_list_to_char");
+		error_exit("malloc", "Allocation Error", 1, false);
 	i = 0;
 	while (env_list)
 	{
 		size = ft_strlen(env_list->key) + ft_strlen(env_list->value) + 2;
 		env_arr[i] = (char *)malloc(sizeof(char) * size);
 		if (env_arr[i] == NULL)
-			return (free_arr(env_arr), malloc_err_exit("env_list_to_char"), NULL);
+			return (free_arr(env_arr),error_exit("malloc", "Allocation Error", 1, false), NULL);
 		ft_strlcpy(env_arr[i], env_list->key, size);
 		if (env_list->value != NULL)
 		{
@@ -55,7 +55,7 @@ static void update_env_value(t_env *node, const char *value, bool append)
 		free(node->value);
 		node->value = ft_strdup(value);
 		if (node->value == NULL)
-			malloc_err_exit("set_env_value");
+			error_exit("malloc", "Allocation Error", 1, false);
 	}
 	else if (append)
 	{
@@ -66,7 +66,7 @@ static void update_env_value(t_env *node, const char *value, bool append)
 			node->value = ft_strdup(value);
 		free(temp);
 		if (node->value == NULL)
-			malloc_err_exit("set_env_value");
+			error_exit("malloc", "Allocation Error", 1, false);
 	}
 }
 
@@ -86,10 +86,10 @@ void	set_env_value(const char *key, const char *value, t_env **env_list, bool ap
 	n_key = ft_strdup(key);
 	n_value = ft_strdup(value);
 	if ((n_key == NULL ) || (n_value == NULL && value != NULL))
-		return (free(n_key), free(n_value), malloc_err_exit("set_env_value"));
+		return (free(n_key), free(n_value), error_exit("malloc", "Allocation Error", 1, false));
 	temp = env_new_node(n_key, n_value);
 	if (temp == NULL)
-		return (free(n_key), free(n_value), malloc_err_exit("set_env_value"));
+		return (free(n_key), free(n_value), error_exit("malloc", "Allocation Error", 1, false));
 	env_add(env_list, temp);
 }
 
