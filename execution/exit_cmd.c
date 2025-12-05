@@ -4,6 +4,7 @@ static void exit_cmd_cleanup(unsigned char exit_code)
 {
 	ft_lstclear(&msh()->inputlst, free_input_node);
 	term_env(msh()->env);
+	restore_fds(msh()->og_fds);
 	exit(exit_code);
 }
 
@@ -79,27 +80,29 @@ int		exit_cmd(char **args)
 	return (0);
 }
 
-void malloc_err_exit(char *err_loc)
+/// @brief 
+/// @param context what exactly failed, IE, malloc or a command such as cd
+/// @param detail extra info as to what failed, IE, a file that could not be opened
+/// @param err flag used to print exact error message if function sets errno upon failure
+void print_err(char *context, char *detail, bool err)
 {
 	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(err_loc, 2);
-	ft_putstr_fd(": Allocation Error\n", 2);
-	exit_cmd_cleanup(1);
+	if (context)
+	{
+		ft_putstr_fd(context, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	if (detail && err)
+		perror(detail);
+	else if (detail)
+		ft_putendl_fd(detail, 2);
+	else
+		ft_putendl_fd(strerror(errno), 2);
 }
 
-void	var_err_exit(char *err_msg, int err_code)
+// For exiting
+void error_exit(char *context, char *detail, int exit_code, bool err)
 {
-	if (err_msg)
-		ft_putstr_fd(err_msg, 2);
-	exit_cmd_cleanup(err_code);
-}
-
-void	file_err(char *filename)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(filename, 2);
-	if (access(filename, F_OK))
-		ft_putstr_fd(": No such file or directory\n", 2);
-	else if (access(filename, R_OK) || access(filename, W_OK))
-		ft_putstr_fd(": Permission denied\n", 2);
+	print_err(context, detail, err);
+	exit_cmd_cleanup(exit_code);
 }

@@ -77,11 +77,13 @@ char	*parse_infiles(t_input *input, int *flag, int *fd)
 	while (input->infiles[i].filename)
 	{
 		infile = input->infiles[i].filename;
-		if (access(infile, R_OK))
+		open_file(infile, fd, REDIN);
+		if (*fd == -1)
 			return (msh()->last_exit_status = *flag = 1, infile);
+		if (input->infiles[i + 1].filename)
+			close(*fd);
 		i++;
 	}
-	open_file(infile, fd, REDIN);
 	return (infile);
 }
 
@@ -91,20 +93,14 @@ char *parse_outfiles(t_input *input, int *fd, int *flag)
 	int		i;
 
 	i = 0;
-	outfile = input->outfiles[i].filename;
-	if (access(outfile, F_OK) || !access(outfile, W_OK))
-		open_file(outfile, fd, input->outfiles[i].mode);
-	else
-		return (msh()->last_exit_status = *flag = 1, outfile);
-	i++;
 	while (input->outfiles[i].filename)
 	{
-		close(*fd);
 		outfile = input->outfiles[i].filename;
-		if (access(outfile, F_OK) || !access(outfile, W_OK))
-			open_file(outfile, fd, input->outfiles[i].mode);
-		else
+		open_file(outfile, fd, input->outfiles[i].mode);
+		if (*fd == -1)
 			return (msh()->last_exit_status = *flag = 1, outfile);
+		if (input->outfiles[i + 1].filename)
+			close(*fd);
 		i++;
 	}
 	return (outfile);
@@ -117,12 +113,13 @@ int	setup_fds(t_input *input, int *og_fd)
 	int		err;
 
 	err = 0;
+	og_fd[0] = dup(STDIN_FILENO);
+	og_fd[1] = dup(STDOUT_FILENO);
 	if (input->infiles->filename)
 	{
 		name = parse_infiles(input, &err, &new_fd[0]);
 		if (err)
-			return (file_err(name), err);
-		og_fd[0] = dup(STDIN_FILENO);
+			return (print_err(NULL, name, true), err);
 		dup2(new_fd[0], STDIN_FILENO);
 		close(new_fd[0]);
 	}
@@ -130,33 +127,30 @@ int	setup_fds(t_input *input, int *og_fd)
 	{
 		name = parse_outfiles(input, &new_fd[1], &err);
 		if (err)
-			return (file_err(name), err);
-		og_fd[1] = dup(STDOUT_FILENO);
+			return (print_err(NULL, name, true), err);
 		dup2(new_fd[1], STDOUT_FILENO);
 		close(new_fd[1]);
 	}
 	return (err);
 }
 
+void restore_fds(int *fd)
+{
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[1]);
+}
+
 void execute_builtin(t_list *input_node)
 {
 	t_input	*input;
-	int		og_fd[2];
 
 	input = (t_input *)input_node->content;
-	if (setup_fds(input, og_fd))
-		return ;
+	if (setup_fds(input, msh()->og_fds))
+		return (restore_fds(msh()->og_fds));
 	msh()->last_exit_status = run_builtin(input);
-	if (input->infiles->filename)
-	{
-		dup2(og_fd[0], STDIN_FILENO);
-		close(og_fd[0]);
-	}
-	if (input->outfiles->filename)
-	{
-		dup2(og_fd[1], STDOUT_FILENO);
-		close(og_fd[1]);
-	}
+	restore_fds(msh()->og_fds);
 }
 
 void	executor(void)

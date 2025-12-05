@@ -12,7 +12,7 @@ static void	set_shell_lvl(t_env **env_list)
 		free(shell_lvl->value);
 		shell_lvl->value = ft_itoa(new_lvl);
 		if (!shell_lvl->value)
-			malloc_err_exit("init_env");
+			error_exit("malloc", "Allocation Error", 1, false);
 	}
 	else
 	{
@@ -20,7 +20,8 @@ static void	set_shell_lvl(t_env **env_list)
 		shell_lvl->key = ft_strdup("SHLVL");
 		shell_lvl->value = ft_strdup("1");
 		if (!shell_lvl->key || !shell_lvl->value)
-			return (free_env_node(shell_lvl), malloc_err_exit("init_env"));
+			return (free_env_node(shell_lvl), \
+error_exit("malloc", "Allocation Error", 1, false));
 		env_add(env_list, shell_lvl);
 	}
 }
@@ -34,21 +35,21 @@ void	init_env(t_env **env_list)
 	char		buf[PATH_MAX];
 
 	*env_list = NULL;
-	i = 0;
-	while (environ[i])
+	i = -1;
+	while (environ[++i])
 	{
 		len = 0;
 		while (environ[i][len] != '=')
 			len++;
 		new = env_new_node(NULL, NULL);
 		if (!new)
-			malloc_err_exit("init_env");
+			error_exit("malloc", "Allocation Error", 1, false);
 		new->key = ft_strndup(environ[i], len);
 		new->value = ft_strdup(environ[i] + len + 1);
 		if (!new->key || !new->value)
-			return (free_env_node(new), malloc_err_exit("init_env"));
+			return (free_env_node(new), \
+error_exit("malloc", "Allocation Error", 1, false));
 		env_add(env_list, new);
-		i++;
 	}
 	set_env_value("PWD", getcwd(buf, sizeof(buf)), env_list, false);
 	set_shell_lvl(env_list);
