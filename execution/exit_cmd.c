@@ -93,3 +93,13 @@ void	var_err_exit(char *err_msg, int err_code)
 		ft_putstr_fd(err_msg, 2);
 	exit_cmd_cleanup(err_code);
 }
+
+void	file_err(char *filename)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(filename, 2);
+	if (access(filename, F_OK))
+		ft_putstr_fd(": No such file or directory\n", 2);
+	else if (access(filename, R_OK) || access(filename, W_OK))
+		ft_putstr_fd(": Permission denied\n", 2);
+}
