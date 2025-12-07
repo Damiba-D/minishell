@@ -142,25 +142,74 @@ void restore_fds(int *fd)
 	close(fd[1]);
 }
 
-void execute_builtin(t_list *input_node)
+void execute_builtin(t_input *input)
 {
-	t_input	*input;
-
-	input = (t_input *)input_node->content;
 	if (setup_fds(input, msh()->og_fds))
 		return (restore_fds(msh()->og_fds));
 	msh()->last_exit_status = run_builtin(input);
 	restore_fds(msh()->og_fds);
 }
 
+void execute_ext_cmd(t_input *input, int cmd_no)
+{
+	pid_t pid;
+	char **env;
+
+	msh()->pids[cmd_no] = fork();
+	pid = msh()->pids[cmd_no];
+	if (pid == -1)
+		return (msh()->last_exit_status = 1, print_err("fork", NULL, true));
+	if (pid == 0)
+	{
+		setup_fds(input, msh()->og_fds);
+		env = env_list_to_char(msh()->env);
+		if (execve(input->argv[0], input->argv, env))
+		{
+			free(msh()->pids);
+			free_arr(env);
+			error_exit(NULL, input->argv[0], 1, true);
+		}
+	}
+}
+
+void wait_children(int last_pid)
+{
+	int i;
+
+	i = 0;
+	while (i < last_pid + 1)
+	{
+		if (msh()->pids[i] > 0)
+			waitpid(msh()->pids[i], &msh()->last_exit_status, 0);
+		i++;
+	}
+	free(msh()->pids);
+}
+
 void	executor(void)
 {
 	t_input *temp;
+	bool wait_child;
 
 	temp = (t_input *)msh()->inputlst->content;
-	if (is_builtin(temp->argv[0]))
+	wait_child = false;
+	if (ft_lstsize(msh()->inputlst) == 1)
 	{
-		execute_builtin(msh()->inputlst);
+		if (is_builtin(temp->argv[0]))
+			execute_builtin(temp);
+		else
+		{
+			msh()->pids = malloc(sizeof(pid_t));
+			execute_ext_cmd(temp, 0);
+			wait_child = true;
+		}
 	}
+	/* else
+	{
+		execute_pipeline(msh()->inputlst);
+		wait_child = true;
+	} */
+	if (wait_child)
+		wait_children(ft_lstsize(msh()->inputlst) - 1);
 	ft_lstclear(&msh()->inputlst, free_input_node);
 }

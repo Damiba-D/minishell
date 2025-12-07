@@ -96,7 +96,7 @@ void print_err(char *context, char *detail, bool err)
 		perror(detail);
 	else if (detail)
 		ft_putendl_fd(detail, 2);
-	else
+	else if (err)
 		ft_putendl_fd(strerror(errno), 2);
 }
 

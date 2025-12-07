@@ -12,6 +12,7 @@ typedef struct s_msh
 	char	*cmdline;
 	int		last_exit_status;
 	int		og_fds[2];
+	pid_t	*pids;
 }			t_msh;
 
 t_msh	*msh(void);
