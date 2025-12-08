@@ -7,6 +7,8 @@ void	open_file(char *name, int *fd, t_token type);
 char	*parse_infiles(t_input *input, int *flag, int *fd);
 char	*parse_outfiles(t_input *input, int *fd, int *flag);
 void	execute_builtin(t_input *input);
+char	*find_command(t_input *input, char *path);
+char	*cmd_create(t_input *input);
 void	execute_ext_cmd(t_input *input, int cmd_no);
 void	wait_children(int last_pid);
 void	executor(void);

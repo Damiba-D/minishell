@@ -5,6 +5,7 @@ static void exit_cmd_cleanup(unsigned char exit_code)
 	ft_lstclear(&msh()->inputlst, free_input_node);
 	term_env(msh()->env);
 	restore_fds(msh()->og_fds);
+	free(msh()->pids);
 	exit(exit_code);
 }
 
