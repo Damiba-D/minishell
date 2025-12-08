@@ -150,10 +150,62 @@ void execute_builtin(t_input *input)
 	restore_fds(msh()->og_fds);
 }
 
+char	*find_command(t_input *input, char *path)
+{
+	char *temp;
+	char **dirs;
+	int i;
+	char *full_path;
+
+	dirs = ft_split(path, ':');
+	if (!dirs)
+		error_exit("malloc", "Allocation Error", 1, false);
+	i = 0;
+	while (dirs[i])
+	{
+		temp = ft_strjoin(dirs[i], "/");
+		full_path = ft_strjoin(temp, input->argv[0]);
+		free(temp);
+		if (!full_path)
+		{
+			free_arr(dirs);
+			error_exit("malloc", "Allocation Error", 1, false);
+		}
+		if (access(full_path, X_OK) == 0)
+			return (free_arr(dirs), full_path);
+		free(full_path);
+		i++;
+	}
+	return (free_arr(dirs), NULL);
+}
+
+char	*cmd_create(t_input *input)
+{
+	char *path;
+	char *cmd;
+
+	path = get_env_value("PATH", msh()->env);
+	if (path)
+		cmd = find_command(input, path);
+	if (!cmd)
+	{
+		cmd = input->argv[0];
+		if (access(cmd, F_OK) != 0)
+			error_exit(cmd, "command not found", 127, false);
+		if (access(cmd, X_OK) != 0)
+			error_exit(cmd, "Permission denied", 126, false);
+		cmd = ft_strdup(input->argv[0]);
+		if (!cmd)
+			error_exit("malloc", "Allocation Error", 1, false);
+	}
+	return (cmd);
+}
+
 void execute_ext_cmd(t_input *input, int cmd_no)
 {
 	pid_t pid;
 	char **env;
+	char *cmd;
 
 	msh()->pids[cmd_no] = fork();
 	pid = msh()->pids[cmd_no];
@@ -162,10 +214,12 @@ void execute_ext_cmd(t_input *input, int cmd_no)
 	if (pid == 0)
 	{
 		setup_fds(input, msh()->og_fds);
+		cmd = NULL;
+		cmd = cmd_create(input);
 		env = env_list_to_char(msh()->env);
-		if (execve(input->argv[0], input->argv, env))
+		if (execve(cmd, input->argv, env))
 		{
-			free(msh()->pids);
+			free(cmd);
 			free_arr(env);
 			error_exit(NULL, input->argv[0], 1, true);
 		}
@@ -175,14 +229,19 @@ void execute_ext_cmd(t_input *input, int cmd_no)
 void wait_children(int last_pid)
 {
 	int i;
+	int w_status;
 
 	i = 0;
 	while (i < last_pid + 1)
 	{
 		if (msh()->pids[i] > 0)
-			waitpid(msh()->pids[i], &msh()->last_exit_status, 0);
+			waitpid(msh()->pids[i], &w_status, 0);
 		i++;
 	}
+	if (WIFEXITED(w_status))
+		msh()->last_exit_status = WEXITSTATUS(w_status);
+	else if (WIFSIGNALED(w_status))
+		msh()->last_exit_status = 128 + WTERMSIG(w_status);
 	free(msh()->pids);
 }
 
@@ -193,6 +252,7 @@ void	executor(void)
 
 	temp = (t_input *)msh()->inputlst->content;
 	wait_child = false;
+	msh()->pids = NULL;
 	if (ft_lstsize(msh()->inputlst) == 1)
 	{
 		if (is_builtin(temp->argv[0]))
