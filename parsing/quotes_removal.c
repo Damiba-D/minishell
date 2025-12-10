@@ -2,9 +2,9 @@
 
 static char *remove_quotes_str(char *str, int *in_sgl, int *in_dbl)
 {
-	int     i;
-	int     j;
-	char    *res;
+	int		i;
+	int		j;
+	char	*res;
 
 	if(!str)
 		return (NULL);
