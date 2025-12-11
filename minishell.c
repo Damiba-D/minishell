@@ -71,10 +71,10 @@ int	main(void)
 		setup_interactive_signals();
 		msh()->cmdline = readline("minishell$ ");
 		if (!msh()->cmdline)
-        {
-            printf("exit\n");
-            exit_cmd(NULL);
-        }
+		{
+			printf("exit\n");
+			exit_cmd(NULL);
+		}
 		if (!msh()->cmdline[0])
 		{
 			free(msh()->cmdline);
@@ -88,6 +88,12 @@ int	main(void)
 			continue ;
 		}
 		expand_all(msh());
+		t_list *cur = msh()->inputlst;
+		while (cur)
+		{
+			remove_quotes_input((t_input *)cur->content);
+			cur = cur->next;
+		}
 		setup_execution_signals();
 		debug_print_input_list(msh()->inputlst);
 		executor();

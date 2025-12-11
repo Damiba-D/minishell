@@ -65,10 +65,12 @@ int		handle_dollar_sign(char *str, int *i, int *var_start, int *var_end);
 int		find_next_var(char *str, int start, int *var_start, int *var_end);
 char	*replace_var_str(char *str, int var_start, int var_end, char *value);
 
-
 // expansion
 void	expand_args(t_input *node);
 char	*expand_arg(char *arg);
 void	expand_all(t_msh *msh_data);
+
+// quote_removal
+void	remove_quotes_input(t_input *node);
 
 #endif
