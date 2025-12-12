@@ -25,14 +25,14 @@ char **env_list_to_char(t_env *env_list)
 
 	env_arr = (char **)malloc(sizeof(char *) * (env_lstsize(env_list) + 1));
 	if (env_arr == NULL)
-		error_exit("malloc", "Allocation Error", 1, false);
+		return (NULL);
 	i = 0;
 	while (env_list)
 	{
 		size = ft_strlen(env_list->key) + ft_strlen(env_list->value) + 2;
 		env_arr[i] = (char *)malloc(sizeof(char) * size);
 		if (env_arr[i] == NULL)
-			return (free_arr(env_arr),error_exit("malloc", "Allocation Error", 1, false), NULL);
+			return (free_arr(env_arr), NULL);
 		ft_strlcpy(env_arr[i], env_list->key, size);
 		if (env_list->value != NULL)
 		{

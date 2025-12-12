@@ -2,8 +2,11 @@
 
 int	main(void)
 {
-	init_env(&msh()->env);
 	msh()->last_exit_status = 0;
+	msh()->pids = NULL;
+	msh()->og_fds[0] = -1;
+	msh()->og_fds[1] = -1;
+	init_env(&msh()->env);
 	setup_interactive_signals();
 	while (1)
 	{
