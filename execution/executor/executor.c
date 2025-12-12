@@ -1,47 +1,6 @@
 #include "../../minishell.h"
 #include "executor.h"
 
-bool is_builtin(char *cmd)
-{
-	if (!ft_strncmp(cmd, "env", 4))
-		return (true);
-	else if (!ft_strncmp(cmd, "echo", 5))
-		return (true);
-	else if (!ft_strncmp(cmd, "unset", 6))
-		return (true);
-	else if (!ft_strncmp(cmd, "pwd", 4))
-		return (true);
-	else if (!ft_strncmp(cmd, "cd", 3))
-		return (true);
-	else if (!ft_strncmp(cmd, "export", 7))
-		return (true);
-	else if (!ft_strncmp(cmd, "exit", 5))
-		return (true);
-	return (false);
-}
-
-int run_builtin(t_input *input)
-{
-	char	*cmd;
-
-	cmd = input->argv[0];
-	if (!ft_strncmp(cmd, "env", 4))
-		return (env_cmd());
-	else if (!ft_strncmp(cmd, "echo", 5))
-		return (echo_cmd(input->argv));
-	else if (!ft_strncmp(cmd, "unset", 6))
-		return (unset_cmd(input->argv));
-	else if (!ft_strncmp(cmd, "pwd", 4))
-		return (pwd_cmd(input->argv));
-	else if (!ft_strncmp(cmd, "cd", 3))
-		return (cd_cmd(input->argv));
-	else if (!ft_strncmp(cmd, "export", 7))
-		return (export_cmd(input->argv));
-	else if (!ft_strncmp(cmd, "exit", 5))
-		return (exit_cmd(input->argv));
-	return (0);
-}
-
 void exe_hds(t_input *input)
 {
 	t_token	type;
@@ -136,95 +95,22 @@ int	setup_fds(t_input *input, int *og_fd)
 
 void restore_fds(int *fd)
 {
-	dup2(fd[0], STDIN_FILENO);
-	close(fd[0]);
-	dup2(fd[1], STDOUT_FILENO);
-	close(fd[1]);
+	if (fd[0] > 0)
+	{
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+	}
+	if (fd[1] > 0)
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+	}
 }
 
-void execute_builtin(t_input *input)
+/* void execute_pipeline(t_list *inputlst)
 {
-	if (setup_fds(input, msh()->og_fds))
-		return (restore_fds(msh()->og_fds));
-	msh()->last_exit_status = run_builtin(input);
-	restore_fds(msh()->og_fds);
-}
-
-char	*find_command(t_input *input, char *path)
-{
-	char *temp;
-	char **dirs;
 	int i;
-	char *full_path;
-
-	dirs = ft_split(path, ':');
-	if (!dirs)
-		error_exit("malloc", "Allocation Error", 1, false);
-	i = 0;
-	while (dirs[i])
-	{
-		temp = ft_strjoin(dirs[i], "/");
-		full_path = ft_strjoin(temp, input->argv[0]);
-		free(temp);
-		if (!full_path)
-		{
-			free_arr(dirs);
-			error_exit("malloc", "Allocation Error", 1, false);
-		}
-		if (access(full_path, X_OK) == 0)
-			return (free_arr(dirs), full_path);
-		free(full_path);
-		i++;
-	}
-	return (free_arr(dirs), NULL);
-}
-
-char	*cmd_create(t_input *input)
-{
-	char *path;
-	char *cmd;
-
-	path = get_env_value("PATH", msh()->env);
-	if (path)
-		cmd = find_command(input, path);
-	if (!cmd)
-	{
-		cmd = input->argv[0];
-		if (access(cmd, F_OK) != 0)
-			error_exit(cmd, "command not found", 127, false);
-		if (access(cmd, X_OK) != 0)
-			error_exit(cmd, "Permission denied", 126, false);
-		cmd = ft_strdup(input->argv[0]);
-		if (!cmd)
-			error_exit("malloc", "Allocation Error", 1, false);
-	}
-	return (cmd);
-}
-
-void execute_ext_cmd(t_input *input, int cmd_no)
-{
-	pid_t pid;
-	char **env;
-	char *cmd;
-
-	msh()->pids[cmd_no] = fork();
-	pid = msh()->pids[cmd_no];
-	if (pid == -1)
-		return (msh()->last_exit_status = 1, print_err("fork", NULL, true));
-	if (pid == 0)
-	{
-		setup_fds(input, msh()->og_fds);
-		cmd = NULL;
-		cmd = cmd_create(input);
-		env = env_list_to_char(msh()->env);
-		if (execve(cmd, input->argv, env))
-		{
-			free(cmd);
-			free_arr(env);
-			error_exit(NULL, input->argv[0], 1, true);
-		}
-	}
-}
+} */
 
 void wait_children(int last_pid)
 {
@@ -243,6 +129,7 @@ void wait_children(int last_pid)
 	else if (WIFSIGNALED(w_status))
 		msh()->last_exit_status = 128 + WTERMSIG(w_status);
 	free(msh()->pids);
+	msh()->pids = NULL;
 }
 
 void	executor(void)
@@ -252,7 +139,6 @@ void	executor(void)
 
 	temp = (t_input *)msh()->inputlst->content;
 	wait_child = false;
-	msh()->pids = NULL;
 	if (ft_lstsize(msh()->inputlst) == 1)
 	{
 		if (is_builtin(temp->argv[0]))
