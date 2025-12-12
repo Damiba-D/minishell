@@ -16,21 +16,21 @@ int	handle_dollar_sign(char *str, int *i, int *var_start, int *var_end)
 	return (0);
 }
 
-int	find_next_var(char *str, int start, int *var_start, int *var_end)
+int	find_next_var(char *str, int last_end, int *var_start, int *var_end)
 {
 	int		i;
 	int		in_single;
 	int		in_double;
 
-	if (!str || start < 0)
+	if (!str || last_end < 0)
 		return (0);
-	i = start;
+	i = 0;
 	in_single = 0;
 	in_double = 0;
 	while (str[i])
 	{
 		update_quotes(str[i], &in_single, &in_double);
-		if(str[i] == '$' && !in_single)
+		if(str[i] == '$' && !in_single && i >= last_end)
 		{
 			if (handle_dollar_sign(str, &i, var_start, var_end))
 				return (1);
@@ -64,4 +64,32 @@ char	*replace_var_str(char *str, int var_start, int var_end, char *value)
 	if (str[var_end])
 		ft_strlcat(res, str + var_end, new_len + 1);
 	return (res);
+}
+
+int	calc_next_search_pos(char *old, char *new, int var_start, int var_end)
+{
+	int	original_var_len;
+	int	inserted_len;
+
+	original_var_len = var_end - var_start;
+	inserted_len = ft_strlen(new) - ft_strlen(old) + original_var_len;
+	return (var_start + inserted_len);
+}
+
+char	*replace_next_var(char *result, int *last_end)
+{
+	char	*new_result;
+	int		var_pos[2];
+
+	if (!find_next_var(result, *last_end, &var_pos[0], &var_pos[1]))
+		return (result);
+	new_result = process_single_var(result, var_pos[0], var_pos[1]);
+	if (!new_result)
+	{
+		free(result);
+		return (NULL);
+	}
+	*last_end = calc_next_search_pos(result, new_result, var_pos[0], var_pos[1]);
+	free(result);
+	return (new_result);
 }
