@@ -56,19 +56,29 @@ char	*cmd_create(t_input *input)
 	return (cmd);
 }
 
-void execute_ext_cmd(t_input *input, int cmd_no)
+static void wait_child(void)
+{
+	int w_status;
+
+	wait(&w_status);
+	if (WIFEXITED(w_status))
+		msh()->last_exit_status = WEXITSTATUS(w_status);
+	else if (WIFSIGNALED(w_status))
+		msh()->last_exit_status = 128 + WTERMSIG(w_status);
+}
+
+void execute_ext_cmd(t_input *input)
 {
 	pid_t pid;
 	char **env;
 	char *cmd;
 
-	msh()->pids[cmd_no] = fork();
-	pid = msh()->pids[cmd_no];
+	pid = fork();
 	if (pid == -1)
 		return (msh()->last_exit_status = 1, print_err("fork", NULL, true));
 	if (pid == 0)
 	{
-		if (setup_fds(input, msh()->og_fds))
+		if (setup_fds(input, msh()->og_fds, true))
 			error_exit(NULL, NULL, 1, false);
 		cmd = cmd_create(input);
 		env = env_list_to_char(msh()->env);
@@ -81,4 +91,5 @@ void execute_ext_cmd(t_input *input, int cmd_no)
 			error_exit(NULL, input->argv[0], 1, true);
 		}
 	}
+	wait_child();
 }

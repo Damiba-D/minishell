@@ -14,15 +14,14 @@ SRC_DIR     = .
 OBJ_DIR     = obj
 LIBFT_DIR   = ../libft
 
-# Libft (REMOVE THIS WHOLE BLOCK LATER IF NEEDED)
-# ------------------------------------------------
-LIBFT_A     = $(LIBFT_DIR)/libft.a
-# ------------------------------------------------
 
-# Sources (MINUS minishell.c)
+LIBFT_A     = $(LIBFT_DIR)/libft.a
+
+# Sources
 SRCs        = envfuncs.c envfuncs2.c env_cmd.c unset_cmd.c echo_cmd.c cd_cmd.c \
 			  export_cmd/export_utils.c export_cmd/export_cmd.c \
-			  exit_cmd.c pwd_cmd.c executor/builtin_utils.c executor/extcmd_utils.c executor/here_doc.c executor/executor.c
+			  exit_cmd.c pwd_cmd.c executor/executor_utils.c executor/builtin_utils.c executor/extcmd_utils.c \
+			  executor/here_doc.c executor/execute_pipeline.c executor/executor.c
 
 OBJ         = $(addprefix $(OBJ_DIR)/, $(SRCs:.c=.o))
 

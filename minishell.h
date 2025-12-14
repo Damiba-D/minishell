@@ -12,6 +12,8 @@ typedef struct s_msh
 	int		last_exit_status;
 	int		og_fds[2];
 	pid_t	*pids;
+	int		pipe[2];
+	int		prev_read;
 }			t_msh;
 
 t_msh	*msh(void);

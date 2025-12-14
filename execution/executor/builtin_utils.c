@@ -44,7 +44,7 @@ int run_builtin(t_input *input)
 
 void execute_builtin(t_input *input)
 {
-	if (setup_fds(input, msh()->og_fds))
+	if (setup_fds(input, msh()->og_fds, true))
 		return (restore_fds(msh()->og_fds));
 	msh()->last_exit_status = run_builtin(input);
 	restore_fds(msh()->og_fds);
