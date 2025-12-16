@@ -73,7 +73,7 @@ int	env_cmd(void)
 	t_env *env_list;
 
 	env_list = msh()->env;
-	while(env_list != NULL)
+	while (env_list != NULL)
 	{
 		if (env_list->value != NULL)
 			printf("%s=%s\n", env_list->key, env_list->value);

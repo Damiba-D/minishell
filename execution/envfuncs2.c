@@ -70,7 +70,8 @@ static void update_env_value(t_env *node, const char *value, bool append)
 	}
 }
 
-void	set_env_value(const char *key, const char *value, t_env **env_list, bool append)
+void	set_env_value(const char *key, const char *value, \
+t_env **env_list, bool append)
 {
 	t_env *temp;
 	char *n_key;

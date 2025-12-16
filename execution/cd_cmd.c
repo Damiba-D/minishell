@@ -30,17 +30,18 @@ int	cd_cmd(char **args)
 		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
 	if (set_path(args, msh()->env, &path))
 		return (1);
-	old_pwd = get_env_value("PWD",  msh()->env);
+	old_pwd = get_env_value("PWD", msh()->env);
 	if (chdir(path) != 0)
 		return (print_err("cd", path, true), 1);
-	set_env_value("OLDPWD", old_pwd,  &msh()->env, false);
+	set_env_value("OLDPWD", old_pwd, &msh()->env, false);
 	new_pwd = getcwd(NULL, 0);
 	if (new_pwd)
-		return(set_env_value("PWD", new_pwd, &msh()->env, false), free(new_pwd), 0);
-	else
 	{
-		error_exit("malloc", "Allocation Error", 1, false);
+		set_env_value("PWD", new_pwd, &msh()->env, false);
+		return(free(new_pwd), 0);
 	}
+	else
+		error_exit("malloc", "Allocation Error", 1, false);
 	return (0);
 }
 

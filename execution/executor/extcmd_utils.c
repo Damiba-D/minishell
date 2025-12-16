@@ -34,11 +34,15 @@ char	*cmd_create(t_input *input)
 {
 	char *path;
 	char *cmd;
+	struct stat statbuf;
 
+	cmd = NULL;
 	if (ft_strchr(input->argv[0], '/'))
 	{
-		if (access(input->argv[0], F_OK) != 0)
-			error_exit(input->argv[0], "command not found", 127, false);
+		if (stat(input->argv[0], &statbuf) != 0)
+			error_exit(input->argv[0], "No such file or directory", 127, false);
+		if (S_ISDIR(statbuf.st_mode))
+			error_exit(input->argv[0], "Is a directory", 126, false);
 		if (access(input->argv[0], X_OK) != 0)
 			error_exit(input->argv[0], "Permission denied", 126, false);
 		cmd = ft_strdup(input->argv[0]);
@@ -49,8 +53,6 @@ char	*cmd_create(t_input *input)
 	path = get_env_value("PATH", msh()->env);
 	if (path)
 		cmd = find_command(input, path);
-	else
-		cmd = NULL;
 	if (!cmd)
 		error_exit(input->argv[0], "command not found", 127, false);
 	return (cmd);
