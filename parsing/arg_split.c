@@ -53,19 +53,15 @@ static int	count_args(char *s)
 	return (count);
 }
 
-char	**arg_split(char *s, int *inv_arg)
+char	**arg_split(char *s)
 {
 	char	**arr;
 	int		i;
 
-	*inv_arg = 1;
 	if (s == NULL)
 		return (NULL);
 	if (has_unmatched_quote(s))
-	{
-		*inv_arg = 2;
 		return (NULL);
-	}
 	arr = (char **)malloc(((count_args(s) + 1) * sizeof(char *)));
 	if (!arr)
 		return (NULL);
@@ -75,7 +71,6 @@ char	**arg_split(char *s, int *inv_arg)
 		free(arr);
 		return (NULL);
 	}
-	*inv_arg = 0;
 	arr[i] = NULL;
 	return (arr);
 }

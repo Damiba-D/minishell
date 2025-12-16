@@ -53,16 +53,15 @@ t_input	*create_input_node(char *segment)
 {
 	t_input	*new_node;
 	char	*cleaned_seg;
-	int		inv_arg;
 
 	new_node = ft_calloc(1, sizeof(t_input));
 	if (!new_node)
 		return (NULL);
 	ext_reds_file(segment, new_node);
 	cleaned_seg = remove_all_reds(segment);
-	new_node->argv = arg_split(cleaned_seg, &inv_arg);
+	new_node->argv = arg_split(cleaned_seg);
 	free(cleaned_seg);
-	if (inv_arg == 2 || !new_node->argv)
+	if (!new_node->argv)
 		return (free_input_node(new_node), NULL);
 	return (new_node);
 }

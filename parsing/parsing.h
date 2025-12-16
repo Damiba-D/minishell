@@ -72,4 +72,8 @@ void	expand_all(t_msh *msh_data);
 // quote_removal
 void	remove_quotes_input(t_input *node);
 
+// refactoring
+char    **append_arrays(char **dst, char **src);
+char	**resplit_after_expansion(char **argv);
+
 #endif

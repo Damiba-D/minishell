@@ -30,26 +30,24 @@ static void	expand_args(t_input *node)
 {
 	int		i;
 	char	*expanded;
-	char	*original;
+	char	**new_arg;
 
 	if (!node || !node->argv)
 		return ;
-	i = 0;
-	while (node->argv[i])
+	i = -1;
+	while (node->argv[++i])
 	{
-		original = node->argv[i];
-		expanded = expand_arg(original);
-		if (expanded)
-		{
-			node->argv[i] = expanded;
-			free(original);
-		}
-		else
-		{
-			node->argv[i] = ft_strdup("");
-			free(original);
-		}
-		i++;
+		expanded = expand_arg(node->argv[i]);
+		if (!expanded)
+			expanded = ft_strdup("");
+		free(node->argv[i]);
+		node->argv[i] = expanded;
+	}
+	new_arg = resplit_after_expansion(node->argv);
+	if (new_arg)
+	{
+		free_arr(node->argv);
+		node->argv = new_arg;
 	}
 }
 
