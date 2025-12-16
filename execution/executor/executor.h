@@ -12,10 +12,11 @@ void	execute_builtin(t_input *input);
 char	*find_command(t_input *input, char *path);
 char	*cmd_create(t_input *input);
 void	execute_ext_cmd(t_input *input);
-void	cleanup_failed_pipeline(int prev_read);
+void	cleanup_failed_pipeline(char *error, int prev_read);
 void	pipeline_process(t_list *current);
 void	execute_pipeline(t_list *inputlst, int input_size);
 void	wait_children(int last_pid);
 void	executor(void);
 void	restore_fds(int *fd);
+void	close_pipe(void);
 #endif

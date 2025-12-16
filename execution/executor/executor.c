@@ -1,6 +1,29 @@
 #include "../../minishell.h"
 #include "executor.h"
 
+void wait_children(int last_pid)
+{
+	int i;
+	int w_status;
+
+	i = 0;
+	if (!msh()->pids)
+		return ;
+	while (i < last_pid)
+	{
+		if (msh()->pids[i] > 0)
+			waitpid(msh()->pids[i], &w_status, 0);
+		i++;
+	}
+	if (WIFEXITED(w_status))
+		msh()->last_exit_status = WEXITSTATUS(w_status);
+	else if (WIFSIGNALED(w_status))
+		msh()->last_exit_status = 128 + WTERMSIG(w_status);
+	if (last_pid > 1)
+		free(msh()->pids);
+	msh()->pids = NULL;
+}
+
 void	executor(void)
 {
 	t_input *temp;
