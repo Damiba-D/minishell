@@ -30,8 +30,10 @@ int	find_next_var(char *str, int last_end, int *var_start, int *var_end)
 	while (str[i])
 	{
 		update_quotes(str[i], &in_single, &in_double);
-		if(str[i] == '$' && !in_single && i >= last_end)
+		if (str[i] == '$' && !in_single && i >= last_end)
 		{
+			if (str[i + 1] == '\'' || str[i + 1] == '\"' || str[i + 1] == '\0')
+				i++;
 			if (handle_dollar_sign(str, &i, var_start, var_end))
 				return (1);
 		}
@@ -40,6 +42,7 @@ int	find_next_var(char *str, int last_end, int *var_start, int *var_end)
 	}
 	return (0);
 }
+
 char	*replace_var_str(char *str, int var_start, int var_end, char *value)
 {
 	int		new_len;
@@ -66,7 +69,7 @@ char	*replace_var_str(char *str, int var_start, int var_end, char *value)
 	return (res);
 }
 
-int	calc_next_search_pos(char *old, char *new, int var_start, int var_end)
+int	calc_next_srch_pos(char *old, char *new, int var_start, int var_end)
 {
 	int	original_var_len;
 	int	inserted_len;
@@ -89,7 +92,7 @@ char	*replace_next_var(char *result, int *last_end)
 		free(result);
 		return (NULL);
 	}
-	*last_end = calc_next_search_pos(result, new_result, var_pos[0], var_pos[1]);
+	*last_end = calc_next_srch_pos(result, new_result, var_pos[0], var_pos[1]);
 	free(result);
 	return (new_result);
 }

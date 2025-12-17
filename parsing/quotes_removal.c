@@ -1,12 +1,12 @@
 #include "../minishell.h"
 
-static char *remove_quotes_str(char *str, int *in_sgl, int *in_dbl)
+static char	*remove_quotes_str(char *str, int *in_sgl, int *in_dbl)
 {
 	int		i;
 	int		j;
 	char	*res;
 
-	if(!str)
+	if (!str)
 		return (NULL);
 	res = malloc(ft_strlen(str) + 1);
 	if (!res)

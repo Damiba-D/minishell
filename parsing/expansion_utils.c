@@ -2,7 +2,7 @@
 
 int	is_var_char(char c)
 {
-	return(ft_isalnum(c) || c == '_');
+	return (ft_isalnum(c) || c == '_');
 }
 
 void	*extract_var_name(char *str, int *i)

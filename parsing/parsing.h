@@ -64,7 +64,7 @@ char	*exp_var_env(char *var_name, t_env *env_list, int lst_exit_stat);
 int		handle_dollar_sign(char *str, int *i, int *var_start, int *var_end);
 int		find_next_var(char *str, int last_end, int *var_start, int *var_end);
 char	*replace_var_str(char *str, int var_start, int var_end, char *value);
-int		calc_next_search_pos(char *old, char *new, int var_start, int var_end);
+int		calc_next_srch_pos(char *old, char *new, int var_start, int var_end);
 char	*replace_next_var(char *result, int *last_end);
 char	*process_single_var(char *result, int var_start, int var_end);
 void	expand_all(t_msh *msh_data);
