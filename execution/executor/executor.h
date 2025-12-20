@@ -14,7 +14,7 @@ char	*cmd_create(t_input *input);
 void	execute_ext_cmd(t_input *input);
 void	cleanup_failed_pipeline(char *error, int prev_read);
 void	pipeline_process(t_list *current);
-void	execute_pipeline(t_list *inputlst, int input_size);
+void	execute_pipeline(int input_size);
 void	wait_children(int last_pid);
 void	executor(void);
 void	restore_fds(int *fd);

@@ -32,7 +32,6 @@ char	*parse_infiles(t_input *input, int *flag, int *fd)
 	int		i;
 
 	i = 0;
-	exe_hds(input);
 	while (input->infiles[i].filename)
 	{
 		infile = input->infiles[i].filename;

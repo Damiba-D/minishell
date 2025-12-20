@@ -78,18 +78,19 @@ static void execute_and_reset(t_list *current, int cmd_no, int input_size)
 	}
 }
 
-void execute_pipeline(t_list *inputlst, int input_size)
+void execute_pipeline(int input_size)
 {
 	int i;
-	t_list *current;
+	t_list *current;	
 
 	i = 0;
-	current = inputlst;
+	current = msh()->inputlst;
 	msh()->pids = malloc(sizeof(pid_t) * input_size);
 	if (!msh()->pids)
 		error_exit("malloc", "Allocation Error", 1, false);
 	while (current)
 	{
+		exe_hds((t_input *)current->content);
 		if (i < input_size - 1 && pipe(msh()->pipe) == -1)
 			return (cleanup_failed_pipeline("pipe", msh()->prev_read));
 		msh()->pids[i] = fork();

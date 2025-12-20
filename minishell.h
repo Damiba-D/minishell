@@ -5,6 +5,9 @@
 # include "parsing/parsing.h"
 # include "execution/execution.h"
 
+# define HEREDOC "/tmp/minishell-heredoc-"
+# define H_D_LEN 23
+
 typedef struct s_msh
 {
 	t_env	*env;

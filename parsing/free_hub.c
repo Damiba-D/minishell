@@ -43,6 +43,12 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
+static void clean_heredoc(char *filename)
+{
+	if (!ft_strncmp(HEREDOC, filename, H_D_LEN))
+		unlink(filename);
+}
+
 void	free_file_arr(t_file *files)
 {
 	int	i;
@@ -52,6 +58,8 @@ void	free_file_arr(t_file *files)
 	i = 0;
 	while (files[i].filename)
 	{
+		if (files[i].mode == HDOC)
+			clean_heredoc(files[i].filename);
 		free(files[i].filename);
 		i++;
 	}
@@ -72,15 +80,3 @@ void	free_input_node(void *content)
 	free(input);
 }
 
-void	free_all(char **segments, t_list **input_list, t_list *new_node)
-{
-	if (segments)
-		free_arr(segments);
-	if (input_list && *input_list)
-		ft_lstclear(input_list, free_input_node);
-	if (new_node)
-	{
-		free_input_node(new_node->content);
-		free(new_node);
-	}
-}

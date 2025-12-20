@@ -35,6 +35,7 @@ void	executor(void)
 	input_size = ft_lstsize(msh()->inputlst);
 	if (input_size == 1)
 	{
+		exe_hds(temp);
 		if (is_builtin(temp->argv[0]))
 			execute_builtin(temp);
 		else
@@ -42,7 +43,7 @@ void	executor(void)
 	}
 	else
 	{
-		execute_pipeline(msh()->inputlst, input_size);
+		execute_pipeline(input_size);
 		wait_child = true;
 	}
 	if (wait_child)

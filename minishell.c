@@ -4,13 +4,13 @@ int	main(void)
 {
 	msh()->last_exit_status = 0;
 	msh()->pids = NULL;
-	msh()->og_fds[0] = -1;
-	msh()->og_fds[1] = -1;
 	init_env(&msh()->env);
 	setup_interactive_signals();
 	while (1)
 	{
 		msh()->prev_read = -1;
+		msh()->og_fds[0] = -1;
+		msh()->og_fds[1] = -1;
 		setup_interactive_signals();
 		msh()->cmdline = readline("minishell$ ");
 		if (!msh()->cmdline)

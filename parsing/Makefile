@@ -20,7 +20,7 @@ LIBFT_A     = $(LIBFT_DIR)/libft.a
 # Sources (WITHOUT minishell.c)
 SRCS        = arg_split.c copying.c \
 			  counting.c extract_reds.c \
-			  parse_line.c free_hub.c utils.c \
+			  parse_line.c free_hub.c free_hub2.c utils.c \
 			  signals.c expansion.c expansion_utils.c \
 			  expansion_utils2.c quotes_removal.c refactoring.c
 
