@@ -27,11 +27,11 @@ void wait_children(int last_pid)
 void	executor(void)
 {
 	t_input *temp;
-	bool wait_child;
 	int input_size;
 
 	temp = (t_input *)msh()->inputlst->content;
-	wait_child = false;
+	if (!temp->argv[0])
+		return (ft_lstclear(&msh()->inputlst, free_input_node));
 	input_size = ft_lstsize(msh()->inputlst);
 	if (input_size == 1)
 	{
@@ -42,11 +42,7 @@ void	executor(void)
 			execute_ext_cmd(temp);
 	}
 	else
-	{
 		execute_pipeline(input_size);
-		wait_child = true;
-	}
-	if (wait_child)
-		wait_children(input_size);
+	wait_children(input_size);
 	ft_lstclear(&msh()->inputlst, free_input_node);
 }
