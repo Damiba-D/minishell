@@ -29,7 +29,7 @@ static char	*strip_invalid_dollars(char *arg)
 	return (res);
 }
 
-static char	*expand_arg(char *arg)
+char	*expand_arg(char *arg)
 {
 	char	*result;
 	char	*new_result;

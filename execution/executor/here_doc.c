@@ -40,6 +40,7 @@ void    here_doc_handler(t_file *here_doc)
     int filenum;
 	char *line;
 	size_t	del_len;
+	char *expanded;
 
     filenum = 0;
     while (true)
@@ -72,8 +73,18 @@ void    here_doc_handler(t_file *here_doc)
 			free(line);
 			break ;
 		}
-		ft_putendl_fd(line, filenum);
-		free(line);
+		if (!here_doc->quoted)
+		{
+			expanded = expand_arg(line);
+			free(line);
+			ft_putendl_fd(expanded, filenum);
+			free(expanded);
+		}
+		else
+		{
+			ft_putendl_fd(line, filenum);
+			free(line);
+		}
 	}
 	close(filenum);
 	free(here_doc->filename);

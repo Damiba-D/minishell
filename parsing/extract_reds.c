@@ -108,7 +108,7 @@ char	*ext_reds_file_util(char *seg, int *i, bool *quoted)
 	k = 0;
 	in_quote = 0;
 	in_dquote = 0;
-	quoted = false;
+	*quoted = false;
 	res = malloc(ft_strlen(seg + *i) + 1);
 	if (!res)
 		return (NULL);

@@ -67,6 +67,7 @@ char	*replace_var_str(char *str, int var_start, int var_end, char *value);
 int		calc_next_srch_pos(char *old, char *new, int var_start, int var_end);
 char	*replace_next_var(char *result, int *last_end);
 char	*process_single_var(char *result, int var_start, int var_end);
+char	*expand_arg(char *arg);
 void	expand_all(t_msh *msh_data);
 
 // quote_removal
