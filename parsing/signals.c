@@ -1,41 +1,40 @@
 #include "../minishell.h"
 
-void	signal_handler(int sig)
-{
-	(void)sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	handle_sigint_execution(int sig)
-{
-    (void)sig;
-    printf("\n");
-}
-
-void	handle_sigquit_interactive(int sig)
-{
-    (void)sig;
-}
-
 void	setup_interactive_signals(void)
 {
-    signal(SIGINT, signal_handler);
-    signal(SIGQUIT, handle_sigquit_interactive);
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_SIGINFO | SA_RESTART;
+	sa.sa_sigaction = signal_handler;
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
-// Setup signals for command execution
 void	setup_execution_signals(void)
 {
-    signal(SIGINT, handle_sigint_execution);
-    signal(SIGQUIT, SIG_DFL);
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_SIGINFO | SA_RESTART;
+	sa.sa_sigaction = signal_handler_pipe;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
-/* void	signal_main(void)
+void	setup_hdoc_signals(void)
 {
-	static struct sigaction	sig;
+	struct sigaction	sa;
 
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_SIGINFO | SA_RESTART;
+	sa.sa_sigaction = signal_handler_hdoc;
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
+}
 
-} */
+void	setup_hparent_signals(void)
+{
+	signal(SIGINT, signal_handler_hparent);
+	signal(SIGQUIT, SIG_IGN);
+}

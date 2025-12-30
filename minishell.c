@@ -5,7 +5,6 @@ int	main(void)
 	msh()->last_exit_status = 0;
 	msh()->pids = NULL;
 	init_env(&msh()->env);
-	setup_interactive_signals();
 	while (1)
 	{
 		msh()->prev_read = -1;
@@ -14,7 +13,7 @@ int	main(void)
 		setup_interactive_signals();
 		msh()->cmdline = readline("minishell$ ");
 		if (!msh()->cmdline)
-            exit_cmd(NULL);
+			exit_cmd(NULL);
 		if (!msh()->cmdline[0])
 		{
 			free(msh()->cmdline);
@@ -36,7 +35,7 @@ int	main(void)
 		}
 		setup_execution_signals();
 		executor();
-        free(msh()->cmdline);
+		free(msh()->cmdline);
 	}
 	return ((unsigned char)msh()->last_exit_status);
 }

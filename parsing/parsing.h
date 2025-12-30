@@ -50,13 +50,6 @@ void	free_file_arr(t_file *files);
 void	free_input_node(void *content);
 void	free_all(char **segments, t_list **input_list, t_list *new_node);
 
-// signals (temporary)
-void	signal_handler(int sig);
-void	handle_sigint_execution(int sig);
-void	handle_sigquit_interactive(int sig);
-void	setup_interactive_signals(void);
-void	setup_execution_signals(void);
-
 // expansions
 int		is_var_char(char c);
 void	*extract_var_name(char *str, int *i);
@@ -74,7 +67,17 @@ void	expand_all(t_msh *msh_data);
 void	remove_quotes_input(t_input *node);
 
 // refactoring
-char    **append_arrays(char **dst, char **src);
+char	**append_arrays(char **dst, char **src);
 char	**resplit_after_expansion(char **argv);
+
+// signals
+void	setup_interactive_signals(void);
+void	setup_execution_signals(void);
+void	setup_hdoc_signals(void);
+void	setup_hparent_signals(void);
+void	signal_handler(int signal, siginfo_t *sig, void *content);
+void	signal_handler_pipe(int signal, siginfo_t *sig, void *content);
+void	signal_handler_hdoc(int signal, siginfo_t *sig, void *content);
+void	signal_handler_hparent(int signum);
 
 #endif
