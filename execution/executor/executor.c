@@ -33,6 +33,7 @@ void	executor(void)
 	if (!temp->argv[0])
 		return (ft_lstclear(&msh()->inputlst, free_input_node));
 	input_size = ft_lstsize(msh()->inputlst);
+	//signal function
 	if (input_size == 1)
 	{
 		exe_hds(temp);
@@ -44,5 +45,6 @@ void	executor(void)
 	else
 		execute_pipeline(input_size);
 	wait_children(input_size);
+	//signal function
 	ft_lstclear(&msh()->inputlst, free_input_node);
 }

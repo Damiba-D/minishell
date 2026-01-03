@@ -80,6 +80,7 @@ void execute_ext_cmd(t_input *input)
 		return (msh()->last_exit_status = 1, print_err("fork", NULL, true));
 	if (pid == 0)
 	{
+		//add signal functions somewhere within here
 		if (setup_fds(input, msh()->og_fds, true))
 			error_exit(NULL, NULL, 1, false);
 		cmd = cmd_create(input);

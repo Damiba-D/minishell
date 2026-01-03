@@ -36,6 +36,7 @@ static void write_here_doc(t_file *here_doc, int filefd)
 	char *expanded;
 
 	del_len = ft_strlen(here_doc->filename) + 1;
+	//potentially here
 	while (true)
 	{
 		line = readline(">");
@@ -60,6 +61,7 @@ void    here_doc_handler(t_file *here_doc)
 	bool	error;
 
 	error = false;
+	//call signal functions somewhere here, potentially before the readline
 	create_tmp_file(&tmpfilename, &filenum, &error);
 	write_here_doc(here_doc, filenum);
 	close(filenum);

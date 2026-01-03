@@ -30,7 +30,7 @@ void	signal_handler_hdoc(int signal, siginfo_t *sig, void *content)
 	(void)content;
 	if (signal == SIGINT)
 	{
-		close(STDIN_FILENO);
+		close(STDIN_FILENO); //WRITE NEWLINE, THIS IS WRONG
 		msh()->last_exit_status = 130;
 	}
 }
