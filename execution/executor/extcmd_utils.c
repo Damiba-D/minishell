@@ -61,12 +61,18 @@ char	*cmd_create(t_input *input)
 static void wait_child(void)
 {
 	int w_status;
+	int sig;
 
 	wait(&w_status);
 	if (WIFEXITED(w_status))
 		msh()->last_exit_status = WEXITSTATUS(w_status);
 	else if (WIFSIGNALED(w_status))
-		msh()->last_exit_status = 128 + WTERMSIG(w_status);
+	{
+		sig = WTERMSIG(w_status);
+		if (sig == SIGQUIT)
+			ft_putendl_fd("Quit (core dumped)", STDOUT_FILENO);
+		msh()->last_exit_status = 128 + sig;
+	}
 }
 
 void execute_ext_cmd(t_input *input)
@@ -80,7 +86,8 @@ void execute_ext_cmd(t_input *input)
 		return (msh()->last_exit_status = 1, print_err("fork", NULL, true));
 	if (pid == 0)
 	{
-		//add signal functions somewhere within here
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (setup_fds(input, msh()->og_fds, true))
 			error_exit(NULL, NULL, 1, false);
 		cmd = cmd_create(input);

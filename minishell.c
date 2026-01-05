@@ -33,7 +33,7 @@ int	main(void)
 			remove_quotes_input((t_input *)cur->content);
 			cur = cur->next;
 		}
-		setup_execution_signals();
+		//setup_execution_signals();
 		executor();
 		free(msh()->cmdline);
 	}

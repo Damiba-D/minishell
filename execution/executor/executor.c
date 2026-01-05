@@ -5,6 +5,7 @@ void wait_children(int last_pid)
 {
 	int i;
 	int w_status;
+	int sig;
 
 	i = 0;
 	if (!msh()->pids)
@@ -18,9 +19,12 @@ void wait_children(int last_pid)
 	if (WIFEXITED(w_status))
 		msh()->last_exit_status = WEXITSTATUS(w_status);
 	else if (WIFSIGNALED(w_status))
-		msh()->last_exit_status = 128 + WTERMSIG(w_status);
-	if (last_pid > 1)
-		free(msh()->pids);
+	{
+		sig = WTERMSIG(w_status);
+		if (sig == SIGQUIT)
+			ft_putendl_fd("Quit (core dumped)", STDOUT_FILENO);
+		msh()->last_exit_status = 128 + sig;
+	}
 	msh()->pids = NULL;
 }
 
@@ -33,7 +37,7 @@ void	executor(void)
 	if (!temp->argv[0])
 		return (ft_lstclear(&msh()->inputlst, free_input_node));
 	input_size = ft_lstsize(msh()->inputlst);
-	//signal function
+	setup_execution_signals();
 	if (input_size == 1)
 	{
 		exe_hds(temp);
@@ -45,6 +49,6 @@ void	executor(void)
 	else
 		execute_pipeline(input_size);
 	wait_children(input_size);
-	//signal function
+	setup_execution_signals();
 	ft_lstclear(&msh()->inputlst, free_input_node);
 }

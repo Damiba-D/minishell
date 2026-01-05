@@ -33,8 +33,3 @@ void	setup_hdoc_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	setup_hparent_signals(void)
-{
-	signal(SIGINT, signal_handler_hparent);
-	signal(SIGQUIT, SIG_IGN);
-}

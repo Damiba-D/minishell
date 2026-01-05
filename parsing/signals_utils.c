@@ -18,10 +18,12 @@ void	signal_handler_pipe(int signal, siginfo_t *sig, void *content)
 {
 	(void)sig;
 	(void)content;
-	if (signal == SIGINT)
+	(void)signal;
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	/* if (signal == SIGINT)
 		msh()->last_exit_status = 130;
 	else if (signal == SIGQUIT)
-		msh()->last_exit_status = 131;
+		msh()->last_exit_status = 131; */
 }
 
 void	signal_handler_hdoc(int signal, siginfo_t *sig, void *content)
@@ -30,13 +32,8 @@ void	signal_handler_hdoc(int signal, siginfo_t *sig, void *content)
 	(void)content;
 	if (signal == SIGINT)
 	{
-		close(STDIN_FILENO); //WRITE NEWLINE, THIS IS WRONG
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		msh()->last_exit_status = 130;
 	}
 }
 
-void	signal_handler_hparent(int signum)
-{
-	(void)signum;
-	msh()->last_exit_status = 130;
-}

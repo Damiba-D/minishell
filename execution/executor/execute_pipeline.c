@@ -48,6 +48,8 @@ void pipeline_process(t_list *current)
 
 static void setup_child(int cmd_no, int input_size)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	save_og_fds(msh()->og_fds);
 	if (msh()->prev_read != -1)
 	{
