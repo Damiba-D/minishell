@@ -25,6 +25,7 @@ void wait_children(int last_pid)
 			ft_putendl_fd("Quit (core dumped)", STDOUT_FILENO);
 		msh()->last_exit_status = 128 + sig;
 	}
+	free(msh()->pids);
 	msh()->pids = NULL;
 }
 
