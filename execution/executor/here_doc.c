@@ -1,6 +1,6 @@
 #include "../../minishell.h"
 
-static void	create_tmp_file(char **filename, int *filenum, bool *error)
+static void	create_tmp_file(char **filename, int *filenum)
 {
 	char *fileno;
 
@@ -18,8 +18,7 @@ static void	create_tmp_file(char **filename, int *filenum, bool *error)
 			if (*filenum == -1)
 			{
 				free(*filename);
-				print_err("heredoc", "open", true);
-				*error = true;
+				error_exit("heredoc", "open", 1, true);
 			}
 			break ;
 		}
@@ -34,13 +33,29 @@ static void write_here_doc(t_file *here_doc, int filefd)
 	char *line;
 	size_t	del_len;
 	char *expanded;
+	int stdin_backup;
 
 	del_len = ft_strlen(here_doc->filename) + 1;
+	msh()->last_exit_status = 0;
+	stdin_backup = dup(STDIN_FILENO);
 	//potentially here
 	while (true)
 	{
 		line = readline(">");
-		if (!line || !ft_strncmp(line, here_doc->filename, del_len))
+		if (msh()->hdoc_stop)
+		{
+			dup2(stdin_backup, STDIN_FILENO);
+			close(stdin_backup);
+			return ;
+		}
+		if (!line)
+		{
+			ft_putstr_fd("minishell: warning: here-document delimited by ", 2);
+            ft_putstr_fd("end-of-file (wanted `", 2);
+            ft_putstr_fd(here_doc->filename, 2);
+            return (ft_putendl_fd("')", 2));
+		}
+		if (!ft_strncmp(line, here_doc->filename, del_len))
 			return (free(line));
 		if (!here_doc->quoted)
 		{
@@ -58,13 +73,13 @@ void    here_doc_handler(t_file *here_doc)
 {
     char *tmpfilename;
     int filenum;
-	bool	error;
 
-	error = false;
 	//call signal functions somewhere here, potentially before the readline
-	create_tmp_file(&tmpfilename, &filenum, &error);
+	create_tmp_file(&tmpfilename, &filenum);
+	setup_hdoc_signals();
 	write_here_doc(here_doc, filenum);
 	close(filenum);
+	setup_interactive_signals();
 	free(here_doc->filename);
 	here_doc->filename = tmpfilename;
 }

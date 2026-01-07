@@ -10,6 +10,7 @@ int	main(void)
 		msh()->prev_read = -1;
 		msh()->og_fds[0] = -1;
 		msh()->og_fds[1] = -1;
+		msh()->hdoc_stop = false;
 		setup_interactive_signals();
 		msh()->cmdline = readline("minishell$ ");
 		if (!msh()->cmdline)

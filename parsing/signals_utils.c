@@ -32,8 +32,8 @@ void	signal_handler_hdoc(int signal, siginfo_t *sig, void *content)
 	(void)content;
 	if (signal == SIGINT)
 	{
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		msh()->hdoc_stop = true;
+		close(STDIN_FILENO);
 		msh()->last_exit_status = 130;
 	}
 }
-

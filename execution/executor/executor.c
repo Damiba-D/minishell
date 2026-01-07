@@ -42,10 +42,13 @@ void	executor(void)
 	if (input_size == 1)
 	{
 		exe_hds(temp);
-		if (is_builtin(temp->argv[0]))
-			execute_builtin(temp);
-		else
-			execute_ext_cmd(temp);
+		if (!msh()->hdoc_stop)
+		{
+			if (is_builtin(temp->argv[0]))
+				execute_builtin(temp);
+			else
+				execute_ext_cmd(temp);
+		}
 	}
 	else
 		execute_pipeline(input_size);

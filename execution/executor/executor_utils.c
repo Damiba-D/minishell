@@ -12,6 +12,8 @@ void exe_hds(t_input *input)
 		type = input->infiles[i].mode;
 		if (type == HDOC)
 			here_doc_handler(&input->infiles[i]);
+		if (msh()->hdoc_stop)
+			break ;
 		i++;
 	}
 }

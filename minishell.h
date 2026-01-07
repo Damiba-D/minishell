@@ -18,6 +18,7 @@ typedef struct s_msh
 	pid_t	*pids;
 	int		pipe[2];
 	int		prev_read;
+	bool	hdoc_stop;
 }			t_msh;
 
 t_msh	*msh(void);
