@@ -48,3 +48,22 @@ void close_pipe(void)
 	close(msh()->pipe[0]);
 	close(msh()->pipe[1]);
 }
+
+bool execute_all_hds(t_list *input)
+{
+	t_list *current;
+
+	current = input;
+	while (current)
+	{
+		exe_hds((t_input *)current->content);
+		if (msh()->hdoc_stop)
+		{
+			free(msh()->pids);
+			msh()->pids = NULL;
+			return (false);
+		}
+		current = current->next;
+	}
+	return (true);
+}

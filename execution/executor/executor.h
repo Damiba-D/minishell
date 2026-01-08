@@ -19,4 +19,5 @@ void	wait_children(int last_pid);
 void	executor(void);
 void	restore_fds(int *fd);
 void	close_pipe(void);
+bool	execute_all_hds(t_list *input);
 #endif

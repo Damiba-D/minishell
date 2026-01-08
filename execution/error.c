@@ -22,3 +22,11 @@ void print_err(char *context, char *detail, bool err)
 			ft_putendl_fd(strerror(errno), 2);
 	}
 }
+
+void print_hd_error(char *filename)
+{
+	ft_putstr_fd("minishell: warning: here-document delimited by ", 2);
+	ft_putstr_fd("end-of-file (wanted `", 2);
+	ft_putstr_fd(filename, 2);
+	ft_putendl_fd("')", 2);
+}

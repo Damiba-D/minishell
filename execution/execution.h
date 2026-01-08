@@ -34,5 +34,6 @@ int		pwd_cmd(char **args);
 int		cd_cmd(char **args);
 void	executor(void);
 void	here_doc_handler(t_file *here_doc);
+void	print_hd_error(char *filename);
 
 #endif

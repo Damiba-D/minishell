@@ -87,12 +87,13 @@ void execute_pipeline(int input_size)
 
 	i = 0;
 	current = msh()->inputlst;
-	msh()->pids = malloc(sizeof(pid_t) * input_size);
+	msh()->pids = calloc(input_size, sizeof(pid_t));
 	if (!msh()->pids)
 		error_exit("malloc", "Allocation Error", 1, false);
+	if (!execute_all_hds(current))
+		return ;
 	while (current)
 	{
-		exe_hds((t_input *)current->content);
 		if (i < input_size - 1 && pipe(msh()->pipe) == -1)
 			return (cleanup_failed_pipeline("pipe", msh()->prev_read));
 		msh()->pids[i] = fork();

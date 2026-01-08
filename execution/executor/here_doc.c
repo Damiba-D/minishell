@@ -49,12 +49,7 @@ static void write_here_doc(t_file *here_doc, int filefd)
 			return ;
 		}
 		if (!line)
-		{
-			ft_putstr_fd("minishell: warning: here-document delimited by ", 2);
-            ft_putstr_fd("end-of-file (wanted `", 2);
-            ft_putstr_fd(here_doc->filename, 2);
-            return (ft_putendl_fd("')", 2));
-		}
+			return (print_hd_error(here_doc->filename));
 		if (!ft_strncmp(line, here_doc->filename, del_len))
 			return (free(line));
 		if (!here_doc->quoted)
