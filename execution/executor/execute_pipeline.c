@@ -50,6 +50,7 @@ static void setup_child(int cmd_no, int input_size)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	signal(SIGPIPE, SIG_IGN);
 	save_og_fds(msh()->og_fds);
 	if (msh()->prev_read != -1)
 	{
