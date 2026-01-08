@@ -5,17 +5,23 @@ void exe_hds(t_input *input)
 {
 	t_token	type;
 	int		i;
+	int stdin_backup;
 
 	i = 0;
+	stdin_backup = dup(STDIN_FILENO);
 	while (input->infiles[i].filename)
 	{
 		type = input->infiles[i].mode;
 		if (type == HDOC)
 			here_doc_handler(&input->infiles[i]);
 		if (msh()->hdoc_stop)
+		{
+			dup2(stdin_backup, STDIN_FILENO);
 			break ;
+		}
 		i++;
 	}
+	close(stdin_backup);
 }
 
 void open_file(char *name, int *fd, t_token type)
