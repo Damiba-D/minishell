@@ -22,7 +22,8 @@ SRCS        = arg_split.c copying.c \
 			  counting.c extract_reds.c \
 			  parse_line.c free_hub.c free_hub2.c utils.c \
 			  signals.c signals_utils.c expansion.c expansion_utils.c \
-			  expansion_utils2.c quotes_removal.c refactoring.c
+			  expansion_utils2.c quotes_removal.c refactoring.c \
+			  syntax_checker.c
 
 OBJ         = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 

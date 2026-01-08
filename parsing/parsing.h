@@ -74,10 +74,11 @@ char	**resplit_after_expansion(char **argv);
 void	setup_interactive_signals(void);
 void	setup_execution_signals(void);
 void	setup_hdoc_signals(void);
-void	setup_hparent_signals(void);
 void	signal_handler(int signal, siginfo_t *sig, void *content);
 void	signal_handler_pipe(int signal, siginfo_t *sig, void *content);
 void	signal_handler_hdoc(int signal, siginfo_t *sig, void *content);
-void	signal_handler_hparent(int signum);
+
+// syntax_checker
+int	check_syntax(char *line);
 
 #endif
