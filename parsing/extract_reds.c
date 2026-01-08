@@ -3,26 +3,21 @@
 static int	count_reds(char *seg, int *in, int *out)
 {
 	int		i;
-	char	type;
+	int		squote;
+	int		dquote;
 
 	*in = 0;
 	*out = 0;
 	i = 0;
+	squote = 0;
+	dquote = 0;
 	while (seg[i])
 	{
-		if (seg[i] == '<' || seg[i] == '>')
-		{
-			type = seg[i];
-			if (seg[i + 1] == seg[i])
-				i++;
-			i = skip_whitespace(seg, i + 1);
-			if (!seg[i])
-				return (1);
-			if (type == '<')
-				(*in)++;
-			else if (type == '>')
-				(*out)++;
-		}
+		update_quotes(seg[i], &squote, &dquote);
+		if (!squote && !dquote && seg[i] == '<')
+			process_red_count(seg, &i, in);
+		else if (!squote && !dquote && seg[i] == '>')
+			process_red_count(seg, &i, out);
 		else
 			i++;
 	}
@@ -78,21 +73,22 @@ void	ext_reds_file(char *seg, t_input *node)
 	int	in_count;
 	int	out_count;
 	int	i;
-	int	in_i;
-	int	out_i;
+	int	squote;
+	int	dquote;
 
 	count_reds(seg, &in_count, &out_count);
 	if (!allocate_file_arrays(node, in_count, out_count))
 		return ;
 	i = 0;
-	in_i = 0;
-	out_i = 0;
+	squote = 0;
+	dquote = 0;
 	while (seg[i])
 	{
-		if (seg[i] == '<')
-			ext_reds_file_single(seg, &i, node, &in_i);
-		else if (seg[i] == '>')
-			ext_reds_file_single(seg, &i, node, &out_i);
+		update_quotes(seg[i], &squote, &dquote);
+		if (!squote && !dquote && seg[i] == '<')
+			ext_reds_file_single(seg, &i, node, &in_count);
+		else if (!squote && !dquote && seg[i] == '>')
+			ext_reds_file_single(seg, &i, node, &out_count);
 		else
 			i++;
 	}

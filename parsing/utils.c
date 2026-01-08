@@ -64,3 +64,12 @@ int	count_pipes(char *line)
 	}
 	return (count);
 }
+
+void	process_red_count(char *seg, int *i, int *count)
+{
+	if (seg[*i + 1] == seg[*i])
+		(*i)++;
+	*i = skip_whitespace(seg, *i + 1);
+	if (seg[*i])
+		(*count)++;
+}

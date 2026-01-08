@@ -28,7 +28,7 @@ static void	create_tmp_file(char **filename, int *filenum)
 	}
 }
 
-static void write_here_doc(t_file *here_doc, int filefd)
+static void	write_here_doc(t_file *here_doc, int filefd)
 {
 	char *line;
 	size_t	del_len;
@@ -56,10 +56,10 @@ static void write_here_doc(t_file *here_doc, int filefd)
 	}
 }
 
-void    here_doc_handler(t_file *here_doc)
+void	here_doc_handler(t_file *here_doc)
 {
-    char *tmpfilename;
-    int filenum;
+	char *tmpfilename;
+	int filenum;
 
 	create_tmp_file(&tmpfilename, &filenum);
 	setup_hdoc_signals();

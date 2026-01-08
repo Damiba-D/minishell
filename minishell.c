@@ -21,6 +21,12 @@ int	main(void)
 			continue ;
 		}
 		add_history(msh()->cmdline);
+		if (check_syntax(msh()->cmdline))
+		{
+			msh()->last_exit_status = 2;
+			free(msh()->cmdline);
+			continue ;
+		}
 		msh()->inputlst = parse_line(msh()->cmdline);
 		if (!msh()->inputlst)
 		{
