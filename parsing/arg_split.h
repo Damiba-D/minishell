@@ -3,9 +3,8 @@
 
 # include "parsing.h"
 
-char	**arg_split(char *s);
-int		ft_cpy_alloc(char **arr, char *s);
-void	arg_len(char *s, int *i, int *len);
-int		has_unmatched_quote(char *s);
+char			**arg_split(char *s);
+int				ft_cpy_alloc(char **arr, char *s);
+void			arg_len(char *s, int *i, int *len);
 
 #endif

@@ -37,7 +37,6 @@ int		skip_whitespace(char *str, int pos);
 int		skip_reds_filename(char *seg, int start_pos);
 void	update_quotes(char c, int *in_quote, int *in_dquote);
 int		count_pipes(char *line);
-void	process_red_count(char *seg, int *i, int *count);
 
 // extract_reds
 void	ext_reds_file(char *seg, t_input *node);
@@ -75,11 +74,10 @@ char	**resplit_after_expansion(char **argv);
 void	setup_interactive_signals(void);
 void	setup_execution_signals(void);
 void	setup_hdoc_signals(void);
+void	setup_hparent_signals(void);
 void	signal_handler(int signal, siginfo_t *sig, void *content);
 void	signal_handler_pipe(int signal, siginfo_t *sig, void *content);
 void	signal_handler_hdoc(int signal, siginfo_t *sig, void *content);
-
-// syntax_checker
-int	check_syntax(char *line);
+void	signal_handler_hparent(int signum);
 
 #endif
