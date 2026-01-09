@@ -17,7 +17,7 @@ static char	*strip_invalid_dollars(char *arg)
 	while (arg[i])
 	{
 		if (arg[i] == '$' && !in_s && !in_d && (arg[i + 1] == '\''
-				|| arg[i + 1] == '\"' || arg[i + 1] == '\0'))
+				|| arg[i + 1] == '\"'))
 		{
 			i++;
 			continue ;

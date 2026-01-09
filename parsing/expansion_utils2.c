@@ -32,8 +32,9 @@ int	find_next_var(char *str, int last_end, int *var_start, int *var_end)
 		update_quotes(str[i], &in_single, &in_double);
 		if (str[i] == '$' && !in_single && i >= last_end)
 		{
-			if (str[i + 1] == '\'' || str[i + 1] == '\"' || str[i + 1] == '\0')
-				i++;
+			if ((str[i + 1] == '\0' || str[i + 1] == '\''
+				|| str[i + 1] == '\"') && ++i)
+				continue ;
 			if (handle_dollar_sign(str, &i, var_start, var_end))
 				return (1);
 		}

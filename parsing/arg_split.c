@@ -1,7 +1,7 @@
 #include "arg_split.h"
 
 /* Check if quotes are balanced (bash rejects unmatched single quotes) */
-static int	has_unmatched_quote(char *s)
+int	has_unmatched_quote(char *s)
 {
 	int	i;
 	int	in_quote;
@@ -12,14 +12,9 @@ static int	has_unmatched_quote(char *s)
 	in_dquote = 0;
 	while (s[i])
 	{
-		if ((!in_quote || !in_dquote) && s[i] == '\\' && s[i + 1])
-		{
-			i += 2;
-			continue ;
-		}
-		if (s[i] == '\'')
+		if (s[i] == '\'' && !in_dquote)
 			in_quote = !in_quote;
-		if (s[i] == '\"')
+		else if (s[i] == '\"' && !in_quote)
 			in_dquote = !in_dquote;
 		i++;
 	}
