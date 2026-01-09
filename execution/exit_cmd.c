@@ -75,7 +75,7 @@ int		exit_cmd(char **args)
 	if (args[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		return (1);
+		return (2);
 	}
 	exit_cmd_cleanup((unsigned char)exit_value);
 	return (0);

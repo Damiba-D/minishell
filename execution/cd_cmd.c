@@ -27,7 +27,7 @@ int	cd_cmd(char **args)
 	char	*new_pwd;
 
 	if (args[1] && args[2])
-		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 2);
 	if (set_path(args, msh()->env, &path))
 		return (1);
 	old_pwd = get_env_value("PWD", msh()->env);
