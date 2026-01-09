@@ -1,111 +1,213 @@
 #include "../../minishell.h"
 #include "executor.h"
 
-void cleanup_failed_pipeline(char *error, int prev_read)
-{
-	int i;
-	int w_status;
+/*
+** ============================================================
+**  EXEC DESCRIPTOR
+**  Built entirely in the parent before fork()
+** ============================================================
+*/
 
-	i = 0;
-	print_err(NULL, error, true);
-	while (msh()->pids[i] > 0)
+typedef struct s_exec
+{
+	char	*cmd_path;
+	char	**argv;
+	t_input	*node;
+	int		is_builtin;
+}	t_exec;
+
+/*
+** ============================================================
+**  PARENT-ONLY: resolve executable path
+** ============================================================
+*/
+
+static char	*resolve_command(t_input *node)
+{
+	char	*cmd;
+
+	if (!node || !node->argv || !node->argv[0])
+		return (NULL);
+	cmd = cmd_create(node);
+	if (!cmd)
+		return (NULL);
+	if (access(cmd, X_OK) != 0)
 	{
-		waitpid(msh()->pids[i], &w_status, 0);
+		free(cmd);
+		return (NULL);
+	}
+	return (cmd);
+}
+
+/*
+** ============================================================
+**  PARENT-ONLY: build execution table
+** ============================================================
+*/
+
+static t_exec	*build_exec_table(t_list *lst, int count)
+{
+	t_exec	*execs;
+	int		i;
+
+	execs = malloc(sizeof(t_exec) * count);
+	if (!execs)
+		return (NULL);
+	i = 0;
+	while (i < count && lst)
+	{
+		execs[i].node = (t_input *)lst->content;
+		execs[i].argv = execs[i].node->argv;
+		execs[i].is_builtin = is_builtin(execs[i].argv[0]);
+		if (execs[i].is_builtin)
+			execs[i].cmd_path = NULL;
+		else
+			execs[i].cmd_path = resolve_command(execs[i].node);
+		lst = lst->next;
 		i++;
 	}
-	if (prev_read != -1)
-		close(prev_read);
-	msh()->last_exit_status = 1;
-	free(msh()->pids);
-	msh()->pids = NULL;
+	return (execs);
 }
 
-void pipeline_process(t_list *current)
-{
-	t_input *node;
-	char *cmd;
-	char **env;
+/*
+** ============================================================
+**  CHILD: pipe wiring only
+** ============================================================
+*/
 
-	node = (t_input *)current->content;
-	if (setup_fds(node, msh()->og_fds, false))
-		error_exit(NULL, NULL, 1, false);
-	if (is_builtin(node->argv[0]))
-		error_exit(NULL, NULL, run_builtin(node), false);
-	else
+static void	child_setup_pipes(int index, int count,
+								int prev_read, int pipefd[2])
+{
+	if (prev_read != -1)
 	{
-		cmd = cmd_create(node);
-		env = env_list_to_char(msh()->env);
-		if (!env)
-			error_exit("malloc", "Allocation Error", 1, false);
-		if (execve(cmd, node->argv, env))
-		{
-			free(cmd);
-			free_arr(env);
-			error_exit(NULL, node->argv[0], 1, true);
-		}
+		dup2(prev_read, STDIN_FILENO);
+		close(prev_read);
+	}
+	if (index < count - 1)
+	{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
 	}
 }
 
-static void setup_child(int cmd_no, int input_size)
+/*
+** ============================================================
+**  CHILD: execute command (NO MALLOC, NO FREE)
+** ============================================================
+*/
+
+static void	child_execute(t_exec *exec, char **envp)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	signal(SIGPIPE, SIG_IGN);
-	save_og_fds(msh()->og_fds);
-	if (msh()->prev_read != -1)
+
+	if (setup_fds(exec->node, NULL, false))
+		_exit(1);
+
+	if (exec->is_builtin)
+		_exit(run_builtin(exec->node));
+
+	execve(exec->cmd_path, exec->argv, envp);
+	_exit(127);
+}
+
+/*
+** ============================================================
+**  PARENT: close pipe ends
+** ============================================================
+*/
+
+static void	parent_close_pipes(int *prev_read,
+								int pipefd[2],
+								int index,
+								int count)
+{
+	if (*prev_read != -1)
+		close(*prev_read);
+	if (index < count - 1)
 	{
-		dup2(msh()->prev_read, STDIN_FILENO);
-		close(msh()->prev_read);
-	}
-	if (cmd_no < input_size - 1)
-	{
-		close(msh()->pipe[0]);
-		dup2(msh()->pipe[1], STDOUT_FILENO);
-		close(msh()->pipe[1]);
+		close(pipefd[1]);
+		*prev_read = pipefd[0];
 	}
 }
 
-static void execute_and_reset(t_list *current, int cmd_no, int input_size)
-{
-	if (msh()->pids[cmd_no] == 0)
-	{
-		setup_child(cmd_no, input_size);
-		pipeline_process(current);
-	}
-	if (msh()->prev_read != -1)
-		close(msh()->prev_read);
-	if (cmd_no < input_size - 1)
-	{
-		close(msh()->pipe[1]);
-		msh()->prev_read = msh()->pipe[0];
-	}
-}
+/*
+** ============================================================
+**  MAIN ENTRY POINT
+** ============================================================
+*/
 
-void execute_pipeline(int input_size)
+void	execute_pipeline(t_list *lst, int count)
 {
-	int i;
-	t_list *current;	
+	t_exec	*execs;
+	char	**envp;
+	pid_t	*pids;
+	int		pipefd[2];
+	int		prev_read;
+	int		status;
+	int		i;
 
-	i = 0;
-	current = msh()->inputlst;
-	msh()->pids = calloc(input_size, sizeof(pid_t));
-	if (!msh()->pids)
-		error_exit("malloc", "Allocation Error", 1, false);
-	if (!execute_all_hds(current))
+	if (!lst || count <= 0)
 		return ;
-	while (current)
+
+	execs = build_exec_table(lst, count);
+	if (!execs)
+		return ;
+
+	envp = env_list_to_char(msh()->env);
+	if (!envp)
 	{
-		if (i < input_size - 1 && pipe(msh()->pipe) == -1)
-			return (cleanup_failed_pipeline("pipe", msh()->prev_read));
-		msh()->pids[i] = fork();
-		if (msh()->pids[i] == -1)
+		free(execs);
+		return ;
+	}
+
+	pids = malloc(sizeof(pid_t) * count);
+	if (!pids)
+	{
+		free(envp);
+		free(execs);
+		return ;
+	}
+
+	prev_read = -1;
+	i = 0;
+	while (i < count)
+	{
+		if (i < count - 1)
 		{
-			if (i < input_size - 1)
-				close_pipe();
-			return (cleanup_failed_pipeline("fork", msh()->prev_read));
+			if (pipe(pipefd) == -1)
+				break ;
 		}
-		execute_and_reset(current, i, input_size);
-		current = current->next;
+		pids[i] = fork();
+		if (pids[i] == 0)
+		{
+			child_setup_pipes(i, count, prev_read, pipefd);
+			child_execute(&execs[i], envp);
+		}
+		parent_close_pipes(&prev_read, pipefd, i, count);
 		i++;
 	}
+
+	i = 0;
+	while (i < count)
+	{
+		waitpid(pids[i], &status, 0);
+		if (WIFEXITED(status))
+			msh()->last_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			msh()->last_exit_status = 128 + WTERMSIG(status);
+		i++;
+	}
+
+	i = 0;
+	while (i < count)
+	{
+		if (execs[i].cmd_path)
+			free(execs[i].cmd_path);
+		i++;
+	}
+	free(execs);
+	free(envp);
+	free(pids);
 }

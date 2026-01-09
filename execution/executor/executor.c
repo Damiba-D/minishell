@@ -51,7 +51,7 @@ void	executor(void)
 		}
 	}
 	else
-		execute_pipeline(input_size);
+		execute_pipeline(msh()->inputlst, input_size);
 	wait_children(input_size);
 	setup_execution_signals();
 	ft_lstclear(&msh()->inputlst, free_input_node);
