@@ -61,7 +61,8 @@ int		exit_cmd(char **args)
 {
 	long long	exit_value;
 
-	ft_putendl_fd("exit", 2);
+	if (ft_lstsize(msh()->inputlst) == 1)
+		ft_putendl_fd("exit", 2);
 	if (!args || !args[1])
 		exit_cmd_cleanup((unsigned char)msh()->last_exit_status);
 	exit_value = 0;

@@ -27,7 +27,7 @@ void pipeline_process(t_list *current)
 	char **env;
 
 	node = (t_input *)current->content;
-	if (setup_fds(node, msh()->og_fds, false))
+	if (setup_fds(node, NULL, false))
 		error_exit(NULL, NULL, 1, false);
 	if (is_builtin(node->argv[0]))
 		error_exit(NULL, NULL, run_builtin(node), false);
@@ -50,8 +50,6 @@ static void setup_child(int cmd_no, int input_size)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	signal(SIGPIPE, SIG_IGN);
-	save_og_fds(msh()->og_fds);
 	if (msh()->prev_read != -1)
 	{
 		dup2(msh()->prev_read, STDIN_FILENO);
