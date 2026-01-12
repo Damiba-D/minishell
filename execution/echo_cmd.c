@@ -24,8 +24,6 @@ int	echo_cmd(char **argv)
 	i = 1;
 	nl_flag = 0;
 	echo_flag_handler(&i, argv, &nl_flag);
-	if (!argv[i])
-		return (0);
 	while (argv[i])
 	{
 		printf("%s", argv[i]);

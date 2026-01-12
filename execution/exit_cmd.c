@@ -61,7 +61,7 @@ int		exit_cmd(char **args)
 {
 	long long	exit_value;
 
-	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+	if (!msh()->pids)
 		ft_putendl_fd("exit", 2);
 	if (!args || !args[1])
 		exit_cmd_cleanup((unsigned char)msh()->last_exit_status);
