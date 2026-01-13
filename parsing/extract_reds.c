@@ -65,16 +65,14 @@ void	ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
 
 static int	allocate_file_arrays(t_input *node, int in_count, int out_count)
 {
-	node->infiles = malloc(sizeof(t_file) * (in_count + 1));
-	node->outfiles = malloc(sizeof(t_file) * (out_count + 1));
+	node->infiles = ft_calloc(in_count + 1, sizeof(t_file));
+	node->outfiles = ft_calloc(out_count + 1, sizeof(t_file));
 	if (!node->infiles || !node->outfiles)
 	{
 		free(node->infiles);
 		free(node->outfiles);
 		return (0);
 	}
-	node->infiles[in_count].filename = NULL;
-	node->outfiles[out_count].filename = NULL;
 	return (1);
 }
 

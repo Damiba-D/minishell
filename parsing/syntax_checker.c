@@ -3,24 +3,25 @@
 static int	check_redir_syntax(char *s)
 {
 	int	i;
-	int	squote;
-	int	dquote;
+	int	sq;
+	int	dq;
 
-	i = 0;
-	squote = 0;
-	dquote = 0;
-	while (s[i])
+	i = -1;
+	sq = 0;
+	dq = 0;
+	while (s[++i])
 	{
-		update_quotes(s[i], &squote, &dquote);
-		if (!squote && !dquote && (s[i] == '<' || s[i] == '>' || s[i] == '|'))
+		update_quotes(s[i], &sq, &dq);
+		if (sq || dq)
+			continue ;
+		if (s[i] == '<' || s[i] == '>')
 		{
-			if (s[i + 1] == s[i] && s[i] != '|')
-				i++;
-			i = skip_whitespace(s, i + 1);
+			i = skip_whitespace(s, i + 1 + (s[i + 1] == s[i]));
 			if (!s[i] || s[i] == '|' || s[i] == '<' || s[i] == '>')
 				return (1);
 		}
-		i++;
+		else if (s[i] == '|' && (!s[i = skip_whitespace(s, i + 1)] || s[i] == '|'))
+			return (1);
 	}
 	return (0);
 }

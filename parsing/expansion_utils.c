@@ -7,28 +7,18 @@ int	is_var_char(char c)
 
 void	*extract_var_name(char *str, int *i)
 {
-	int		start;
-	int		len;
-	char	*var_name;
+	int	start;
 
 	if (!str || !i)
 		return (NULL);
 	start = *i;
-	len = 0;
-	if (str[*i] == '?')
-	{
-		(*i)++;
-		return (ft_strdup("?"));
-	}
+	if (str[*i] == '?' || ft_isdigit(str[*i]))
+		return ((*i)++, ft_substr(str, start, 1));
 	while (str[*i] && is_var_char(str[*i]))
-	{
 		(*i)++;
-		len++;
-	}
-	if (len == 0)
+	if (*i == start)
 		return (NULL);
-	var_name = ft_substr(str, start, len);
-	return (var_name);
+	return (ft_substr(str, start, *i - start));
 }
 
 char	*exp_var_env(char *var_name, t_env *env_list, int lst_exit_stat)
