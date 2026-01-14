@@ -41,7 +41,10 @@ int	cd_cmd(char **args)
 		return(free(new_pwd), 0);
 	}
 	else
+	{
 		set_env_value("PWD", args[1], &msh()->env, true);
-		//need to print specific error message for getcwd failure
+		ft_putendl_fd("cd: error retrieving current directory: getcwd: \
+cannot access parent directories: No such file or directory", 2);
+	}
 	return (0);
 }
