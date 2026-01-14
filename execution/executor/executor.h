@@ -20,4 +20,6 @@ void	executor(void);
 void	restore_fds(int *fd);
 void	close_pipe(void);
 bool	execute_all_hds(t_list *input);
+char	*replace_next_var_hdoc(char *result, int *last_end);
+char	*hdoc_expand_arg(char *line);
 #endif

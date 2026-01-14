@@ -22,7 +22,8 @@ SRCs        = envfuncs.c envfuncs2.c env_cmd.c unset_cmd.c echo_cmd.c cd_cmd.c \
 			  export_cmd/export_utils.c export_cmd/export_cmd.c error.c \
 			  exit_cmd.c pwd_cmd.c executor/executor_utils.c executor/executor_utils2.c \
 			  executor/builtin_utils.c executor/extcmd_utils.c \
-			  executor/here_doc.c executor/execute_pipeline.c executor/executor.c
+			  executor/here_doc.c executor/execute_pipeline.c executor/executor.c \
+			  executor/here_doc_utils.c
 
 OBJ         = $(addprefix $(OBJ_DIR)/, $(SRCs:.c=.o))
 
