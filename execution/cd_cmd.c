@@ -41,7 +41,7 @@ int	cd_cmd(char **args)
 		return(free(new_pwd), 0);
 	}
 	else
-		error_exit("malloc", "Allocation Error", 1, false);
+		set_env_value("PWD", args[1], &msh()->env, true);
+		//need to print specific error message for getcwd failure
 	return (0);
 }
-
