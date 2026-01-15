@@ -1,12 +1,5 @@
 #include "../minishell.h"
 
-/* static int	syntax_check(char *line)
-{
-	int	i;
-	int	in_d;
-	int	in_s;
-} */
-
 static char	*extract_segment(char *line, int *pos)
 {
 	int	start;

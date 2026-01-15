@@ -20,10 +20,6 @@ void	signal_handler_pipe(int signal, siginfo_t *sig, void *content)
 	(void)content;
 	(void)signal;
 	ft_putstr_fd("\n", STDOUT_FILENO);
-	/* if (signal == SIGINT)
-		msh()->last_exit_status = 130;
-	else if (signal == SIGQUIT)
-		msh()->last_exit_status = 131; */
 }
 
 void	signal_handler_hdoc(int signal, siginfo_t *sig, void *content)

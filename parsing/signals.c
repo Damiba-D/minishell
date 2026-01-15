@@ -32,4 +32,3 @@ void	setup_hdoc_signals(void)
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
-

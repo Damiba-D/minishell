@@ -1,6 +1,7 @@
 #include "../../minishell.h"
 
-static int	find_next_var_hdoc(char *str, int last_end, int *var_start, int *var_end)
+static int	find_next_var_hdoc(char *str, int last_end, int *var_start,
+		int *var_end)
 {
 	int	i;
 	int	in_single;
@@ -16,9 +17,8 @@ static int	find_next_var_hdoc(char *str, int last_end, int *var_start, int *var_
 		update_quotes(str[i], &in_single, &in_double);
 		if (str[i] == '$' && i >= last_end)
 		{
-			if ((str[i + 1] == '\0' || str[i + 1] == ' '
-				|| str[i + 1] == '\''
-				|| str[i + 1] == '\"') && ++i)
+			if ((str[i + 1] == '\0' || str[i + 1] == ' ' || str[i + 1] == '\''
+					|| str[i + 1] == '\"') && ++i)
 				continue ;
 			if (handle_dollar_sign(str, &i, var_start, var_end))
 				return (1);
@@ -49,9 +49,9 @@ char	*replace_next_var_hdoc(char *result, int *last_end)
 
 char	*hdoc_expand_arg(char *line)
 {
-	char	*result;
-	char	*new_result;
-	int		last_replaced_end;
+	char *result;
+	char *new_result;
+	int last_replaced_end;
 
 	if (!line)
 		return (NULL);

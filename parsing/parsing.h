@@ -4,8 +4,8 @@
 # include "../shared.h"
 # include "arg_split.h"
 
-typedef struct s_env t_env;
-typedef struct s_msh t_msh;
+typedef struct s_env	t_env;
+typedef struct s_msh	t_msh;
 
 typedef enum e_token
 {
@@ -42,6 +42,7 @@ int		count_pipes(char *line);
 void	ext_reds_file(char *seg, t_input *node);
 void	ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i);
 char	*ext_reds_file_util(char *seg, int *i, bool *quoted);
+int		count_reds(char *seg, int *in, int *out);
 
 // free hub
 char	*remove_all_reds(char *seg);
@@ -62,6 +63,7 @@ char	*replace_next_var(char *result, int *last_end);
 char	*process_single_var(char *result, int var_start, int var_end);
 char	*expand_arg(char *arg);
 void	expand_all(t_msh *msh_data);
+void	expand_files(t_input *node);
 
 // quote_removal
 void	remove_quotes_input(t_input *node);
@@ -79,6 +81,6 @@ void	signal_handler_pipe(int signal, siginfo_t *sig, void *content);
 void	signal_handler_hdoc(int signal, siginfo_t *sig, void *content);
 
 // syntax_checker
-int	check_syntax(char *line);
+int		check_syntax(char *line);
 
 #endif

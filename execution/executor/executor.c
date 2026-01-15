@@ -1,11 +1,11 @@
 #include "../../minishell.h"
 #include "executor.h"
 
-void wait_children(int last_pid)
+void	wait_children(int last_pid)
 {
-	int i;
-	int w_status;
-	int sig;
+	int	i;
+	int	w_status;
+	int	sig;
 
 	i = 0;
 	if (!msh()->pids)
@@ -31,8 +31,8 @@ void wait_children(int last_pid)
 
 void	executor(void)
 {
-	t_input *temp;
-	int input_size;
+	t_input	*temp;
+	int		input_size;
 
 	temp = (t_input *)msh()->inputlst->content;
 	input_size = ft_lstsize(msh()->inputlst);

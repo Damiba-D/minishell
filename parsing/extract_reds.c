@@ -1,39 +1,5 @@
 #include "../minishell.h"
 
-static int	count_reds(char *seg, int *in, int *out)
-{
-	int		i;
-	int		sq;
-	int		dq;
-	char	type;
-
-	*in = 0;
-	*out = 0;
-	i = 0;
-	sq = 0;
-	dq = 0;
-	while (seg[i])
-	{
-		update_quotes(seg[i], &sq, &dq);
-		if (!sq && !dq && (seg[i] == '<' || seg[i] == '>'))
-		{
-			type = seg[i];
-			if (seg[i + 1] == seg[i])
-				i++;
-			i = skip_whitespace(seg, i + 1);
-			if (!seg[i])
-				return (1);
-			if (type == '<')
-				(*in)++;
-			else if (type == '>')
-				(*out)++;
-		}
-		else
-			i++;
-	}
-	return (0);
-}
-
 void	ext_reds_file_single(char *seg, int *i, t_input *node, int *red_i)
 {
 	int	type;

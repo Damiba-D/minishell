@@ -43,7 +43,7 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-static void clean_heredoc(char *filename)
+static void	clean_heredoc(char *filename)
 {
 	if (!ft_strncmp(HEREDOC, filename, H_D_LEN))
 		unlink(filename);
@@ -79,4 +79,3 @@ void	free_input_node(void *content)
 		free_file_arr(input->outfiles);
 	free(input);
 }
-

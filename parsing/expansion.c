@@ -8,7 +8,8 @@ static char	*strip_invalid_dollars(char *arg)
 	int		in_d;
 	int		in_s;
 
-	if (!arg || !(res = malloc(ft_strlen(arg) + 1)))
+	res = calloc(ft_strlen(arg) + 1, sizeof(char));
+	if (!arg || !res)
 		return (NULL);
 	i = 0;
 	k = 0;
@@ -25,7 +26,6 @@ static char	*strip_invalid_dollars(char *arg)
 		res[k++] = arg[i];
 		update_quotes(arg[i++], &in_s, &in_d);
 	}
-	res[k] = '\0';
 	return (res);
 }
 
@@ -40,7 +40,7 @@ char	*expand_arg(char *arg)
 		return (NULL);
 	stripped = strip_invalid_dollars(arg);
 	if (!stripped)
-		return(NULL);
+		return (NULL);
 	result = ft_strdup(stripped);
 	free(stripped);
 	if (!result)
@@ -95,6 +95,7 @@ void	expand_all(t_msh *msh)
 	{
 		node = (t_input *)current->content;
 		expand_args(node);
+		expand_files(node);
 		current = current->next;
 	}
 }

@@ -1,5 +1,21 @@
 #include "../minishell.h"
 
+static int	check_redir_token(char *s, int *i)
+{
+	*i = skip_whitespace(s, *i + 1 + (s[*i + 1] == s[*i]));
+	if (!s[*i] || s[*i] == '|' || s[*i] == '<' || s[*i] == '>')
+		return (1);
+	return (0);
+}
+
+static int	check_pipe_token(char *s, int *i)
+{
+	*i = skip_whitespace(s, *i + 1);
+	if (!s[*i] || s[*i] == '|')
+		return (1);
+	return (0);
+}
+
 static int	check_redir_syntax(char *s)
 {
 	int	i;
@@ -16,12 +32,14 @@ static int	check_redir_syntax(char *s)
 			continue ;
 		if (s[i] == '<' || s[i] == '>')
 		{
-			i = skip_whitespace(s, i + 1 + (s[i + 1] == s[i]));
-			if (!s[i] || s[i] == '|' || s[i] == '<' || s[i] == '>')
+			if (check_redir_token(s, &i))
 				return (1);
 		}
-		else if (s[i] == '|' && (!s[i = skip_whitespace(s, i + 1)] || s[i] == '|'))
-			return (1);
+		else if (s[i] == '|')
+		{
+			if (check_pipe_token(s, &i))
+				return (1);
+		}
 	}
 	return (0);
 }
