@@ -54,7 +54,7 @@ static void update_env_value(t_env *node, const char *value, bool append)
 	{
 		free(node->value);
 		node->value = ft_strdup(value);
-		if (node->value == NULL)
+		if (value && node->value == NULL)
 			error_exit("malloc", "Allocation Error", 1, false);
 	}
 	else if (append)

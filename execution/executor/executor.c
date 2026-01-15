@@ -35,8 +35,6 @@ void	executor(void)
 	int input_size;
 
 	temp = (t_input *)msh()->inputlst->content;
-	if (!temp->argv[0])
-		return (ft_lstclear(&msh()->inputlst, free_input_node));
 	input_size = ft_lstsize(msh()->inputlst);
 	setup_execution_signals();
 	if (input_size == 1)

@@ -3,6 +3,8 @@
 
 bool is_builtin(char *cmd)
 {
+	if (!cmd)
+		return (true);
 	if (!ft_strncmp(cmd, "env", 4))
 		return (true);
 	else if (!ft_strncmp(cmd, "echo", 5))
@@ -25,6 +27,8 @@ int run_builtin(t_input *input)
 	char	*cmd;
 
 	cmd = input->argv[0];
+	if (!cmd)
+		return (0);
 	if (!ft_strncmp(cmd, "env", 4))
 		return (env_cmd());
 	else if (!ft_strncmp(cmd, "echo", 5))
