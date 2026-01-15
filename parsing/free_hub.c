@@ -58,7 +58,7 @@ void	free_file_arr(t_file *files)
 	i = 0;
 	while (files[i].filename)
 	{
-		if (files[i].mode == HDOC)
+		if (!msh()->is_child && files[i].mode == HDOC)
 			clean_heredoc(files[i].filename);
 		free(files[i].filename);
 		i++;

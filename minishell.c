@@ -5,6 +5,7 @@ int	main(void)
 	msh()->last_exit_status = 0;
 	msh()->pids = NULL;
 	init_env(&msh()->env);
+	msh()->is_child = false;
 	while (1)
 	{
 		msh()->prev_read = -1;

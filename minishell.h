@@ -19,6 +19,7 @@ typedef struct s_msh
 	int		pipe[2];
 	int		prev_read;
 	bool	hdoc_stop;
+	bool	is_child;
 }			t_msh;
 
 t_msh	*msh(void);

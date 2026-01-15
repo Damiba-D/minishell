@@ -50,6 +50,7 @@ static void setup_child(int cmd_no, int input_size)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	msh()->is_child = true;
 	if (msh()->prev_read != -1)
 	{
 		dup2(msh()->prev_read, STDIN_FILENO);
