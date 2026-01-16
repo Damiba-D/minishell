@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_cmd.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddamiba <ddamiba@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/16 17:47:30 by ddamiba           #+#    #+#             */
+/*   Updated: 2026/01/16 17:47:31 by ddamiba          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 static void	exit_cmd_cleanup(unsigned char exit_code)
@@ -85,11 +97,15 @@ int	exit_cmd(char **args)
 	return (0);
 }
 
-/// @brief For exiting and printing any kind of error. If context & detail are NULL & err is set to false, nothing is printed
-/// @param context what exactly failed, IE, malloc or a command such as cd
-/// @param detail extra info as to what failed, IE, a file that could not be opened
+/// @brief For exiting and printing any kind of error.
+/// If context & detail are NULL & err is set to false, nothing is printed
+/// @param context what exactly failed, 
+/// IE, malloc or a command such as cd
+/// @param detail extra info as to what failed 
+/// IE, a file that could not be opened
 /// @param exit_code exit status the process will exit with
-/// @param err flag used to print exact error message if function sets errno upon failure
+/// @param err flag used to print exact error message
+/// if function sets errno upon failure
 void	error_exit(char *context, char *detail, int exit_code, bool err)
 {
 	print_err(context, detail, err);

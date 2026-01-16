@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   extcmd_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddamiba <ddamiba@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/16 17:46:11 by ddamiba           #+#    #+#             */
+/*   Updated: 2026/01/16 17:46:12 by ddamiba          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 #include "executor.h"
 
@@ -75,6 +87,13 @@ static void	wait_child(void)
 	}
 }
 
+static void	cleanup_execve(char *cmd, char **env, char *cmd_name)
+{
+	free(cmd);
+	free_arr(env);
+	error_exit(NULL, cmd_name, 1, true);
+}
+
 void	execute_ext_cmd(t_input *input)
 {
 	pid_t	pid;
@@ -93,13 +112,10 @@ void	execute_ext_cmd(t_input *input)
 		cmd = cmd_create(input);
 		env = env_list_to_char(msh()->env);
 		if (env == NULL)
-			return (free(cmd), error_exit("malloc", "Allocation Error", 1, false));
+			return (free(cmd), error_exit("malloc", \
+"Allocation Error", 1, false));
 		if (execve(cmd, input->argv, env))
-		{
-			free(cmd);
-			free_arr(env);
-			error_exit(NULL, input->argv[0], 1, true);
-		}
+			cleanup_execve(cmd, env, input->argv[0]);
 	}
 	wait_child();
 }
