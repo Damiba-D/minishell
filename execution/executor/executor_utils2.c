@@ -4,7 +4,6 @@
 int	setup_fds(t_input *input, int *og_fd, bool save)
 {
 	int new_fd[2];
-	char	*name;
 	int		err;
 
 	err = 0;
@@ -12,17 +11,17 @@ int	setup_fds(t_input *input, int *og_fd, bool save)
 		save_og_fds(og_fd);
 	if (input->infiles->filename)
 	{
-		name = parse_infiles(input, &err, &new_fd[0]);
+		parse_infiles(input, &err, &new_fd[0]);
 		if (err)
-			return (print_err(NULL, name, true), err);
+			return (err);
 		dup2(new_fd[0], STDIN_FILENO);
 		close(new_fd[0]);
 	}
 	if (input->outfiles->filename)
 	{
-		name = parse_outfiles(input, &new_fd[1], &err);
+		parse_outfiles(input, &new_fd[1], &err);
 		if (err)
-			return (print_err(NULL, name, true), err);
+			return (err);
 		dup2(new_fd[1], STDOUT_FILENO);
 		close(new_fd[1]);
 	}

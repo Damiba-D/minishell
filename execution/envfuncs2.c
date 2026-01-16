@@ -17,7 +17,7 @@ int	env_lstsize(t_env *lst)
 	return (count);
 }
 
-char **env_list_to_char(t_env *env_list)
+char	**env_list_to_char(t_env *env_list)
 {
 	int		size;
 	char	**env_arr;
@@ -46,9 +46,9 @@ char **env_list_to_char(t_env *env_list)
 	return (env_arr);
 }
 
-static void update_env_value(t_env *node, const char *value, bool append)
+static void	update_env_value(t_env *node, const char *value, bool append)
 {
-	char *temp;
+	char	*temp;
 
 	if (!append)
 	{
@@ -73,9 +73,9 @@ static void update_env_value(t_env *node, const char *value, bool append)
 void	set_env_value(const char *key, const char *value, \
 t_env **env_list, bool append)
 {
-	t_env *temp;
-	char *n_key;
-	char *n_value;
+	t_env	*temp;
+	char	*n_key;
+	char	*n_value;
 
 	temp = *env_list;
 	while (temp)
@@ -87,17 +87,11 @@ t_env **env_list, bool append)
 	n_key = ft_strdup(key);
 	n_value = ft_strdup(value);
 	if ((n_key == NULL ) || (n_value == NULL && value != NULL))
-		return (free(n_key), free(n_value), error_exit("malloc", "Allocation Error", 1, false));
+		return (free(n_key), free(n_value), \
+error_exit("malloc", "Allocation Error", 1, false));
 	temp = env_new_node(n_key, n_value);
 	if (temp == NULL)
-		return (free(n_key), free(n_value), error_exit("malloc", "Allocation Error", 1, false));
+		return (free(n_key), free(n_value), \
+error_exit("malloc", "Allocation Error", 1, false));
 	env_add(env_list, temp);
 }
-
-
-/*
-	char *temp
-	char *temp2
-	temp = strjoin(key, =)
-	temp2 = strjoin(temp, value)
-*/

@@ -44,7 +44,6 @@ int	is_invalid_identifier(char *arg, int *ret_val)
 
 	i = 0;
 	inval = 0;
-
 	if (!arg[0] || (!ft_isalpha(arg[0]) && arg[0] != '_'))
 		inval = 1;
 	while (arg[i] && !inval)
@@ -67,8 +66,8 @@ int	is_invalid_identifier(char *arg, int *ret_val)
 
 t_env	**lst_to_arr(t_env *env_list)
 {
-	t_env **arr;
-	int i;	
+	t_env	**arr;
+	int		i;
 
 	arr = (t_env **)malloc((env_lstsize(env_list) + 1) * sizeof(t_env));
 	if (arr == NULL)

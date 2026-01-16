@@ -30,7 +30,7 @@ void	env_add(t_env **lst, t_env *new)
 	last->next = new;
 }
 
-t_env *get_env_node(char *key, t_env *env_list)
+t_env	*get_env_node(char *key, t_env *env_list)
 {
 	while (env_list)
 	{
@@ -60,4 +60,3 @@ void	free_env_node(t_env *env_node)
 		free(env_node->value);
 	free(env_node);
 }
-

@@ -43,9 +43,17 @@ char	*parse_infiles(t_input *input, int *flag, int *fd)
 	while (input->infiles[i].filename)
 	{
 		infile = input->infiles[i].filename;
+		if (!input->infiles[i].quoted && ft_strchr(infile, ' '))
+		{
+			print_err(infile, "ambiguous redirect", false);
+			return (msh()->last_exit_status = *flag = 1, infile);
+		}
 		open_file(infile, fd, REDIN);
 		if (*fd == -1)
+		{
+			print_err(NULL, input->infiles[i].filename, true);
 			return (msh()->last_exit_status = *flag = 1, infile);
+		}
 		if (input->infiles[i + 1].filename)
 			close(*fd);
 		i++;
@@ -62,9 +70,17 @@ char *parse_outfiles(t_input *input, int *fd, int *flag)
 	while (input->outfiles[i].filename)
 	{
 		outfile = input->outfiles[i].filename;
+		if (!input->outfiles[i].quoted && ft_strchr(outfile, ' '))
+		{
+			print_err(outfile, "ambiguous redirect", false);
+			return (msh()->last_exit_status = *flag = 1, outfile);
+		}
 		open_file(outfile, fd, input->outfiles[i].mode);
 		if (*fd == -1)
+		{
+			print_err(NULL, input->outfiles[i].filename, true);
 			return (msh()->last_exit_status = *flag = 1, outfile);
+		}
 		if (input->outfiles[i + 1].filename)
 			close(*fd);
 		i++;

@@ -55,10 +55,9 @@ error_exit("malloc", "Allocation Error", 1, false));
 	set_shell_lvl(env_list);
 }
 
-
-void term_env(t_env *env_list)
+void	term_env(t_env *env_list)
 {
-	t_env *temp;
+	t_env	*temp;
 
 	while (env_list != NULL)
 	{
@@ -70,7 +69,7 @@ void term_env(t_env *env_list)
 
 int	env_cmd(void)
 {
-	t_env *env_list;
+	t_env	*env_list;
 
 	env_list = msh()->env;
 	while (env_list != NULL)

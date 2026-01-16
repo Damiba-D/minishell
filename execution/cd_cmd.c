@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-static int set_path(char **args, t_env *env_list, char **path)
+static int	set_path(char **args, t_env *env_list, char **path)
 {
 	if (!args[1] || !ft_strncmp(args[1], "~", 2))
 	{
@@ -38,7 +38,7 @@ int	cd_cmd(char **args)
 	if (new_pwd)
 	{
 		set_env_value("PWD", new_pwd, &msh()->env, false);
-		return(free(new_pwd), 0);
+		return (free(new_pwd), 0);
 	}
 	else
 	{

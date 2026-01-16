@@ -1,7 +1,7 @@
 #ifndef EXPORT_CMD_H
 # define EXPORT_CMD_H
 
-typedef struct s_env t_env;
+typedef struct s_env	t_env;
 
 int		env_keycmp(const char *s1, const char *s2);
 void	sort_env_array(t_env **env);

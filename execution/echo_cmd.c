@@ -2,15 +2,15 @@
 
 void	echo_flag_handler(int *i, char **argv, int *nl_flag)
 {
-	int j;
+	int	j;
 
 	while (argv[*i] && argv[*i][0] == '-' && argv[*i][1] == 'n')
 	{
 		j = 1;
 		while (argv[*i][j] == 'n')
-				j++;
+			j++;
 		if (argv[*i][j] != '\0')
-				return ;
+			return ;
 		(*i)++;
 		*nl_flag = 1;
 	}
@@ -18,8 +18,8 @@ void	echo_flag_handler(int *i, char **argv, int *nl_flag)
 
 int	echo_cmd(char **argv)
 {
-	int i;
-	int nl_flag;
+	int	i;
+	int	nl_flag;
 
 	i = 1;
 	nl_flag = 0;
@@ -33,6 +33,5 @@ int	echo_cmd(char **argv)
 	}
 	if (!nl_flag)
 		printf("\n");
-	return (0); 
+	return (0);
 }
-

@@ -1,10 +1,11 @@
 #include "../../minishell.h"
 #include "export_cmd.h"
 
-static void	export_non_null(char *eq_pos, char *pl_pos, char *arg, t_env **env_list)
+static void	export_non_null(char *eq_pos, char *pl_pos, char *arg, \
+t_env **env_list)
 {
-	char *key;
-	char *value;
+	char	*key;
+	char	*value;
 
 	if (!pl_pos)
 	{
@@ -26,8 +27,8 @@ static void	export_non_null(char *eq_pos, char *pl_pos, char *arg, t_env **env_l
 
 static void	print_sorted_env(t_env *env_list)
 {
-	t_env **sorted_list;
-	int i;
+	t_env	**sorted_list;
+	int		i;
 
 	sorted_list = lst_to_arr(env_list);
 	sort_env_array(sorted_list);
@@ -45,12 +46,12 @@ static void	print_sorted_env(t_env *env_list)
 	free(sorted_list);
 }
 
-int		export_cmd(char **args)
+int	export_cmd(char **args)
 {
-	int i;
-	int ret_val;
-	char *eq_pos;
-	char *pl_pos;
+	int		i;
+	int		ret_val;
+	char	*eq_pos;
+	char	*pl_pos;
 
 	ret_val = 0;
 	if (!args[1])
