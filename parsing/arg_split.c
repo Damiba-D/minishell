@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   arg_split.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcardoso <mcardoso@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/16 17:50:07 by mcardoso          #+#    #+#             */
+/*   Updated: 2026/01/16 17:50:08 by mcardoso         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "arg_split.h"
 
 /* Check if quotes are balanced (bash rejects unmatched single quotes) */
