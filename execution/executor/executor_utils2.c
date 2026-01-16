@@ -3,8 +3,8 @@
 
 int	setup_fds(t_input *input, int *og_fd, bool save)
 {
-	int new_fd[2];
-	int		err;
+	int	new_fd[2];
+	int	err;
 
 	err = 0;
 	if (save)
@@ -28,7 +28,7 @@ int	setup_fds(t_input *input, int *og_fd, bool save)
 	return (err);
 }
 
-void restore_fds(int *fd)
+void	restore_fds(int *fd)
 {
 	if (fd[0] > 0)
 	{
@@ -42,15 +42,15 @@ void restore_fds(int *fd)
 	}
 }
 
-void close_pipe(void)
+void	close_pipe(void)
 {
 	close(msh()->pipe[0]);
 	close(msh()->pipe[1]);
 }
 
-bool execute_all_hds(t_list *input)
+bool	execute_all_hds(t_list *input)
 {
-	t_list *current;
+	t_list	*current;
 
 	current = input;
 	while (current)

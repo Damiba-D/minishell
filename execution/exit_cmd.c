@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-static void exit_cmd_cleanup(unsigned char exit_code)
+static void	exit_cmd_cleanup(unsigned char exit_code)
 {
 	ft_lstclear(&msh()->inputlst, free_input_node);
 	term_env(msh()->env);
@@ -11,7 +11,7 @@ static void exit_cmd_cleanup(unsigned char exit_code)
 
 static bool	is_numeric(const char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!s || !*s)
@@ -57,7 +57,10 @@ static bool	exit_parser(const char *str, long long *out)
 	return (true);
 }
 
-int		exit_cmd(char **args)
+/// @brief 
+/// @param args 
+/// @return 
+int	exit_cmd(char **args)
 {
 	long long	exit_value;
 
@@ -87,7 +90,7 @@ int		exit_cmd(char **args)
 /// @param detail extra info as to what failed, IE, a file that could not be opened
 /// @param exit_code exit status the process will exit with
 /// @param err flag used to print exact error message if function sets errno upon failure
-void error_exit(char *context, char *detail, int exit_code, bool err)
+void	error_exit(char *context, char *detail, int exit_code, bool err)
 {
 	print_err(context, detail, err);
 	exit_cmd_cleanup(exit_code);

@@ -7,7 +7,7 @@
 /// IE, a file that could not be opened
 /// @param err flag used to print exact error message
 /// if function sets errno upon failure
-void print_err(char *context, char *detail, bool err)
+void	print_err(char *context, char *detail, bool err)
 {
 	if (context || detail || err)
 	{
@@ -26,7 +26,7 @@ void print_err(char *context, char *detail, bool err)
 	}
 }
 
-void print_hd_error(char *filename)
+void	print_hd_error(char *filename)
 {
 	ft_putstr_fd("minishell: warning: here-document delimited by ", 2);
 	ft_putstr_fd("end-of-file (wanted `", 2);

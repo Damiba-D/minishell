@@ -1,10 +1,10 @@
 #include "../../minishell.h"
 #include "executor.h"
 
-void cleanup_failed_pipeline(char *error, int prev_read)
+void	cleanup_failed_pipeline(char *error, int prev_read)
 {
-	int i;
-	int w_status;
+	int	i;
+	int	w_status;
 
 	i = 0;
 	print_err(NULL, error, true);
@@ -20,11 +20,11 @@ void cleanup_failed_pipeline(char *error, int prev_read)
 	msh()->pids = NULL;
 }
 
-void pipeline_process(t_list *current)
+void	pipeline_process(t_list *current)
 {
-	t_input *node;
-	char *cmd;
-	char **env;
+	t_input	*node;
+	char	*cmd;
+	char	**env;
 
 	node = (t_input *)current->content;
 	if (setup_fds(node, NULL, false))
@@ -46,7 +46,7 @@ void pipeline_process(t_list *current)
 	}
 }
 
-static void setup_child(int cmd_no, int input_size)
+static void	setup_child(int cmd_no, int input_size)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -64,7 +64,7 @@ static void setup_child(int cmd_no, int input_size)
 	}
 }
 
-static void execute_and_reset(t_list *current, int cmd_no, int input_size)
+static void	execute_and_reset(t_list *current, int cmd_no, int input_size)
 {
 	if (msh()->pids[cmd_no] == 0)
 	{
@@ -80,10 +80,10 @@ static void execute_and_reset(t_list *current, int cmd_no, int input_size)
 	}
 }
 
-void execute_pipeline(int input_size)
+void	execute_pipeline(int input_size)
 {
-	int i;
-	t_list *current;	
+	int		i;
+	t_list	*current;	
 
 	i = 0;
 	current = msh()->inputlst;

@@ -1,11 +1,11 @@
 #include "../../minishell.h"
 #include "executor.h"
 
-void exe_hds(t_input *input)
+void	exe_hds(t_input *input)
 {
 	t_token	type;
 	int		i;
-	int stdin_backup;
+	int		stdin_backup;
 
 	i = 0;
 	stdin_backup = dup(STDIN_FILENO);
@@ -24,7 +24,7 @@ void exe_hds(t_input *input)
 	close(stdin_backup);
 }
 
-void open_file(char *name, int *fd, t_token type)
+void	open_file(char *name, int *fd, t_token type)
 {
 	if (type == REDIN || type == HDOC)
 		*fd = open(name, O_RDONLY);
@@ -61,7 +61,7 @@ char	*parse_infiles(t_input *input, int *flag, int *fd)
 	return (infile);
 }
 
-char *parse_outfiles(t_input *input, int *fd, int *flag)
+char	*parse_outfiles(t_input *input, int *fd, int *flag)
 {
 	char	*outfile;
 	int		i;
@@ -88,10 +88,8 @@ char *parse_outfiles(t_input *input, int *fd, int *flag)
 	return (outfile);
 }
 
-void save_og_fds(int *og_fd)
+void	save_og_fds(int *og_fd)
 {
 	og_fd[0] = dup(STDIN_FILENO);
 	og_fd[1] = dup(STDOUT_FILENO);
 }
-
-

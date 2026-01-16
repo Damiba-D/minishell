@@ -2,10 +2,10 @@
 
 static void	unset_env(const char *key, t_env **env_list)
 {
-	t_env *prev;
-	t_env *targ;
-	t_env *foll;
-	size_t key_len;
+	t_env	*prev;
+	t_env	*targ;
+	t_env	*foll;
+	size_t	key_len;
 
 	prev = NULL;
 	targ = *env_list;
@@ -28,9 +28,9 @@ static void	unset_env(const char *key, t_env **env_list)
 	}
 }
 
-int		unset_cmd(char **args)
+int	unset_cmd(char **args)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (args[++i])

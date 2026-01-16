@@ -3,10 +3,10 @@
 
 char	*find_command(t_input *input, char *path)
 {
-	char *temp;
-	char **dirs;
-	int i;
-	char *full_path;
+	char	*temp;
+	char	**dirs;
+	int		i;
+	char	*full_path;
 
 	dirs = ft_split(path, ':');
 	if (!dirs)
@@ -32,9 +32,9 @@ char	*find_command(t_input *input, char *path)
 
 char	*cmd_create(t_input *input)
 {
-	char *path;
-	char *cmd;
-	struct stat statbuf;
+	char		*path;
+	char		*cmd;
+	struct stat	statbuf;
 
 	cmd = NULL;
 	if (ft_strchr(input->argv[0], '/'))
@@ -58,10 +58,10 @@ char	*cmd_create(t_input *input)
 	return (cmd);
 }
 
-static void wait_child(void)
+static void	wait_child(void)
 {
-	int w_status;
-	int sig;
+	int	w_status;
+	int	sig;
 
 	wait(&w_status);
 	if (WIFEXITED(w_status))
@@ -75,11 +75,11 @@ static void wait_child(void)
 	}
 }
 
-void execute_ext_cmd(t_input *input)
+void	execute_ext_cmd(t_input *input)
 {
-	pid_t pid;
-	char **env;
-	char *cmd;
+	pid_t	pid;
+	char	**env;
+	char	*cmd;
 
 	pid = fork();
 	if (pid == -1)

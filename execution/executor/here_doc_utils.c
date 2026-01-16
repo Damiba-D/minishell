@@ -49,9 +49,9 @@ char	*replace_next_var_hdoc(char *result, int *last_end)
 
 char	*hdoc_expand_arg(char *line)
 {
-	char *result;
-	char *new_result;
-	int last_replaced_end;
+	char	*result;
+	char	*new_result;
+	int		last_replaced_end;
 
 	if (!line)
 		return (NULL);

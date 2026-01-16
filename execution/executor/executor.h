@@ -1,5 +1,8 @@
 #ifndef EXECUTOR_H
-#include "../../parsing/parsing.h"
+# define EXECUTOR_H
+
+# include "../../parsing/parsing.h"
+
 bool	is_builtin(char *cmd);
 int		run_builtin(t_input *input);
 void	exe_hds(t_input *input);
@@ -22,4 +25,5 @@ void	close_pipe(void);
 bool	execute_all_hds(t_list *input);
 char	*replace_next_var_hdoc(char *result, int *last_end);
 char	*hdoc_expand_arg(char *line);
+
 #endif

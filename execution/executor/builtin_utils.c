@@ -1,7 +1,7 @@
 #include "../../minishell.h"
 #include "executor.h"
 
-bool is_builtin(char *cmd)
+bool	is_builtin(char *cmd)
 {
 	if (!cmd)
 		return (true);
@@ -22,7 +22,7 @@ bool is_builtin(char *cmd)
 	return (false);
 }
 
-int run_builtin(t_input *input)
+int	run_builtin(t_input *input)
 {
 	char	*cmd;
 
@@ -46,7 +46,7 @@ int run_builtin(t_input *input)
 	return (0);
 }
 
-void execute_builtin(t_input *input)
+void	execute_builtin(t_input *input)
 {
 	if (setup_fds(input, msh()->og_fds, true))
 		return (restore_fds(msh()->og_fds));

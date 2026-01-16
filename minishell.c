@@ -35,7 +35,7 @@ int	main(void)
 			continue ;
 		}
 		expand_all(msh());
-		t_list *cur = msh()->inputlst;
+		t_list	*cur = msh()->inputlst;
 		while (cur)
 		{
 			remove_quotes_input((t_input *)cur->content);

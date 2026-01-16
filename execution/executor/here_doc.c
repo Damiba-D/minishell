@@ -2,7 +2,7 @@
 
 static void	create_tmp_file(char **filename, int *filenum)
 {
-	char *fileno;
+	char	*fileno;
 
 	*filenum = 0;
 	while (true)
@@ -30,9 +30,9 @@ static void	create_tmp_file(char **filename, int *filenum)
 
 static void	write_here_doc(t_file *here_doc, int filefd)
 {
-	char *line;
+	char	*line;
 	size_t	del_len;
-	char *expanded;
+	char	*expanded;
 
 	del_len = ft_strlen(here_doc->filename) + 1;
 	while (true)
@@ -58,8 +58,8 @@ static void	write_here_doc(t_file *here_doc, int filefd)
 
 void	here_doc_handler(t_file *here_doc)
 {
-	char *tmpfilename;
-	int filenum;
+	char	*tmpfilename;
+	int		filenum;
 
 	create_tmp_file(&tmpfilename, &filenum);
 	setup_hdoc_signals();
@@ -69,4 +69,3 @@ void	here_doc_handler(t_file *here_doc)
 	free(here_doc->filename);
 	here_doc->filename = tmpfilename;
 }
-
